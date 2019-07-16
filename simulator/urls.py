@@ -1,9 +1,9 @@
-from django.urls import path
+from django.urls import path, re_path
 from . import views
 
 app_name='simulator'
 
 urlpatterns = [
     path('', views.main, name='main'),
-    path('simular', views.simular, name='simular')
+    re_path(r'^simular/(?P<rho>[0-9][.][0-9])/$', views.simular, name='simular')
 ]

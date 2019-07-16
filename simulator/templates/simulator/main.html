@@ -12,7 +12,21 @@
 <h2>Digite a utilização da fila:</h2>
 <input type="text" ng-model="rho"></input>
 <h3>{% verbatim %} {{rho}} {% endverbatim %}</h3>
-<h1><a href="{% url 'simulator:simular' %}" class="btn btn-primary btn-lg btn btn-success">Simular</a></h1>
+
+<h1><a id="btn_simular" href="" class="btn btn-primary btn-lg btn btn-success">Simular</a></h1>
+
+<script ng-app="app" ng-controller="SimuladorController">
+    document.getElementById('btn_simular').addEventListener('click', acertaRho, false);
+    function acertaRho() {
+        console.log("rho:");        
+        console.log($scope.rho);
+        // var url_mask = "{% url 'simulator:simular' 0.6 %}".replace('0.6', 0.1);
+        // console.log(url_mask);
+        // window.location.href = url_mask;
+    }
+</script>
 </body>
 
+
 </html>
+
