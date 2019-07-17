@@ -1,12 +1,16 @@
 from django.shortcuts import render
 from .simulador import *
+import json
+from django.http import HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
-
+@csrf_exempt
 def main(request):    
 
     return render(request, 'simulator/main.html', {})
-
+    
+@csrf_exempt
 def simular(request, rho):
     context = {
         'e_w': -1,
@@ -26,11 +30,13 @@ def simular(request, rho):
         w_means.append(Statistics.media_amostral(wj_s))
         w_vars.append(Statistics.var_amostral(wj_s))
         nq_s.append(nq)
+        print(i)
     context['e_w'] = Statistics.media_amostral(w_means)
     context['v_w'] = Statistics.media_amostral(w_vars)
     context['e_nq'] = Statistics.media_amostral(nq_s)
     context['v_nq'] = Statistics.media_amostral(nq_s)
-    return render(request, 'simulator/main.html', context)
+    print('end')
+    return HttpResponse(json.dumps(context))
 
 
 
