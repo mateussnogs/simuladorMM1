@@ -1,48 +1,82 @@
 <!DOCTYPE html>
 <html ng-app='app'>
     <head>
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
-    <link rel="stylesheet" href="/templates/simulador/styles.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular.min.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular-cookies.min.js"></script>
-    <script src="/static/js/app.js"></script>
-    <script src="/static/js/controllers/simulador_controller.js"></script>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/static/css/styles.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular-cookies.min.js"></script>
+        <script src="/static/js/app.js"></script>
+        <script src="/static/js/controllers/simulador_controller.js"></script>
     </head>
     <title>SimuladorMM1</title>
     <body ng-controller="SimuladorController">
-        <h1>Simulador: </h1><br>
-        <label for="taxa">Escolha a utilização da fila:</label>
-        <select id="taxa" ng-model="rho">
-            <option value=0.2>0.2</option>
-            <option value=0.4>0.4</option>
-            <option value=0.6>0.6</option>
-            <option value=0.8>0.8</option>
-            <option value=0.9>0.9</option>
-        </select>
+        <div class="topnav">
+            <a class="active" href="#home">Simulador de Filas M/M/1</a>
+            <a href="#news">Animação de filas discretas</a>
+        </div>
+        <div class="before">
+            <h3 style="padding-left:10px">Escolha as configurações para rodar a fila</h3>
+            <div class="opcoes">
+                <label for="taxa">Taxa de utilização:</label>
+                <select id="taxa" ng-model="rho">
+                    <option value=0.2>0.2</option>
+                    <option value=0.4>0.4</option>
+                    <option value=0.6>0.6</option>
+                    <option value=0.8>0.8</option>
+                    <option value=0.9>0.9</option>
+                </select>
+            </div>
+            
+            <div class="opcoes">
+                <label for="disc">Disciplina:</label>
+                <select id="disc" ng-model="disciplina">
+                    <option value='FCFS'>FCFS</option>
+                    <option value='LCFS'>LCFS</option>
+                </select>
+            </div>
 
-        <p>{% verbatim %} {{ rho }} {% endverbatim %}</p>
-        
-        <label for="disc">Escolha a disciplina da fila:</label>
-        <select id="disc" ng-model="disciplina">
-            <option value='FCFS'>FCFS</option>
-            <option value='LCFS'>LCFS</option>
-        </select>
+            <div class="opcoes">
+                <label for="kmin">Coletas por rodada:</label>
+                <input id="kmin" type="number" ng-model="kmin" min="1" max="100000">
+            </div>
 
-        <label for="kmin">Digite o numero de coletas por rodada:</label>
-        <input id="kmin" type="number" ng-model="kmin" min="1" max="100000">
-
-        <label for="rod">Digite o numero de rodada:</label>
-        <input id="rod" type="number" ng-model="rodadas" min="1" max="3200">
-
-        <h1><a id="btn_simular" href ng-click="simular(rho)" class="btn btn-primary btn-lg btn btn-success">Simular</a></h1>
-
-        <h2> Resultados:</h2>
-        <p>Tempo médio de espera: {% verbatim %} {{ result[e_w] }} {% endverbatim %}</p> 
-        <p>Variância do tempo de espera: {% verbatim %} {{ result[v_w] }} {% endverbatim %}</p> 
-        <p>Número médio de pessoas na fila: {% verbatim %} {{ result[e_nq] }} {% endverbatim %}</p> 
-        <p>Variância do número de pessoas na fila: {% verbatim %} {{ result[v_nq] }} {% endverbatim %}</p>
-
+            <div class="opcoes">
+                <label for="rod">Número de rodada:</label>
+                <input id="rod" type="number" ng-model="rodadas" min="1" max="3200">
+            </div>
+        </div>
+        <h1><a href ng-click="simular(rho, disciplina, kmin, rodadas)" class="btn btn-lg btn btn_simular">Simular</a></h1>
+        <div class="after">
+            <div ng-show="showLoader" class="loader"></div>
+            <h2> Resultados:</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Metrica:</th>
+                        <th>Valor Obtido:</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Tempo médio de espera:</td>
+                        <td>{% verbatim %} {{ results['e_w'] }} {% endverbatim %}</td>
+                    </tr>
+                    <tr>
+                        <td>Variância do tempo de espera:</td>
+                        <td>{% verbatim %} {{ results['v_w'] }} {% endverbatim %}</td>
+                    </tr>
+                    <tr>
+                        <td>Número médio de pessoas na fila:</td>
+                        <td>{% verbatim %} {{ results['e_nq'] }} {% endverbatim %}</td>
+                    </tr>
+                    <tr>
+                        <td>Variância do número de pessoas na fila:</td>
+                        <td>{% verbatim %} {{ results['v_nq'] }} {% endverbatim %}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </body>
 </html>
 

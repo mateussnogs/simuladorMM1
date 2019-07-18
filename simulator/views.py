@@ -11,22 +11,23 @@ def main(request):
     return render(request, 'simulator/main.html', {})
     
 @csrf_exempt
-def simular(request, rho):
+def simular(request, rho, disciplina, kmin, rodadas):
     context = {
         'e_w': -1,
         'v_w': -1,
         'e_nq': -1,
         'v_nq': -1
     }
-    print(rho)
     rho = float(rho)
     simulador = Simulador(rho)
-    rodadas = 300
+    rodadas = int(rodadas)
+    disciplina = str(disciplina)
+    kmin = int(kmin)
     w_means = []
     w_vars = []
     nq_s = []
     for i in range(rodadas):
-        nq, wj_s = simulador.simular('FCFS', 3000)
+        nq, wj_s = simulador.simular(disciplina, kmin)
         w_means.append(Statistics.media_amostral(wj_s))
         w_vars.append(Statistics.var_amostral(wj_s))
         nq_s.append(nq)
