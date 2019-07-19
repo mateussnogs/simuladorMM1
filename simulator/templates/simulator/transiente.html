@@ -18,15 +18,32 @@
             <a href="animacao">Animação de filas discretas</a>
             <a href="transiente">Determinação da fase transiente</a>
         </div>
-        <button ng-click="simular_toplot(rho, disciplina, kmin, rodadas)"> Roda </button>
-        <button ng-click="plotCharts(rho)"> Plota </button>
-        <div id="graph">
-                <p ng-if="plots['N']">OK!</p>
-            <div id="chart2"></div>
-            <div id="chart4"></div>
-            <div id="chart6"></div>
-            <div id="chart8"></div>
-            <div id="chart9"></div>
+        <div class="before">
+            <div class="opcoes">
+                <label for="taxa">Taxa de utilização:</label>
+                <select id="taxa" ng-model="rho">
+                    <option value=0.2>0.2</option>
+                    <option value=0.4>0.4</option>
+                    <option value=0.6>0.6</option>
+                    <option value=0.8>0.8</option>
+                    <option value=0.9>0.9</option>
+                </select>
+            </div>
+            <div class="opcoes">
+                <label for="disc">Disciplina:</label>
+                <select id="disc" ng-model="disciplina">
+                    <option value='FCFS'>FCFS</option>
+                    <option value='LCFS'>LCFS</option>
+                </select>
+            </div>
+        </div>
+        <div class="butons">
+            <button ng-click="simular_toplot(rho, disciplina, kmin, rodadas)"> Roda </button>
+        </div>
+        <div ng-show="showLoader" class="loader"></div>
+        <div ng-show="chartReady" id="graph">
+            <div id="chartW"></div>
+            <div id="chartV"></div>
         <div>
     </body>
 </html>

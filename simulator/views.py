@@ -74,6 +74,8 @@ def simular_toplot(request, rho, disciplina, kmin, rodadas):
     mespera = []
     vespera = []
     nq = 0
+    medias_moveis_w = []
+    medias_moveis_v = []
     media_tempo_espera = 0
     variancia_tempo_espera = 0
     t_rodada = simulador.instante_atual
@@ -107,6 +109,17 @@ def simular_toplot(request, rho, disciplina, kmin, rodadas):
                 mespera.append(media_tempo_espera)
                 variancia_tempo_espera = simulador.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
                 vespera.append(variancia_tempo_espera)
+                if(coletas>3000):
+                    sumw = 0
+                    sumv = 0
+                    for k in range(coletas-3000, coletas):
+                        sumw += mespera[k]
+                        sumv += vespera[k]
+                    medias_moveis_w.append(sumw/3000)
+                    medias_moveis_v.append(sumv/3000)     
+                else:
+                    medias_moveis_w.append(0)
+                    medias_moveis_v.append(0)
             simulador.agendar_chegada(simulador.instante_atual)
         else: #partida
             simulador.servidor_ocupado = False
@@ -121,10 +134,23 @@ def simular_toplot(request, rho, disciplina, kmin, rodadas):
                 mespera.append(media_tempo_espera)
                 variancia_tempo_espera = simulador.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
                 vespera.append(variancia_tempo_espera)
-            #t_rodada = simulador.instante_atual - t_rodada
-            #media_tempo_espera = self.staticts.media_amostral(tempos_espera)
-            #variancia_tempo_espera = self.staticts.var_amostral(tempos_espera)
+                if(coletas>3000):
+                    sumw = 0
+                    sumv = 0
+                    for k in range(coletas-3000, coletas):
+                        sumw += mespera[k]
+                        sumv += vespera[k]
+                    medias_moveis_w.append(sumw/3000)
+                    medias_moveis_v.append(sumv/3000)     
+                else:
+                    medias_moveis_w.append(0)
+                    medias_moveis_v.append(0)
+                    #t_rodada = simulador.instante_atual - t_rodada
+                    #media_tempo_espera = self.staticts.media_amostral(tempos_espera)
+                    #variancia_tempo_espera = self.staticts.var_amostral(tempos_espera)
     context['V'] = vespera
+    context['MMV'] = medias_moveis_v
     context['W'] = mespera
-            #return nq/t_rodada, media_tempo_espera, variancia_tempo_espera
+    context['MMW'] = medias_moveis_w
+    #return nq/t_rodada, media_tempo_espera, variancia_tempo_espera
     return HttpResponse(json.dumps(context))

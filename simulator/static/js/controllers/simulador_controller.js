@@ -12,12 +12,12 @@
            'e_nq': null,
            'v_nq': null
         };
-        $scope.plotCharts = function () {
+        $scope.plotCharts = function (rho, disciplina) {
             var chart = new Highcharts.Chart({
                 
                 chart: {
-                    renderTo: 'chart2',
-                    width: 1000
+                    renderTo: 'chartW',
+                    width: 420
                 },
                 plotOptions: {
                     series: {
@@ -26,20 +26,20 @@
                 },
                 series: [{
                     name: 'E[W]',
-                    data: $scope.plots[0]['W']
+                    data: $scope.plots['W']
                 },{
-                    name: 'V(W)',
-                    data: $scope.plots[0]['V']
+                    name: 'Medias moveis',
+                    data: $scope.plots['MMW']
                 }],
                 title: {
-                    text: 'Taxa 0,2'
+                    text: 'Disciplina ' + disciplina + ' e Taxa ' + rho
                 }
             });
-            var chart2 = new Highcharts.Chart({
+            var chart1 = new Highcharts.Chart({
                 
                 chart: {
-                    renderTo: 'chart4',
-                    width: 1000
+                    renderTo: 'chartV',
+                    width: 420
                 },
                 plotOptions: {
                     series: {
@@ -47,82 +47,17 @@
                     }
                 },
                 series: [{
-                    name: 'E[W]',
-                    data: $scope.plots[1]['W']
-                },{
                     name: 'V(W)',
-                    data: $scope.plots[1]['V']
+                    data: $scope.plots['V']
+                },{
+                    name: 'Medias moveis',
+                    data: $scope.plots['MMV']
                 }],
                 title: {
-                    text: 'Taxa 0,4'
+                    text: 'Disciplina ' + disciplina + ' e Taxa ' + rho
                 }
             });
-            var chart3 = new Highcharts.Chart({
-                
-                chart: {
-                    renderTo: 'chart6',
-                    width: 1000
-                },
-                plotOptions: {
-                    series: {
-                        pointStart: 1
-                    }
-                },
-                series: [{
-                    name: 'E[W]',
-                    data: $scope.plots[2]['W']
-                },{
-                    name: 'V(W)',
-                    data: $scope.plots[2]['V']
-                }],
-                title: {
-                    text: 'Taxa 0,6'
-                }
-            });
-            var chart4 = new Highcharts.Chart({
-                
-                chart: {
-                    renderTo: 'chart8',
-                    width: 1000
-                },
-                plotOptions: {
-                    series: {
-                        pointStart: 1
-                    }
-                },
-                series: [{
-                    name: 'E[W]',
-                    data: $scope.plots[3]['W']
-                },{
-                    name: 'V(W)',
-                    data: $scope.plots[3]['V']
-                }],
-                title: {
-                    text: 'Taxa 0,8'
-                }
-            });
-            var chart5 = new Highcharts.Chart({
-                
-                chart: {
-                    renderTo: 'chart9',
-                    width: 1000
-                },
-                plotOptions: {
-                    series: {
-                        pointStart: 1
-                    }
-                },
-                series: [{
-                    name: 'E[W]',
-                    data: $scope.plots[4]['W']
-                },{
-                    name: 'V(W)',
-                    data: $scope.plots[4]['V']
-                }],
-                title: {
-                    text: 'Taxa 0,9'
-                }
-            });
+            $scope.chartReady = true;
         };
 
         $scope.simular = function(rho, disciplina, kmin, rodadas) {
@@ -134,18 +69,16 @@
             });
         }
         $scope.simular_toplot = function(rho, disciplina, kmin, rodadas) {
-            let r = [0.2, 0.4, 0.6, 0.8, 0.9]
-            let plots = []
-            for( let i in r){
-               console.log('rodar');
-                $http.post('/simulartoplot/' + r[i] + '/' + disciplina + '/' + kmin + '/' + rodadas + '/')
-                .then(function(res) {
-                    plots.push(res.data);
-                    $scope.showLoader = false;
-                    console.log('parei')
-                });
-            }
-            $scope.plots = plots;
+            console.log('rodar');
+            $scope.chartReady = false;
+            $scope.showLoader = true;
+            $http.post('/simulartoplot/' + rho + '/' + disciplina + '/' + kmin + '/' + rodadas + '/')
+            .then(function(res) {
+                $scope.plots = res.data;
+                $scope.showLoader = false;
+                console.log('parei')
+                $scope.plotCharts(rho, disciplina);
+            });
         }
     });
 })();

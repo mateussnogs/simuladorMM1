@@ -5,6 +5,8 @@
   width: 120px;
   height: 120px;
   animation: spin 2s linear infinite;
+  margin-left: 700px;
+  margin-top: -150px;
 }
   
 @keyframes spin {
@@ -102,4 +104,22 @@ table{
 
 td, th{
   border: 1px black solid;
+}
+
+#chartW, #chartV{
+  display: inline-block;
+  width: 400px;
+}
+
+#chartW{
+  margin-left: -100px;
+}
+
+.butons{
+  width: 20%;
+  padding-left: 70px;
+}
+
+#graph{
+  margin-top: -190px;
 }
