@@ -120,7 +120,9 @@ class Simulador:
         
     def simular(self, disciplina='FCFS', kmin=3000):
         tempos_espera = []
-        nq = 0
+        area_nq = 0 # ou primeiro momento
+        seg_momento_nq = 0
+        pmf_nq = {}
         media_tempo_espera = 0
         variancia_tempo_espera = 0
         t_rodada = self.instante_atual
@@ -132,7 +134,12 @@ class Simulador:
             dt = self.instante_atual
             self.instante_atual = evento.instante # avança o tempo para instante do evento
             dt = self.instante_atual - dt            
-            nq += len(self.fila)*dt
+            area_nq += len(self.fila)*dt
+            seg_momento_nq += (len(self.fila)**2)*dt
+            if (len(self.fila) in pmf_nq.keys()):
+                pmf_nq[len(self.fila)].append(dt)
+            else:
+                pmf_nq[len(self.fila)] = [dt]
             if (evento.tipo == 'chegada'):                
                 if(self.servidor_ocupado):
                     if (disciplina == 'FCFS'):
@@ -163,6 +170,6 @@ class Simulador:
                 t_rodada = self.instante_atual - t_rodada
                 #media_tempo_espera = self.staticts.media_amostral(tempos_espera)
                 #variancia_tempo_espera = self.staticts.var_amostral(tempos_espera)
-                return nq/t_rodada, media_tempo_espera, variancia_tempo_espera
+                return area_nq/t_rodada, seg_momento_nq, media_tempo_espera, variancia_tempo_espera
             
             
