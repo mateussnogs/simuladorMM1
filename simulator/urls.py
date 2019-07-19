@@ -4,6 +4,10 @@ from . import views
 app_name='simulator'
 
 urlpatterns = [
-    path('', views.main, name='main'),
-    re_path(r'^simular/(?P<rho>[0-9][.][0-9])/(?P<disciplina>[\w-]+)/(?P<kmin>[0-9]+)/(?P<rodadas>[0-9]+)/$', views.simular, name='simular')
+    path('main', views.main, name='main'),
+    path('animacao', views.animacao, name='animacao'),
+    path('transiente', views.transiente, name='transiente'),
+    re_path(r'^simular/(?P<rho>[0-9][.][0-9])/(?P<disciplina>[\w-]+)/(?P<kmin>[0-9]+)/(?P<rodadas>[0-9]+)/$', views.simular, name='simular'),
+    re_path(r'^simulartoplot/(?P<rho>[0-9][.][0-9])/(?P<disciplina>[\w-]+)/(?P<kmin>[0-9]+)/(?P<rodadas>[0-9]+)/$', views.simular_toplot, name='simular_toplot')
+    
 ]

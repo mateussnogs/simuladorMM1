@@ -1,24 +1,60 @@
 import random
 from math import log
-# from scipy.stats import t, chi2
+from scipy.stats import t, chi2
 from math import sqrt
 
 class Statistics:
     @staticmethod
-    def media_amostral(X):
+    def media_amostral(X): #estimador media
         n = len(X)
         soma = 0
         for i in range(n):
             soma += X[i]
         return soma/n
+
     @staticmethod
-    def var_amostral(X):
-        mi_chapeu = Statistics.media_amostral(X)
+    def media_incremental(media_j, x, i): #estimador media incremental
+        if(i>0):
+            return media_j + (x - media_j)/i
+        else:
+            return x
+
+    @staticmethod
+    def var_amostral(X, mi_chapeu): #estimador variancia
         n = len(X)
         soma = 0
         for i in range(n):
             soma += (X[i] - mi_chapeu)**2
         return soma/(n-1)
+
+    @staticmethod
+    def var_incremental(var_j, media_i, x, media_j, i): #estimador variancia incremental
+        if(i>0):
+            return ((i-1)*var_j + (x - media_i)*(x - media_j))/i
+        else:
+            return 0
+
+    @staticmethod
+    def intervalo_de_confianca_tstudent(michapeu, sigma2chapeu, n, ic): #calcula IC aplicando formula
+        alpha = (1 - ic)
+        t_student = t.ppf(1 - alpha/2, n-1) 
+        mul = sqrt(sigma2chapeu / n)
+        superior = michapeu + t_student * mul
+        inferior = michapeu - t_student * mul
+        precisao = (superior - inferior)/(superior + inferior)
+        centro = (superior + inferior)/2
+        return centro, inferior, superior, precisao
+  
+    @staticmethod
+    def intervalo_de_confianca_chi2(sigma2chapeu, n, ic): #calcula IC aplicando formula
+        alpha = (1 - ic)
+        chi2_sup = chi2.ppf(alpha/2, n - 1)
+        chi2_inf = chi2.ppf(1 - alpha/2, n - 1)
+        inferior = ((n - 1) * sigma2chapeu) / chi2_inf
+        superior = ((n - 1) * sigma2chapeu) / chi2_sup
+        precisao = (chi2_inf - chi2_sup) / (chi2_inf + chi2_sup)
+        centro = (superior + inferior) / 2
+        return centro, inferior, superior, precisao
 
 class AmostradorExponencial:
     def __init__(self, lamb):
@@ -70,6 +106,7 @@ class Simulador:
         self.fila = []
         self.servidor_ocupado = False
         self.instante_atual = 0
+        self.staticts = Statistics
         
     def agendar_chegada(self, instante):
         demora_chegar = self.amostrador_chegada.gerar_amostra()
@@ -84,6 +121,8 @@ class Simulador:
     def simular(self, disciplina='FCFS', kmin=3000):
         tempos_espera = []
         nq = 0
+        media_tempo_espera = 0
+        variancia_tempo_espera = 0
         t_rodada = self.instante_atual
         if (len(self.eventos.eventos) == 0):
             self.agendar_chegada(self.instante_atual)
@@ -105,6 +144,9 @@ class Simulador:
                     tempos_espera.append(0)
                     coletas += 1
                     self.agendar_partida(self.instante_atual, evento.fregues)
+                    lastmedia_tempo = media_tempo_espera
+                    media_tempo_espera = self.staticts.media_incremental(media_tempo_espera, tempos_espera[coletas-1], coletas)
+                    variancia_tempo_espera = self.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
                 self.agendar_chegada(self.instante_atual)
             else: #partida
                 self.servidor_ocupado = False
@@ -114,8 +156,13 @@ class Simulador:
                     tempos_espera.append(self.instante_atual-fregues.instante_chegada)                    
                     coletas += 1
                     self.agendar_partida(self.instante_atual, fregues)
+                    lastmedia_tempo = media_tempo_espera
+                    media_tempo_espera = self.staticts.media_incremental(media_tempo_espera, tempos_espera[coletas-1], coletas)
+                    variancia_tempo_espera = self.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
             if (coletas >= kmin):
                 t_rodada = self.instante_atual - t_rodada
-                return nq/t_rodada, tempos_espera
+                #media_tempo_espera = self.staticts.media_amostral(tempos_espera)
+                #variancia_tempo_espera = self.staticts.var_amostral(tempos_espera)
+                return nq/t_rodada, media_tempo_espera, variancia_tempo_espera
             
             

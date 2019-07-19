@@ -90,7 +90,14 @@ h2{
 
 table{
   position: absolute;
-  top: 300px;
+}
+
+#ew{
+  top:100px;
+}
+
+#vw{
+  top:300px
 }
 
 td, th{

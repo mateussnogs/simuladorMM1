@@ -13,9 +13,9 @@
     <title>SimuladorMM1</title>
     <body ng-controller="SimuladorController">
         <div class="topnav">
-            <a class="active" href="main.html">Simulador de Filas M/M/1</a>
-            <a href="animacao.html">Animação de filas discretas</a>
-            <a href="transiente.html">Determinação da fase transiente</a>
+            <a class="active" href="main">Simulador de Filas M/M/1</a>
+            <a href="animacao">Animação de filas discretas</a>
+            <a href="transiente">Determinação da fase transiente</a>
         </div>
         <div class="before">
             <h3 style="padding-left:10px">Escolha as configurações para rodar a fila</h3>
@@ -52,29 +52,43 @@
         <div class="after">
             <div ng-show="showLoader" class="loader"></div>
             <h2> Resultados:</h2>
-            <table>
+            <table id="ew">
                 <thead>
                     <tr>
-                        <th>Metrica:</th>
-                        <th>Valor Obtido:</th>
+                        <th>Lim Inf IC</th>
+                        <th>E[W]</th>
+                        <th>Lim Sup IC</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>Tempo médio de espera:</td>
+                        <td>{% verbatim %} {{ results['ic_ew_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['e_w'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_ew_high'] }} {% endverbatim %}</td>
                     </tr>
+                </tbody>
+            </table>
+            <table id="vw">
+                <thead>
                     <tr>
-                        <td>Variância do tempo de espera:</td>
+                        <th></th>
+                        <th>Lim Inf IC</th>
+                        <th>V(W)</th>
+                        <th>Lim Sup IC</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>T-Student</td>
+                        <td>{% verbatim %} {{ results['ic_vwt_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['v_w'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vwt_high'] }} {% endverbatim %}</td>
                     </tr>
                     <tr>
-                        <td>Número médio de pessoas na fila:</td>
-                        <td>{% verbatim %} {{ results['e_nq'] }} {% endverbatim %}</td>
-                    </tr>
-                    <tr>
-                        <td>Variância do número de pessoas na fila:</td>
-                        <td>{% verbatim %} {{ results['v_nq'] }} {% endverbatim %}</td>
+                        <td>Chi-Square</td>
+                        <td>{% verbatim %} {{ results['ic_vwchi_low'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['v_w'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vwchi_high'] }} {% endverbatim %}</td>
                     </tr>
                 </tbody>
             </table>
