@@ -33,7 +33,7 @@ def simular(request, rho, disciplina, kmin, rodadas):
     Vw = []
     Nq = []
     for i in range(rodadas):
-        nqi, wi, vi_w = simulador.simular(disciplina, kmin)
+        nqi, segm_nqi, wi, vi_w = simulador.simular(disciplina, kmin)
         W.append(wi) #Conjunto de variaveis aleatorias {Wi}
         Vw.append(vi_w) #Conjunto de variaveis aleatorias {Vi}
         Nq.append(nqi) #Conjunto de variaveis aleatorias {Nqi}
