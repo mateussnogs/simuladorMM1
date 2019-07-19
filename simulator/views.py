@@ -32,34 +32,59 @@ def simular(request, rho, disciplina, kmin, rodadas):
     W = []
     Vw = []
     Nq = []
+    Vnq = []
     for i in range(rodadas):
-        nqi, segm_nqi, wi, vi_w = simulador.simular(disciplina, kmin)
+        nqi, vi_nq, wi, vi_w = simulador.simular(disciplina, kmin)
         W.append(wi) #Conjunto de variaveis aleatorias {Wi}
         Vw.append(vi_w) #Conjunto de variaveis aleatorias {Vi}
         Nq.append(nqi) #Conjunto de variaveis aleatorias {Nqi}
+        Vnq.append(vi_nq)
         print(i)
     #Variaveis para ICs        
     mi_chapeu_w = Statistics.media_amostral(W)
     mi_chapeu_vw = Statistics.media_amostral(Vw)
     mi_chapeu_nq = Statistics.media_amostral(Nq)
+    mi_chapeu_vnq = Statistics.media_amostral(Vnq)
     sigma_chapeu2_w = Statistics.var_amostral(W, mi_chapeu_w)
     sigma_chapeu2_vw = Statistics.var_amostral(Vw, mi_chapeu_vw)
     sigma_chapeu2_nq = Statistics.var_amostral(Nq, mi_chapeu_nq)
+    sigma_chapeu2_vnq = Statistics.var_amostral(Vnq, mi_chapeu_vnq)
 
     #ic medias
     ic_w = Statistics.intervalo_de_confianca_tstudent(mi_chapeu_w, sigma_chapeu2_w, rodadas, 0.95)
     ic_nq = Statistics.intervalo_de_confianca_tstudent(mi_chapeu_nq, sigma_chapeu2_nq, rodadas, 0.95)
     #ic variancias pela tstudent
     ic_vwt = Statistics.intervalo_de_confianca_tstudent(mi_chapeu_vw, sigma_chapeu2_vw, rodadas, 0.95)
+    ic_vnqt = Statistics.intervalo_de_confianca_tstudent(mi_chapeu_vnq, sigma_chapeu2_vnq, rodadas, 0.95)    
+    #ic variancias pela chi2
     ic_vwchi = Statistics.intervalo_de_confianca_chi2(mi_chapeu_vw, rodadas, 0.95)
+    ic_vnqchi = Statistics.intervalo_de_confianca_chi2(mi_chapeu_vnq, rodadas, 0.95)
+    
     context['e_w'] = mi_chapeu_w
-    context['v_w'] = mi_chapeu_vw
     context['ic_ew_low'] = ic_w[1]
     context['ic_ew_high'] = ic_w[2]
+    context['ic_ew_pres'] = ic_w[3]
+    
+    context['v_w'] = mi_chapeu_vw
     context['ic_vwt_low'] = ic_vwt[1]
     context['ic_vwt_high'] = ic_vwt[2]
+    context['ic_vwt_pres'] = ic_vwt[3]
     context['ic_vwchi_low'] = ic_vwchi[1]
     context['ic_vwchi_high'] = ic_vwchi[2]
+    context['ic_vwchi_pres'] = ic_vwchi[3]
+
+    context['e_nq'] = mi_chapeu_nq
+    context['ic_enq_low'] = ic_nq[1]
+    context['ic_enq_high'] = ic_nq[2]
+    context['ic_enq_pres'] = ic_nq[3]
+    
+    context['v_nq'] = mi_chapeu_nq
+    context['ic_vnqt_low'] = ic_vwt[1]
+    context['ic_vnqt_high'] = ic_vnqt[2]
+    context['ic_vnqt_pres'] = ic_vnqt[3]
+    context['ic_vnqchi_low'] = ic_vnqchi[1]
+    context['ic_vnqchi_high'] = ic_vnqchi[2]
+    context['ic_vnqchi_pres'] = ic_vnqchi[3]
     print('end')
     return HttpResponse(json.dumps(context))
 

@@ -62,6 +62,30 @@
 
         $scope.simular = function(rho, disciplina, kmin, rodadas) {
             $scope.showLoader = true;
+            $scope.results = {
+                'e_w': null,
+                'v_w': null,
+                'e_nq': null,
+                'v_nq': null,
+                'ic_ew_low': null,
+                'ic_ew_high': null,
+                'ic_ew_pres': null,
+                'ic_enq_low': null,
+                'ic_enq_high': null,
+                'ic_enq_pres': null,
+                'ic_vwt_low': null,
+                'ic_vwt_high': null,
+                'ic_vwt_pres': null,
+                'ic_vwchi_low': null,
+                'ic_vwchi_high': null,
+                'ic_vwchi_pres': null,
+                'ic_vnqt_low': null,
+                'ic_vnqt_high': null,
+                'ic_vnqt_pres': null,
+                'ic_vnqchi_low': null,
+                'ic_vnqchi_high': null,
+                'ic_vnqchi_pres': null
+             };
             $http.post('/simular/' + rho + '/' + disciplina + '/' + kmin + '/' + rodadas + '/')
             .then(function(res) {
                 $scope.results = res.data;

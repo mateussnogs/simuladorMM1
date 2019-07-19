@@ -170,6 +170,6 @@ class Simulador:
                 t_rodada = self.instante_atual - t_rodada
                 #media_tempo_espera = self.staticts.media_amostral(tempos_espera)
                 #variancia_tempo_espera = self.staticts.var_amostral(tempos_espera)
-                return area_nq/t_rodada, seg_momento_nq, media_tempo_espera, variancia_tempo_espera
+                return area_nq/t_rodada, (seg_momento_nq-(area_nq/t_rodada)**2), media_tempo_espera, variancia_tempo_espera
             
             

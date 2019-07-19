@@ -19,7 +19,7 @@
         </div>
         <div class="before">
             <h3 style="padding-left:10px">Escolha as configurações para rodar a fila</h3>
-            <div class="opcoes">
+            <div class="opcoes" style="height: 50px;padding-top: 8px;">
                 <label for="taxa">Taxa de utilização:</label>
                 <select id="taxa" ng-model="rho">
                     <option value=0.2>0.2</option>
@@ -30,7 +30,7 @@
                 </select>
             </div>
             
-            <div class="opcoes">
+            <div class="opcoes" style="height: 50px;padding-top: 8px;">
                 <label for="disc">Disciplina:</label>
                 <select id="disc" ng-model="disciplina">
                     <option value='FCFS'>FCFS</option>
@@ -52,43 +52,73 @@
         <div class="after">
             <div ng-show="showLoader" class="loader"></div>
             <h2> Resultados:</h2>
-            <table id="ew">
+            <h4> Pela distribuição t-Student</h4>
+            <table id="e">
                 <thead>
                     <tr>
+                        <th>Métrica</th>
+                        <th>Valor Obtido</th>
                         <th>Lim Inf IC</th>
-                        <th>E[W]</th>
                         <th>Lim Sup IC</th>
+                        <th>Precisão</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>{% verbatim %} {{ results['ic_ew_low'] }} {% endverbatim %}</td>
+                        <td>E[W]</td>
                         <td>{% verbatim %} {{ results['e_w'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_ew_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_ew_high'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_ew_pres']*100 }} {% endverbatim %} %</td>
+                    </tr>
+                    <tr>
+                        <td>V(W)</td>
+                        <td>{% verbatim %} {{ results['v_w'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vwt_low'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vwt_high'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vwt_pres']*100 }} {% endverbatim %} %</td>
+                    </tr>
+                    <tr>
+                        <td>E[Nq]</td>
+                        <td>{% verbatim %} {{ results['e_nq'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_enq_low'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_enq_high'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_enq_pres']*100 }} {% endverbatim %} %</td>
+                    </tr>
+                    <tr>
+                        <td>V(Nq)</td>
+                        <td>{% verbatim %} {{ results['v_nq'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vnqt_low'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vnqt_high'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vnqt_pres']*100 }} {% endverbatim %} %</td>
                     </tr>
                 </tbody>
             </table>
-            <table id="vw">
+            <h4> Pela distribuição Chi-Quadrado</h4>
+            <table id="v">
                 <thead>
                     <tr>
-                        <th></th>
+                        <th>Métrica</th>
+                        <th>Valor Obtido</th>
                         <th>Lim Inf IC</th>
-                        <th>V(W)</th>
                         <th>Lim Sup IC</th>
+                        <th>Precisão</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td>T-Student</td>
-                        <td>{% verbatim %} {{ results['ic_vwt_low'] }} {% endverbatim %}</td>
+                        <td>V(W)</td>
                         <td>{% verbatim %} {{ results['v_w'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_vwt_high'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vwchi_low'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vwchi_high'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vwchi_pres'] * 100 }} {% endverbatim %} %</td>
                     </tr>
                     <tr>
-                        <td>Chi-Square</td>
-                        <td>{% verbatim %} {{ results['ic_vwchi_low'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['v_w'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_vwchi_high'] }} {% endverbatim %}</td>
+                        <td>V(Nq)</td>
+                        <td>{% verbatim %} {{ results['v_nq'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vnqchi_low'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vnqchi_high'] }} {% endverbatim %}</td>
+                        <td>{% verbatim %} {{ results['ic_vnqchi_pres']*100 }} {% endverbatim %} %</td>
                     </tr>
                 </tbody>
             </table>
