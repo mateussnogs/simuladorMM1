@@ -112,7 +112,8 @@
         };
 
         var check_status;
-        $scope.status_simulador = function() {            
+        $scope.status_simulador = function() {
+            
             $http.get('/status')
             .then(function(res) {
                 $scope.res = res.data;

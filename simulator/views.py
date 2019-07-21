@@ -28,7 +28,7 @@ def rodada(request):
         rodadas = file_rodada.readlines()
         file_rodada.close()
     except:
-        rodadas = [0]
+        rodadas = []
     
     context = {
         'rodada_atual': int(rodadas[-1]) if (len(rodadas) > 0) else 0
