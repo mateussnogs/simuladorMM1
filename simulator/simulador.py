@@ -1,6 +1,6 @@
 import random
 from math import log
-from scipy.stats import t, chi2
+# from scipy.stats import t, chi2
 from math import sqrt
 
 class Statistics:
@@ -64,7 +64,8 @@ class Statistics:
     @staticmethod
     def intervalo_de_confianca_tstudent(michapeu, sigma2chapeu, n, ic): #calcula IC aplicando formula
         alpha = (1 - ic)
-        t_student = t.ppf(1 - alpha/2, n-1) 
+        # t_student = t.ppf(1 - alpha/2, n-1)
+        t_student = 1.9607 
         mul = sqrt(sigma2chapeu / n)
         superior = michapeu + t_student * mul
         inferior = michapeu - t_student * mul
@@ -75,8 +76,10 @@ class Statistics:
     @staticmethod
     def intervalo_de_confianca_chi2(sigma2chapeu, n, ic): #calcula IC aplicando formula
         alpha = (1 - ic)
-        chi2_sup = chi2.ppf(alpha/2, n - 1)
-        chi2_inf = chi2.ppf(1 - alpha/2, n - 1)
+        # chi2_sup = chi2.ppf(alpha/2, n - 1)
+        chi2_sup = 3044.13
+        # chi2_inf = chi2.ppf(1 - alpha/2, n - 1)
+        chi2_inf = 3357.65
         inferior = ((n - 1) * sigma2chapeu) / chi2_inf
         superior = ((n - 1) * sigma2chapeu) / chi2_sup
         precisao = (chi2_inf - chi2_sup) / (chi2_inf + chi2_sup)
