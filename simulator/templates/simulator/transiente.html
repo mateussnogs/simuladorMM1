@@ -42,8 +42,24 @@
         </div>
         <div ng-show="showLoader" class="loader"></div>
         <div ng-show="chartReady" id="graph">
-            <div id="chartW"></div>
-            <div id="chartV"></div>
+            <div class="row">
+                <div class="col-sm-3">
+                <div id="chartW"></div>
+                </div>
+                <div class="col-sm-3">
+                <div id="chartV"></div>
+                </div>
+            </div>
+            <div class="row" style="margin-left:1%">                
+                <div class="col-sm-12">
+                    <div id="chartENq"></div>
+                </div>                
+            </div>
+            <div class="row" style="margin:left:1%">
+                <div class="col-sm-12">
+                    <div id="chartVNq"></div>
+                </div>
+            </div>
         <div>
     </body>
 </html>

@@ -17,7 +17,7 @@
                 
                 chart: {
                     renderTo: 'chartW',
-                    width: 420
+                    width: 520
                 },
                 plotOptions: {
                     series: {
@@ -36,10 +36,9 @@
                 }
             });
             var chart1 = new Highcharts.Chart({
-                
                 chart: {
                     renderTo: 'chartV',
-                    width: 420
+                    width: 520
                 },
                 plotOptions: {
                     series: {
@@ -53,6 +52,48 @@
                     name: 'Medias moveis',
                     data: $scope.plots['MMV']
                 }],
+                title: {
+                    text: 'Disciplina ' + disciplina + ' e Taxa ' + rho
+                }
+            });
+            var chart2 = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'chartENq',
+                    width: 1200
+                },
+                plotOptions: {
+                    series: {
+                        pointStart: 1
+                    }
+                },
+                series: [{
+                    name: 'E(Nq)',
+                    data: $scope.plots['ENq']
+                }],/*{
+                    name: 'Medias moveis',
+                    data: $scope.plots['MMENq']
+                }],*/
+                title: {
+                    text: 'Disciplina ' + disciplina + ' e Taxa ' + rho
+                }
+            });
+            var chart3 = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'chartVNq',
+                    width: 1200
+                },
+                plotOptions: {
+                    series: {
+                        pointStart: 1
+                    }
+                },
+                series: [{
+                    name: 'V(Nq)',
+                    data: $scope.plots['VNq']
+                }],/*{
+                    name: 'Medias moveis',
+                    data: $scope.plots['MMVNq']
+                }],*/
                 title: {
                     text: 'Disciplina ' + disciplina + ' e Taxa ' + rho
                 }

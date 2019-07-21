@@ -22,10 +22,37 @@ class Statistics:
     @staticmethod
     def var_amostral(X, mi_chapeu): #estimador variancia
         n = len(X)
+        if ((n-1) == 0):
+            return 0
         soma = 0
         for i in range(n):
             soma += (X[i] - mi_chapeu)**2
         return soma/(n-1)
+
+    @staticmethod
+    def media_pmf(pmf, total):
+        media = 0
+        pn_s = []
+        for key in pmf.keys():
+            pn = 0
+            for i in range(len(pmf[key])):
+                pn += pmf[key][i]
+            pn = pn/total
+            media += key*pn
+        return media
+
+    @staticmethod
+    def var_pmf(pmf, total):
+        media = Statistics.media_pmf(pmf, total)
+        segundo_momento = 0
+        for key in pmf.keys():
+            pn = 0
+            for i in range(len(pmf[key])):
+                pn += pmf[key][i]
+            pn = pn/total
+            segundo_momento += (key**2)*pn
+        var = segundo_momento - media**2
+        return var
 
     @staticmethod
     def var_incremental(var_j, media_i, x, media_j, i): #estimador variancia incremental
@@ -123,6 +150,7 @@ class Simulador:
         area_nq = 0 # ou primeiro momento
         seg_momento_nq = 0
         pmf_nq = {}
+        nq_medias = []
         media_tempo_espera = 0
         variancia_tempo_espera = 0
         t_rodada = self.instante_atual
@@ -140,6 +168,7 @@ class Simulador:
                 pmf_nq[len(self.fila)].append(dt)
             else:
                 pmf_nq[len(self.fila)] = [dt]
+            nq_medias.append(Statistics.media_pmf(pmf_nq, self.instante_atual))
             if (evento.tipo == 'chegada'):                
                 if(self.servidor_ocupado):
                     if (disciplina == 'FCFS'):
@@ -170,6 +199,6 @@ class Simulador:
                 t_rodada = self.instante_atual - t_rodada
                 #media_tempo_espera = self.staticts.media_amostral(tempos_espera)
                 #variancia_tempo_espera = self.staticts.var_amostral(tempos_espera)
-                return area_nq/t_rodada, (seg_momento_nq/t_rodada-(area_nq/t_rodada)**2), media_tempo_espera, variancia_tempo_espera
+                return area_nq/t_rodada, (seg_momento_nq/t_rodada-(area_nq/t_rodada)**2), nq_medias, media_tempo_espera, variancia_tempo_espera
             
             
