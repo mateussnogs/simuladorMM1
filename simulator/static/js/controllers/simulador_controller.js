@@ -1,10 +1,10 @@
 (function() {
     'use strict';
     angular.module('app').controller('SimuladorController', function($scope, $http, $interval) {
-        $scope.rho = 0.8;
+        $scope.rho = 0.9;
         $scope.rodada = 0
         $scope.disciplina = 'FCFS';
-        $scope.kmin = 1000;
+        $scope.kmin = 2500;
         $scope.rodadas = 3200;
         $scope.showLoader = false;
         $scope.results = {

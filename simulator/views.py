@@ -29,7 +29,6 @@ def rodada(request):
 def simular(request, rho, disciplina, kmin, rodadas):
     global rodada
     rodada = 0
-    request.session['rodada'] = 0
     context = {
         'e_w': -1,
         'v_w': -1,
