@@ -183,9 +183,9 @@ class Simulador:
                     tempos_espera.append(0)
                     coletas += 1
                     self.agendar_partida(self.instante_atual, evento.fregues)
-                    # lastmedia_tempo = media_tempo_espera
-                    # media_tempo_espera = self.staticts.media_incremental(media_tempo_espera, tempos_espera[coletas-1], coletas)
-                    # variancia_tempo_espera = self.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
+                    lastmedia_tempo = media_tempo_espera
+                    media_tempo_espera = self.staticts.media_incremental(media_tempo_espera, tempos_espera[coletas-1], coletas)
+                    variancia_tempo_espera = self.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
                 self.agendar_chegada(self.instante_atual)
             else: #partida
                 self.servidor_ocupado = False
@@ -201,7 +201,7 @@ class Simulador:
             if (coletas >= kmin):
                 t_rodada = self.instante_atual - t_rodada
                 media_tempo_espera = self.staticts.media_amostral(tempos_espera)
-                variancia_tempo_espera = self.staticts.var_amostral(tempos_espera)
+                variancia_tempo_espera = self.staticts.var_amostral(tempos_espera, media_tempo_espera)
                 return area_nq/t_rodada, (seg_momento_nq/t_rodada-(area_nq/t_rodada)**2), media_tempo_espera, variancia_tempo_espera
             
             
