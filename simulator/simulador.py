@@ -171,7 +171,7 @@ class Simulador:
                 pmf_nq[len(self.fila)].append(dt)
             else:
                 pmf_nq[len(self.fila)] = [dt]
-            nq_medias.append(Statistics.media_pmf(pmf_nq, self.instante_atual))
+            # nq_medias.append(Statistics.media_pmf(pmf_nq, self.instante_atual))
             if (evento.tipo == 'chegada'):                
                 if(self.servidor_ocupado):
                     if (disciplina == 'FCFS'):
