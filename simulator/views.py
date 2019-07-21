@@ -6,8 +6,6 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
-#variável global para controle da rodada atual
-rodada_atual = 0
 
 @csrf_exempt
 def main(request):    
@@ -20,11 +18,17 @@ def transiente(request):
     return render(request, 'simulator/transiente.html', {})
     
 def rodada(request):
-    global rodada_atual
+    # global rodada_atual
+    try:
+        file_rodada = open("rodada_atual.txt", "r")
+        rodadas = file_rodada.readlines()
+        file_rodada.close()
+    except:
+        rodadas = [0]
+    
     context = {
-        'rodada_atual': rodada_atual
+        'rodada_atual': int(rodadas[-1]) if (len(rodadas) > 0) else 0
     }
-    print(context['rodada_atual'])
     return HttpResponse(json.dumps(context))
 
 @csrf_exempt
@@ -46,6 +50,7 @@ def simular(request, rho, disciplina, kmin, rodadas):
     Vw = []
     Nq = []
     Vnq = []
+    
     for i in range(rodadas):
         nqi, vi_nq, wi, vi_w = simulador.simular(disciplina, kmin)
         W.append(wi) #Conjunto de variaveis aleatorias {Wi}
@@ -53,6 +58,11 @@ def simular(request, rho, disciplina, kmin, rodadas):
         Nq.append(nqi) #Conjunto de variaveis aleatorias {Nqi}
         Vnq.append(vi_nq)
         rodada_atual = i
+        file_rodada = open("rodada_atual.txt", "a")
+        file_rodada.write(str(i)+"\n")
+        file_rodada.close()
+    file_rodada = open("rodada_atual.txt", "w") # esvazia arquivo ja que simulacao acabou
+    file_rodada.close()
     #Variaveis para ICs        
     mi_chapeu_w = Statistics.media_amostral(W)
     mi_chapeu_vw = Statistics.media_amostral(Vw)
