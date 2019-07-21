@@ -201,7 +201,7 @@ class Simulador:
             if (coletas >= kmin):
                 t_rodada = self.instante_atual - t_rodada
                 media_tempo_espera = Statistics.media_amostral(tempos_espera)
-                variancia_tempo_espera = Statistics.var_amostral(tempos_espera)
+                variancia_tempo_espera = Statistics.var_amostral(tempos_espera, media_tempo_espera)
                 #media_tempo_espera = self.staticts.media_amostral(tempos_espera)
                 #variancia_tempo_espera = self.staticts.var_amostral(tempos_espera)
                 return area_nq/t_rodada, (seg_momento_nq/t_rodada-(area_nq/t_rodada)**2), media_tempo_espera, variancia_tempo_espera
