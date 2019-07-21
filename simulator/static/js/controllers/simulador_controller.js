@@ -1,7 +1,8 @@
 (function() {
     'use strict';
-    angular.module('app').controller('SimuladorController', function($scope, $http) {
+    angular.module('app').controller('SimuladorController', function($scope, $http, $interval) {
         $scope.rho = 0.8;
+        $scope.rodada = 0
         $scope.disciplina = 'FCFS';
         $scope.kmin = 1000;
         $scope.rodadas = 3200;
@@ -101,7 +102,17 @@
             $scope.chartReady = true;
         };
 
+        $scope.get_rodada = function() {            
+            $http.get('/rodada')
+            .then(function(res) {
+                $scope.res = res.data;
+                $scope.rodada = $scope.res['rodada']+1;
+            });
+        };
+
         $scope.simular = function(rho, disciplina, kmin, rodadas) {
+            var rodada;
+            rodada = $interval($scope.get_rodada, 1000);
             $scope.showLoader = true;
             $scope.results = {
                 'e_w': null,
@@ -129,8 +140,10 @@
              };
             $http.post('/simular/' + rho + '/' + disciplina + '/' + kmin + '/' + rodadas + '/')
             .then(function(res) {
+                $scope.get_rodada(); // pega rodada ultima vez para ter o ultimo valor
                 $scope.results = res.data;
-                $scope.showLoader = false;
+                $scope.showLoader = false;                
+                $interval.cancel(rodada);
             });
         }
         $scope.simular_toplot = function(rho, disciplina, kmin, rodadas) {

@@ -6,6 +6,9 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
+#variável global para controle da rodada atual
+rodada = 0
+
 @csrf_exempt
 def main(request):    
     return render(request, 'simulator/main.html', {})
@@ -17,7 +20,16 @@ def transiente(request):
     return render(request, 'simulator/transiente.html', {})
     
 @csrf_exempt
+def rodada(request):
+    global rodada
+    context = {'rodada': rodada}
+    return HttpResponse(json.dumps(context))
+
+@csrf_exempt
 def simular(request, rho, disciplina, kmin, rodadas):
+    global rodada
+    rodada = 0
+    request.session['rodada'] = 0
     context = {
         'e_w': -1,
         'v_w': -1,
@@ -39,7 +51,7 @@ def simular(request, rho, disciplina, kmin, rodadas):
         Vw.append(vi_w) #Conjunto de variaveis aleatorias {Vi}
         Nq.append(nqi) #Conjunto de variaveis aleatorias {Nqi}
         Vnq.append(vi_nq)
-        print(i)
+        rodada = i
     #Variaveis para ICs        
     mi_chapeu_w = Statistics.media_amostral(W)
     mi_chapeu_vw = Statistics.media_amostral(Vw)
