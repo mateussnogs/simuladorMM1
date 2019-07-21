@@ -106,7 +106,7 @@
             $http.get('/rodada')
             .then(function(res) {
                 $scope.res = res.data;
-                $scope.rodada = $scope.res['rodada']+1;
+                $scope.rodada = $scope.res['rodada_atual']+1;
             });
         };
 
