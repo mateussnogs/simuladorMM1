@@ -57,7 +57,8 @@ def simular(request, rho, disciplina, kmin, rodadas):
         Vw.append(vi_w) #Conjunto de variaveis aleatorias {Vi}
         Nq.append(nqi) #Conjunto de variaveis aleatorias {Nqi}
         Vnq.append(vi_nq)
-        rodada_atual = i
+        if (i%7==0):#debug n rodada
+            print(i)
         file_rodada = open("rodada_atual.txt", "a")
         file_rodada.write(str(i)+"\n")
         file_rodada.close()
