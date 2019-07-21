@@ -6,6 +6,9 @@ from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
 from background_task import background
 from django.utils import timezone
+from django.http import HttpResponseRedirect
+from django.shortcuts import redirect
+from django.urls import reverse
 # Create your views here.
 
 
@@ -20,7 +23,6 @@ def transiente(request):
     return render(request, 'simulator/transiente.html', {})
     
 def rodada(request):
-    # global rodada_atual
     try:
         file_rodada = open("rodada_atual.txt", "r")
         rodadas = file_rodada.readlines()
@@ -32,13 +34,36 @@ def rodada(request):
         'rodada_atual': int(rodadas[-1]) if (len(rodadas) > 0) else 0
     }
     return HttpResponse(json.dumps(context))
+
+def status_simulacao(request):
+    try:
+        file_status = open("status_simulacao.txt", "r")
+        status = file_status.readlines()
+        file_status.close()
+    except:
+        status = []
+    
+    context = {
+        'status': status[-1] if (len(status) > 0) else 0
+    }
+    return HttpResponse(json.dumps(context))
+
+def resultado_simulacao(request):
+    try:
+        file_status = open("status_simulacao.txt", "w") # abre para apagar/reiniciar status apenas
+        file_status.close()
+
+        file_res = open("res_simulacao.txt", "r")
+        return HttpResponse(file_res)
+    except:
+        return HttpResponse("Falha simulação")
+
 @csrf_exempt
 def simular_background(request, rho, disciplina, kmin, rodadas):
     print("chamando simular em background...")
-    response = simular.now(rho, disciplina, kmin, rodadas)
-    print("simulador terminou...")
-    return response
-
+    simular(rho, disciplina, kmin, rodadas)
+    return render(request, 'simulator/main.html', {})
+    
 @csrf_exempt
 @background(schedule=timezone.now())
 def simular(rho, disciplina, kmin, rodadas):
@@ -119,6 +144,14 @@ def simular(rho, disciplina, kmin, rodadas):
     context['ic_vnqchi_high'] = ic_vnqchi[2]
     context['ic_vnqchi_pres'] = ic_vnqchi[3]
     print('end')
+    file_status = open("status_simulacao.txt", "w")
+    file_status.write("ended")
+    file_status.close()
+    print('salvando resultado simulação')
+    file_res_simulacao = open("res_simulacao.txt", "w")
+    file_res_simulacao.write(json.dumps(context))
+    print("resultado salvo")
+    file_res_simulacao.close()
     return HttpResponse(json.dumps(context))
 
 @csrf_exempt

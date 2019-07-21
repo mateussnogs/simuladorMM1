@@ -7,6 +7,7 @@
         $scope.kmin = 2500;
         $scope.rodadas = 3200;
         $scope.showLoader = false;
+        $scope.rodada_atual = null;
         $scope.results = {
            'e_w': null,
            'v_w': null,
@@ -110,9 +111,27 @@
             });
         };
 
+        var check_status;
+        $scope.status_simulador = function() {            
+            $http.get('/status')
+            .then(function(res) {
+                $scope.res = res.data;
+                if ($scope.res['status'] == 'ended') {
+                    $scope.showLoader = false;                
+                    $interval.cancel($scope.rodada_atual);
+                    $interval.cancel(check_status);
+                    $http.get('/resultado')
+                    .then(function(result) {
+                        $scope.results = result.data;
+                    });
+                }
+            });
+        };
+
         $scope.simular = function(rho, disciplina, kmin, rodadas) {
-            var rodada;
-            rodada = $interval($scope.get_rodada, 1000, rodadas);
+            // var rodada;
+            $scope.rodada_atual = $interval($scope.get_rodada, 1000, rodadas);
+            check_status = $interval($scope.status_simulador, 1000, rodadas);
             $scope.showLoader = true;
             $scope.results = {
                 'e_w': null,
@@ -142,8 +161,8 @@
             .then(function(res) {
                 $scope.get_rodada(); // pega rodada ultima vez para ter o ultimo valor
                 $scope.results = res.data;
-                $scope.showLoader = false;                
-                $interval.cancel(rodada);
+                // $scope.showLoader = false;                
+                // $interval.cancel(rodada);
             });
         }
         $scope.simular_toplot = function(rho, disciplina, kmin, rodadas) {

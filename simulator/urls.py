@@ -9,6 +9,7 @@ urlpatterns = [
     path('transiente', views.transiente, name='transiente'),
     re_path(r'^simular/(?P<rho>[0-9][.][0-9])/(?P<disciplina>[\w-]+)/(?P<kmin>[0-9]+)/(?P<rodadas>[0-9]+)/$', views.simular_background, name='simular'),
     re_path(r'^simulartoplot/(?P<rho>[0-9][.][0-9])/(?P<disciplina>[\w-]+)/(?P<kmin>[0-9]+)/(?P<rodadas>[0-9]+)/$', views.simular_toplot, name='simular_toplot'),
-    path('rodada', views.rodada, name='rodada'),
-    
+    path('rodada', views.rodada, name='rodada'),    
+    path('status', views.status_simulacao, name='status'),    
+    path('resultado', views.resultado_simulacao, name='resultado'),    
 ]
