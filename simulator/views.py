@@ -33,8 +33,8 @@ def rodada(request):
 
 @csrf_exempt
 def simular(request, rho, disciplina, kmin, rodadas):
-    global rodada_atual
-    rodada_atual = 0
+    file_rodada = open("rodada_atual.txt", "w") # esvazia arquivo caso esteja cheio
+    file_rodada.close()
     context = {
         'e_w': -1,
         'v_w': -1,
