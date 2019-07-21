@@ -112,7 +112,7 @@
 
         $scope.simular = function(rho, disciplina, kmin, rodadas) {
             var rodada;
-            rodada = $interval($scope.get_rodada, 1000);
+            rodada = $interval($scope.get_rodada, 1000, rodadas/2);
             $scope.showLoader = true;
             $scope.results = {
                 'e_w': null,
