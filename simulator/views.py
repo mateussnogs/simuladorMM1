@@ -19,12 +19,12 @@ def animacao(request):
 def transiente(request):    
     return render(request, 'simulator/transiente.html', {})
     
-@csrf_exempt
 def rodada(request):
     global rodada_atual
     context = {
         'rodada_atual': rodada_atual
     }
+    print(context['rodada_atual'])
     return HttpResponse(json.dumps(context))
 
 @csrf_exempt
