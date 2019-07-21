@@ -4,6 +4,8 @@ import time
 import json
 from django.http import HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from background_task import background
+from django.utils import timezone
 # Create your views here.
 
 
@@ -30,9 +32,16 @@ def rodada(request):
         'rodada_atual': int(rodadas[-1]) if (len(rodadas) > 0) else 0
     }
     return HttpResponse(json.dumps(context))
+@csrf_exempt
+def simular_background(request, rho, disciplina, kmin, rodadas):
+    print("chamando simular em background...")
+    response = simular.now(rho, disciplina, kmin, rodadas)
+    print("simulador terminou...")
+    return response
 
 @csrf_exempt
-def simular(request, rho, disciplina, kmin, rodadas):
+@background(schedule=timezone.now())
+def simular(rho, disciplina, kmin, rodadas):
     file_rodada = open("rodada_atual.txt", "w") # esvazia arquivo caso esteja cheio
     file_rodada.close()
     context = {
