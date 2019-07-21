@@ -25,7 +25,7 @@ SECRET_KEY = 'wd)2qic+)((582@$cmz^*7n9u4a2!n4gupa%u*(v5!9@o-yjyp'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['mateussnogs.pythonanywhere.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['mateussnogs.pythonanywhere.com', 'localhost', '127.0.0.1', 'simuladormm1.ddns.net']
 
 
 # Application definition
