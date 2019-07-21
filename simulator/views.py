@@ -78,7 +78,7 @@ def simular(request, rho, disciplina, kmin, rodadas):
     context['ic_enq_high'] = ic_nq[2]
     context['ic_enq_pres'] = ic_nq[3]
     
-    context['v_nq'] = mi_chapeu_nq
+    context['v_nq'] = mi_chapeu_vnq
     context['ic_vnqt_low'] = ic_vwt[1]
     context['ic_vnqt_high'] = ic_vnqt[2]
     context['ic_vnqt_pres'] = ic_vnqt[3]
