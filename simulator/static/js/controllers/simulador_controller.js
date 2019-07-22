@@ -20,8 +20,8 @@
             var chart = new Highcharts.Chart({
                 
                 chart: {
-                    renderTo: 'chartW',
-                    width: 520
+                    renderTo: 'chartEW',
+                    width: 800
                 },
                 plotOptions: {
                     series: {
@@ -41,8 +41,8 @@
             });
             var chart1 = new Highcharts.Chart({
                 chart: {
-                    renderTo: 'chartV',
-                    width: 520
+                    renderTo: 'chartVW',
+                    width:800
                 },
                 plotOptions: {
                     series: {
@@ -63,7 +63,7 @@
             var chart2 = new Highcharts.Chart({
                 chart: {
                     renderTo: 'chartENq',
-                    width: 1200
+                    width: 800
                 },
                 plotOptions: {
                     series: {
@@ -73,10 +73,10 @@
                 series: [{
                     name: 'E(Nq)',
                     data: $scope.plots['ENq']
-                }],/*{
+                },{
                     name: 'Medias moveis',
-                    data: $scope.plots['MMENq']
-                }],*/
+                    data: $scope.plots['MMNq']
+                }],
                 title: {
                     text: 'Disciplina ' + disciplina + ' e Taxa ' + rho
                 }
@@ -84,7 +84,7 @@
             var chart3 = new Highcharts.Chart({
                 chart: {
                     renderTo: 'chartVNq',
-                    width: 1200
+                    width: 800
                 },
                 plotOptions: {
                     series: {
@@ -94,15 +94,16 @@
                 series: [{
                     name: 'V(Nq)',
                     data: $scope.plots['VNq']
-                }],/*{
+                },{
                     name: 'Medias moveis',
                     data: $scope.plots['MMVNq']
-                }],*/
+                }],
                 title: {
                     text: 'Disciplina ' + disciplina + ' e Taxa ' + rho
                 }
             });
             $scope.chartReady = true;
+            $scope.showLoader = false;
         };
 
         $scope.get_rodada = function() {            
@@ -176,7 +177,6 @@
             $http.post('/simulartoplot/' + rho + '/' + disciplina + '/' + kmin + '/' + rodadas + '/')
             .then(function(res) {
                 $scope.plots = res.data;
-                $scope.showLoader = false;
                 console.log('parei')
                 $scope.plotCharts(rho, disciplina);
             });

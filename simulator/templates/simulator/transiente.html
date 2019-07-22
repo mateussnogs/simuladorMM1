@@ -40,26 +40,28 @@
         <div class="butons">
             <button ng-click="simular_toplot(rho, disciplina, kmin, rodadas)"> Roda </button>
         </div>
-        <div ng-show="showLoader" class="loader"></div>
+        <div ng-show="showLoader" class="loader" style="margin-left: 700px;margin-top: -150px;"></div>
         <div ng-show="chartReady" id="graph">
             <div class="row">
-                <div class="col-sm-3">
-                <div id="chartW"></div>
+                <div class="col-sm-6">
+                <div id="chartEW"></div>
                 </div>
-                <div class="col-sm-3">
-                <div id="chartV"></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                <div id="chartVW"></div>
                 </div>
             </div>
             <div class="row" style="margin-left:1%">                
-                <div class="col-sm-12">
+                <div class="col-sm-6">
                     <div id="chartENq"></div>
-                </div>                
+                </div>   
             </div>
-            <div class="row" style="margin:left:1%">
-                <div class="col-sm-12">
+            <div class="row">             
+                <div class="col-sm-6">
                     <div id="chartVNq"></div>
                 </div>
             </div>
-        <div>
+        </div>
     </body>
 </html>
