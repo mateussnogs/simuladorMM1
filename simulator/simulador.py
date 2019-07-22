@@ -96,8 +96,9 @@ class AmostradorExponencial:
         return x0
 
 class Fregues:
-    def __init__(self, instante_chegada):
+    def __init__(self, instante_chegada, cor):
         self.instante_chegada = instante_chegada
+        self.cor = cor
 
 class Evento:
     def __init__(self, tipo, instante, fregues):
@@ -137,6 +138,7 @@ class Simulador:
         self.servidor_ocupado = False
         self.instante_atual = 0
         self.staticts = Statistics
+        self.rodada_atual = 0
         
     def agendar_chegada(self, instante):
         demora_chegar = self.amostrador_chegada.gerar_amostra()
@@ -180,8 +182,9 @@ class Simulador:
                         self.fila.insert(0, evento.fregues)
                 else: # serve fregues
                     self.servidor_ocupado = True
-                    tempos_espera.append(0)
-                    coletas += 1
+                    if (evento.fregues.cor == self.rodada_atual):
+                        tempos_espera.append(0)
+                        coletas += 1
                     self.agendar_partida(self.instante_atual, evento.fregues)
                     lastmedia_tempo = media_tempo_espera
                     media_tempo_espera = self.staticts.media_incremental(media_tempo_espera, tempos_espera[coletas-1], coletas)
@@ -192,13 +195,15 @@ class Simulador:
                 if (len(self.fila) > 0):
                     self.servidor_ocupado = True
                     fregues = self.fila.pop(0)
-                    tempos_espera.append(self.instante_atual-fregues.instante_chegada)                    
-                    coletas += 1
+                    if (fregues.cor == self.rodada_atual):
+                        tempos_espera.append(self.instante_atual-fregues.instante_chegada)                    
+                        coletas += 1
                     self.agendar_partida(self.instante_atual, fregues)
                     lastmedia_tempo = media_tempo_espera
                     media_tempo_espera = self.staticts.media_incremental(media_tempo_espera, tempos_espera[coletas-1], coletas)
                     variancia_tempo_espera = self.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
             if (coletas >= kmin):
+                self.rodada_atual += 1
                 t_rodada = self.instante_atual - t_rodada
                 media_tempo_espera = self.staticts.media_amostral(tempos_espera)
                 variancia_tempo_espera = self.staticts.var_amostral(tempos_espera, media_tempo_espera)
