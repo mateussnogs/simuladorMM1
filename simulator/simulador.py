@@ -143,7 +143,7 @@ class Simulador:
     def agendar_chegada(self, instante):
         demora_chegar = self.amostrador_chegada.gerar_amostra()
         instante_ocorrencia = instante + demora_chegar
-        self.eventos.agendar_evento(Chegada(instante_ocorrencia, Fregues(instante_ocorrencia)))
+        self.eventos.agendar_evento(Chegada(instante_ocorrencia, Fregues(instante_ocorrencia, self.rodada_atual)))
         
     def agendar_partida(self, instante, fregues):
         demora_partir = self.amostrador_servico.gerar_amostra()
