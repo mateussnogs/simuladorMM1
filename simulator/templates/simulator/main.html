@@ -51,7 +51,7 @@
                 Rodada: {% verbatim %} {{ rodada }} {% endverbatim %}
             </h1>
         </div>
-        <h1><a href ng-click="simular(rho, disciplina, kmin, rodadas)" class="btn btn-lg btn btn_simular">Simular</a></h1>
+        <h1><a href ng-disabled="simulando" ng-click="simular(rho, disciplina, kmin, rodadas)" class="btn btn-lg btn btn_simular">Simular</a></h1>
         <div class="after">
             <div ng-show="showLoader" class="loader"></div>
             <h2> Resultados:</h2>

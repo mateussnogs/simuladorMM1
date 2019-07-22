@@ -22,6 +22,17 @@ def animacao(request):
 def transiente(request):    
     return render(request, 'simulator/transiente.html', {})
     
+def limpar_arquivos_simulacao(request):
+    file_status = open("status_simulacao.txt", "w") # abre para apagar/reiniciar status apenas
+    file_status.close()
+
+    file_rodada = open("rodada_atual.txt", "w")
+    file_rodada.close()
+
+    file_res_simulacao = open("res_simulacao.txt", "w")
+    file_res_simulacao.close()
+    return HttpResponse("Arquivos limpos.")
+
 def rodada(request):
     try:
         file_rodada = open("rodada_atual.txt", "r")

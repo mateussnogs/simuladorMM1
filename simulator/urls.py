@@ -12,4 +12,5 @@ urlpatterns = [
     path('rodada', views.rodada, name='rodada'),    
     path('status', views.status_simulacao, name='status'),    
     path('resultado', views.resultado_simulacao, name='resultado'),    
+    path('limpar', views.limpar_arquivos_simulacao, name='limpar'),
 ]
