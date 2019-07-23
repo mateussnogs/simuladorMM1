@@ -169,11 +169,11 @@ class Simulador:
             dt = self.instante_atual - dt            
             area_nq += len(self.fila)*dt
             seg_momento_nq += (len(self.fila)**2)*dt
-            if (len(self.fila) in pmf_nq.keys()):
-                pmf_nq[len(self.fila)].append(dt)
-            else:
-                pmf_nq[len(self.fila)] = [dt]
-            # nq_medias.append(Statistics.media_pmf(pmf_nq, self.instante_atual))
+            # if (len(self.fila) in pmf_nq.keys()):
+            #     pmf_nq[len(self.fila)].append(dt)
+            # else:
+            #     pmf_nq[len(self.fila)] = [dt]
+            # # nq_medias.append(Statistics.media_pmf(pmf_nq, self.instante_atual))
             if (evento.tipo == 'chegada'):                
                 if(self.servidor_ocupado):
                     if (disciplina == 'FCFS'):
@@ -186,9 +186,9 @@ class Simulador:
                         tempos_espera.append(0)
                         coletas += 1
                     self.agendar_partida(self.instante_atual, evento.fregues)
-                    lastmedia_tempo = media_tempo_espera
-                    media_tempo_espera = self.staticts.media_incremental(media_tempo_espera, tempos_espera[coletas-1], coletas)
-                    variancia_tempo_espera = self.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
+                    # lastmedia_tempo = media_tempo_espera
+                    # media_tempo_espera = self.staticts.media_incremental(media_tempo_espera, tempos_espera[coletas-1], coletas)
+                    # variancia_tempo_espera = self.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
                 self.agendar_chegada(self.instante_atual)
             else: #partida
                 self.servidor_ocupado = False
@@ -199,9 +199,9 @@ class Simulador:
                         tempos_espera.append(self.instante_atual-fregues.instante_chegada)                    
                         coletas += 1
                     self.agendar_partida(self.instante_atual, fregues)
-                    lastmedia_tempo = media_tempo_espera
-                    media_tempo_espera = self.staticts.media_incremental(media_tempo_espera, tempos_espera[coletas-1], coletas)
-                    variancia_tempo_espera = self.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
+                    # lastmedia_tempo = media_tempo_espera
+                    # media_tempo_espera = self.staticts.media_incremental(media_tempo_espera, tempos_espera[coletas-1], coletas)
+                    # variancia_tempo_espera = self.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
             if (coletas >= kmin):
                 self.rodada_atual += 1
                 t_rodada = self.instante_atual - t_rodada
