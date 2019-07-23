@@ -106,6 +106,37 @@
             $scope.showLoader = false;
         };
 
+        $scope.plotRChart = function (metrica, icname) {
+            let icrange = [$scope.results[icname + 'low'], $scope.results[icname + 'high']];
+            //metrica = 'toplot_' + metrica;
+            let l = $scope.results['toplot_' + metrica].length;
+            let icarangear = [];
+            for(var i=0; i<l; i++){
+                icarangear[i] = [i, icrange[0], icrange[1]];
+            }
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'graph_results',
+                    width: 1200
+                },
+                plotOptions: {
+                    series: {
+                        pointStart: 1
+                    }
+                },
+                series: [{
+                    name: name,
+                    data: $scope.results['toplot_' + metrica],
+                    color: 'black'
+                },{
+                    type: 'arearange',
+                    name: 'IC',
+                    data: icarangear,
+                    color: 'yellow'
+                }],
+            });
+        };
+
         $scope.get_rodada = function() {            
             $http.get('/rodada')
             .then(function(res) {
@@ -114,7 +145,6 @@
             });
         };
 
-        
         $scope.status_simulador = function() {
             $http.get('/status')
             .then(function(res) {
@@ -127,6 +157,7 @@
                     $http.get('/resultado') // pega resultado da simulacao
                     .then(function(result) {
                         $scope.results = result.data;
+                        console.log(result.data)
                     });
                 }
             });
@@ -163,7 +194,11 @@
                 'ic_vnqt_pres': null,
                 'ic_vnqchi_low': null,
                 'ic_vnqchi_high': null,
-                'ic_vnqchi_pres': null
+                'ic_vnqchi_pres': null,
+                'toplot_EW': null,
+                'toplot_VW': null,
+                'toplot_ENq': null,
+                'toplot_VNq': null
              };
             $http.post('/simular/' + rho + '/' + disciplina + '/' + kmin + '/' + rodadas + '/')
             .then(function(res) {

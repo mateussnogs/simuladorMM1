@@ -9,6 +9,8 @@
         <script src="/static/js/app.js"></script>
         <script src="/static/js/controllers/simulador_controller.js"></script>
         <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>    </head>
     <title>SimuladorMM1</title>
     <body ng-controller="SimuladorController">
@@ -54,7 +56,7 @@
             <p ng-show="showLoader" class="rod">
                 Rodada:
             </p>
-            <p ng-show="showLoader" class="rod" style="margin-top: 155px;margin-left: -120px;">{% verbatim %} {{ rodada }} {% endverbatim %}</p>
+            <p ng-show="showLoader" class="rod" style="margin-top: 155px;margin-left: -125px;">{% verbatim %} {{ rodada }} {% endverbatim %}</p>
             <h2> Resultados:</h2>
             <h4> Pela distribuição t-Student</h4>
             <table id="e">
@@ -69,28 +71,28 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>E[W]</td>
+                        <td><a ng-click="plotRChart('EW', 'ic_ew_')">E[W]</a></td>
                         <td>{% verbatim %} {{ results['e_w'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_ew_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_ew_high'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_ew_pres']*100 }} {% endverbatim %} %</td>
                     </tr>
                     <tr>
-                        <td>V(W)</td>
+                        <td><a ng-click="plotRChart('VW', 'ic_vwt_')">V(W)</a></td>
                         <td>{% verbatim %} {{ results['v_w'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vwt_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vwt_high'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vwt_pres']*100 }} {% endverbatim %} %</td>
                     </tr>
                     <tr>
-                        <td>E[Nq]</td>
+                        <td><a ng-click="plotRChart('ENq', 'ic_enq_')">E[Nq]</a></td>
                         <td>{% verbatim %} {{ results['e_nq'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_enq_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_enq_high'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_enq_pres']*100 }} {% endverbatim %} %</td>
                     </tr>
                     <tr>
-                        <td>V(Nq)</td>
+                        <td><a ng-click="plotRChart('VNq', 'ic_vnqt_')">V(Nq)</a></td>
                         <td>{% verbatim %} {{ results['v_nq'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vnqt_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vnqt_high'] }} {% endverbatim %}</td>
@@ -111,14 +113,14 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td>V(W)</td>
+                        <td><a ng-click="plotRChart('VW', 'ic_vwchi_')">V(W)</a></td>
                         <td>{% verbatim %} {{ results['v_w'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vwchi_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vwchi_high'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vwchi_pres'] * 100 }} {% endverbatim %} %</td>
                     </tr>
                     <tr>
-                        <td>V(Nq)</td>
+                        <td><a ng-click="plotRChart('VNq', 'ic_vnqchi_')">V(Nq)</a></td>
                         <td>{% verbatim %} {{ results['v_nq'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vnqchi_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vnqchi_high'] }} {% endverbatim %}</td>
@@ -126,6 +128,8 @@
                     </tr>
                 </tbody>
             </table>
+        </div>
+        <div id="graph_results" style="float: left;">
         </div>
     </body>
 </html>

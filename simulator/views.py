@@ -148,12 +148,18 @@ def simular(rho, disciplina, kmin, rodadas):
     context['ic_enq_pres'] = ic_nq[3]
     
     context['v_nq'] = mi_chapeu_vnq
-    context['ic_vnqt_low'] = ic_vwt[1]
+    context['ic_vnqt_low'] = ic_vnqt[1]
     context['ic_vnqt_high'] = ic_vnqt[2]
     context['ic_vnqt_pres'] = ic_vnqt[3]
     context['ic_vnqchi_low'] = ic_vnqchi[1]
     context['ic_vnqchi_high'] = ic_vnqchi[2]
     context['ic_vnqchi_pres'] = ic_vnqchi[3]
+
+    context['toplot_EW'] = W
+    context['toplot_VW'] = Vw
+    context['toplot_ENq'] = Nq
+    context['toplot_VNq'] = Vnq
+
     print('end')
     file_status = open("status_simulacao.txt", "w")
     file_status.write("ended")
@@ -195,7 +201,7 @@ def simular_toplot(request, rho, disciplina, kmin, rodadas):
     if (len(simulador.eventos.eventos) == 0):
         simulador.agendar_chegada(simulador.instante_atual)
     coletas = 0
-    t_end = time.time() + 10
+    t_end = time.time() + 60
     while time.time() < t_end:
         evento = simulador.eventos.proximo_evento()
         dt = simulador.instante_atual

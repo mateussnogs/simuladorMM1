@@ -140,3 +140,7 @@ td, th{
   margin-top: 135px;
   position: absolute;
 }
+
+a{
+  cursor: pointer;
+}
