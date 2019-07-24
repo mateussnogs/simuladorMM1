@@ -16,6 +16,19 @@
            'e_nq': null,
            'v_nq': null
         };
+
+        // para acessar elemento: analiticos[DISCIPLINA][METRICA][UTILIZACAO]
+        $scope.analiticos = {
+            'FCFS':{            
+                'EW': {'0.2': 0.25, '0.4': 0.66, '0.6': 1.50, '0.8': 4.00, '0.9': 9.00 },
+                'VW': {'0.2': 0.56, '0.4': 1.77, '0.6': 5.24, '0.8': 24.00, '0.9': 99.00},
+            },
+            'LCFS':{
+                'EW': {'0.2': 0.25, '0.4': 0.66, '0.6': 1.50, '0.8': 4.00, '0.9': 9.00 },
+                'VW': {'0.2': 0.71, '0.4': 3.25, '0.6': 16.50, '0.8': 184.00, '0.9': 1719.00},
+            }
+        };
+
         $scope.plotCharts = function (rho, disciplina) {
             var chart = new Highcharts.Chart({
                 
@@ -134,6 +147,89 @@
                     data: icarangear,
                     color: 'yellow'
                 }],
+            });            
+        };
+
+        $scope.plotICChart = function (metrica, icname) {         
+            let inf = $scope.results[icname + 'low']
+            let sup = $scope.results[icname + 'high']
+            let center = (inf+sup)/2;
+            var chart_ic_ew = new Highcharts.Chart({
+
+                chart: {
+                    renderTo: 'ic_ew',
+                    inverted: false
+                },
+                title: {
+                    text: 'Confidence intervals'
+                },
+        
+                xAxis: {
+                    categories: ['Item #1']
+                },
+        
+                yAxis: [{
+                    title: {
+                        text: metrica
+                    },
+                    gridZIndex: -1,
+                    // plota a linha com o valor do analitico pra mostrar se cai no IC ou nao
+                    plotLines: [{  value: $scope.analiticos['FCFS'][metrica.toString()]['0.9'],
+                                   color: 'red',
+                                   width: 1
+                    }]
+                }],
+        
+        
+                plotOptions: {
+                    columnrange: {
+                        grouping: false,
+                        color: 'navy'
+                    },
+                    scatter: {
+                        color: 'navy',
+                        marker: {
+                            symbol: 'diamond'
+                   
+                        }
+                    }        
+                },                
+                tooltip: {
+                    shared: true
+                },
+                legend: {
+                    enabled: false
+                },
+                series: [{
+                    type: 'columnrange',
+                    pointWidth: 2,
+                    data: [
+                        [inf, sup],
+                    //  [inf_chi, sup_chi]
+                    ]            
+                }, {
+                    type: 'columnrange',
+                    pointWidth: 15,
+                    minPointLength: 2,
+                    data: [
+                        [sup, sup], // plota a linha superior
+                    //  [sup_chi, sup_chi]  
+                    ]            
+                }, {
+                    type: 'columnrange',
+                    pointWidth: 15,
+                    minPointLength: 2,
+                    data: [
+                        [inf, inf], // plota a linha inferior
+                    //  [inf_chi, inf_chi]  
+                    ]            
+                }, {
+                    type: 'scatter',
+                    data: [
+                        [center], // ponto do centro
+                    //  [center_chi]  
+                    ]
+                }]
             });
         };
 

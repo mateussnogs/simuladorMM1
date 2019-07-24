@@ -58,7 +58,7 @@
             </p>
             <p ng-show="showLoader" class="rod" style="margin-top: 155px;margin-left: -125px;">{% verbatim %} {{ rodada }} {% endverbatim %}</p>
             <h2> Resultados:</h2>
-            <h4> Pela distribuição t-Student</h4>
+            <h4> <a ng-click="plotICChart('EW', 'ic_ew_')"> Pela distribuição t-Student</a></h4>
             <table id="e">
                 <thead>
                     <tr>
@@ -129,6 +129,7 @@
                 </tbody>
             </table>
         </div>
+        <div id="ic_ew" style="float: left;"></div>
         <div id="graph_results" style="float: left;">
         </div>
     </body>
