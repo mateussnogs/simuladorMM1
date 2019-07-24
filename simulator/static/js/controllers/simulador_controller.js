@@ -150,37 +150,29 @@
             });            
         };
 
-        $scope.plotICChart = function (metrica, icname) {         
-            let inf = $scope.results[icname + 'low']
-            let sup = $scope.results[icname + 'high']
-            let center = (inf+sup)/2;
+        $scope.plotICCharts = function (disciplina, rho) {         
             var chart_ic_ew = new Highcharts.Chart({
-
                 chart: {
                     renderTo: 'ic_ew',
                     inverted: false
                 },
                 title: {
-                    text: 'Confidence intervals'
+                    text: 'Intervalo de Confiança'
                 },
-        
                 xAxis: {
-                    categories: ['Item #1']
+                    categories: ['E[W]']
                 },
-        
                 yAxis: [{
                     title: {
-                        text: metrica
+                        text:  'Valor Analítico'
                     },
                     gridZIndex: -1,
                     // plota a linha com o valor do analitico pra mostrar se cai no IC ou nao
-                    plotLines: [{  value: $scope.analiticos['FCFS'][metrica.toString()]['0.9'],
+                    plotLines: [{  value: $scope.analiticos[disciplina]['EW'][rho],
                                    color: 'red',
                                    width: 1
                     }]
                 }],
-        
-        
                 plotOptions: {
                     columnrange: {
                         grouping: false,
@@ -190,9 +182,8 @@
                         color: 'navy',
                         marker: {
                             symbol: 'diamond'
-                   
                         }
-                    }        
+                    }
                 },                
                 tooltip: {
                     shared: true
@@ -204,33 +195,315 @@
                     type: 'columnrange',
                     pointWidth: 2,
                     data: [
-                        [inf, sup],
+                        [$scope.results['ic_ew_low'], $scope.results['ic_ew_high']]
                     //  [inf_chi, sup_chi]
-                    ]            
+                    ],
+                    name: 'IC T-Student'
                 }, {
                     type: 'columnrange',
                     pointWidth: 15,
                     minPointLength: 2,
                     data: [
-                        [sup, sup], // plota a linha superior
+                        [$scope.results['ic_ew_high'], $scope.results['ic_ew_high']] // plota a linha superior
                     //  [sup_chi, sup_chi]  
-                    ]            
+                    ],
+                    enableMouseTracking: false         
                 }, {
                     type: 'columnrange',
                     pointWidth: 15,
                     minPointLength: 2,
                     data: [
-                        [inf, inf], // plota a linha inferior
+                        [$scope.results['ic_ew_low'], $scope.results['ic_ew_low']] // plota a linha inferior
                     //  [inf_chi, inf_chi]  
-                    ]            
+                    ] ,
+                    enableMouseTracking: false           
                 }, {
                     type: 'scatter',
                     data: [
-                        [center], // ponto do centro
+                        [($scope.results['ic_ew_low'] + $scope.results['ic_ew_high'])/2] // ponto do centro
                     //  [center_chi]  
-                    ]
+                    ],
+                    enableMouseTracking: false
                 }]
             });
+            var chart_ic_vw = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'ic_vw',
+                    inverted: false
+                },
+                title: {
+                    text: 'Intervalo de Confiança'
+                },
+                xAxis: {
+                    categories: ['V(W)']
+                },
+                yAxis: [{
+                    title: {
+                        text:' Valor Analítico'
+                    },
+                    gridZIndex: -1,
+                    // plota a linha com o valor do analitico pra mostrar se cai no IC ou nao
+                    plotLines: [{  value: $scope.analiticos[disciplina]['VW'][rho],
+                                   color: 'red',
+                                   width: 1
+                    }]
+                }],
+                plotOptions: {
+                    columnrange: {
+                        grouping: false,
+                        color: 'navy'
+                    },
+                    scatter: {
+                        color: 'navy',
+                        marker: {
+                            symbol: 'diamond'
+                        }
+                    }
+                },                
+                tooltip: {
+                    shared: true
+                },
+                legend: {
+                    enabled: false
+                },
+                series: [{
+                    type: 'columnrange',
+                    pointWidth: 2,
+                    data: [
+                        [$scope.results['ic_vwt_low'], $scope.results['ic_vwt_high']]
+                    //  [inf_chi, sup_chi]
+                    ],
+                    name: 'IC T-Student'
+                }, {
+                    type: 'columnrange',
+                    pointWidth: 2,
+                    data: [
+                        [$scope.results['ic_vwchi_low'], $scope.results['ic_vwchi_high']]
+                    //  [inf_chi, sup_chi]
+                    ],
+                    name: 'IC Chi-Quadrado'
+                },{
+                    type: 'columnrange',
+                    pointWidth: 15,
+                    minPointLength: 2,
+                    data: [
+                        [$scope.results['ic_vwt_high'], $scope.results['ic_vwt_high']] // plota a linha superior
+                    //  [sup_chi, sup_chi]  
+                    ],
+                    enableMouseTracking: false         
+                }, {
+                    type: 'columnrange',
+                    pointWidth: 15,
+                    minPointLength: 2,
+                    data: [
+                        [$scope.results['ic_vwt_low'], $scope.results['ic_vwt_low']] // plota a linha inferior
+                    //  [inf_chi, inf_chi]  
+                    ] ,
+                    enableMouseTracking: false           
+                }, {
+                    type: 'columnrange',
+                    pointWidth: 15,
+                    minPointLength: 2,
+                    data: [
+                        [$scope.results['ic_vwchi_high'], $scope.results['ic_vwchi_high']] // plota a linha inferior
+                    //  [inf_chi, inf_chi]  
+                    ] ,
+                    enableMouseTracking: false           
+                }, {
+                    type: 'columnrange',
+                    pointWidth: 15,
+                    minPointLength: 2,
+                    data: [
+                        [$scope.results['ic_vwchi_low'], $scope.results['ic_vwchi_low']] // plota a linha inferior
+                    //  [inf_chi, inf_chi]  
+                    ] ,
+                    enableMouseTracking: false           
+                }, {
+                    type: 'scatter',
+                    data: [
+                        [($scope.results['ic_vwt_low'] + $scope.results['ic_vwt_high'])/2] // ponto do centro
+                    //  [center_chi]  
+                    ],
+                    enableMouseTracking: false
+                }]
+            });
+            var chart_ic_enq = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'ic_enq',
+                    inverted: false
+                },
+                title: {
+                    text: 'Intervalo de Confiança'
+                },
+                xAxis: {
+                    categories: ['E[Nq]']
+                },
+                yAxis: [{
+                    title: {
+                        text:  'Valor Analítico'
+                    },
+                    gridZIndex: -1,
+                    // plota a linha com o valor do analitico pra mostrar se cai no IC ou nao
+                    plotLines: [{  value: $scope.analiticos[disciplina]['ENq'][rho],
+                                   color: 'red',
+                                   width: 1
+                    }]
+                }],
+                plotOptions: {
+                    columnrange: {
+                        grouping: false,
+                        color: 'navy'
+                    },
+                    scatter: {
+                        color: 'navy',
+                        marker: {
+                            symbol: 'diamond'
+                        }
+                    }
+                },                
+                tooltip: {
+                    shared: true
+                },
+                legend: {
+                    enabled: false
+                },
+                series: [{
+                    type: 'columnrange',
+                    pointWidth: 2,
+                    data: [
+                        [$scope.results['ic_ew_low'], $scope.results['ic_ew_high']]
+                    //  [inf_chi, sup_chi]
+                    ],
+                    name: 'IC T-Student'
+                }, {
+                    type: 'columnrange',
+                    pointWidth: 15,
+                    minPointLength: 2,
+                    data: [
+                        [$scope.results['ic_ew_high'], $scope.results['ic_ew_high']] // plota a linha superior
+                    //  [sup_chi, sup_chi]  
+                    ],
+                    enableMouseTracking: false         
+                }, {
+                    type: 'columnrange',
+                    pointWidth: 15,
+                    minPointLength: 2,
+                    data: [
+                        [$scope.results['ic_ew_low'], $scope.results['ic_ew_low']] // plota a linha inferior
+                    //  [inf_chi, inf_chi]  
+                    ] ,
+                    enableMouseTracking: false           
+                }, {
+                    type: 'scatter',
+                    data: [
+                        [($scope.results['ic_ew_low'] + $scope.results['ic_ew_high'])/2] // ponto do centro
+                    //  [center_chi]  
+                    ],
+                    enableMouseTracking: false
+                }]
+            });
+            var chart_ic_vw = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'ic_vw',
+                    inverted: false
+                },
+                title: {
+                    text: 'Intervalo de Confiança'
+                },
+                xAxis: {
+                    categories: ['V(W)']
+                },
+                yAxis: [{
+                    title: {
+                        text:' Valor Analítico'
+                    },
+                    gridZIndex: -1,
+                    // plota a linha com o valor do analitico pra mostrar se cai no IC ou nao
+                    plotLines: [{  value: $scope.analiticos[disciplina]['VW'][rho],
+                                   color: 'red',
+                                   width: 1
+                    }]
+                }],
+                plotOptions: {
+                    columnrange: {
+                        grouping: false,
+                        color: 'navy'
+                    },
+                    scatter: {
+                        color: 'navy',
+                        marker: {
+                            symbol: 'diamond'
+                        }
+                    }
+                },                
+                tooltip: {
+                    shared: true
+                },
+                legend: {
+                    enabled: false
+                },
+                series: [{
+                    type: 'columnrange',
+                    pointWidth: 2,
+                    data: [
+                        [$scope.results['ic_vwt_low'], $scope.results['ic_vwt_high']]
+                    //  [inf_chi, sup_chi]
+                    ],
+                    name: 'IC T-Student'
+                }, {
+                    type: 'columnrange',
+                    pointWidth: 2,
+                    data: [
+                        [$scope.results['ic_vwchi_low'], $scope.results['ic_vwchi_high']]
+                    //  [inf_chi, sup_chi]
+                    ],
+                    name: 'IC Chi-Quadrado'
+                },{
+                    type: 'columnrange',
+                    pointWidth: 15,
+                    minPointLength: 2,
+                    data: [
+                        [$scope.results['ic_vwt_high'], $scope.results['ic_vwt_high']] // plota a linha superior
+                    //  [sup_chi, sup_chi]  
+                    ],
+                    enableMouseTracking: false         
+                }, {
+                    type: 'columnrange',
+                    pointWidth: 15,
+                    minPointLength: 2,
+                    data: [
+                        [$scope.results['ic_vwt_low'], $scope.results['ic_vwt_low']] // plota a linha inferior
+                    //  [inf_chi, inf_chi]  
+                    ] ,
+                    enableMouseTracking: false           
+                }, {
+                    type: 'columnrange',
+                    pointWidth: 15,
+                    minPointLength: 2,
+                    data: [
+                        [$scope.results['ic_vwchi_high'], $scope.results['ic_vwchi_high']] // plota a linha inferior
+                    //  [inf_chi, inf_chi]  
+                    ] ,
+                    enableMouseTracking: false           
+                }, {
+                    type: 'columnrange',
+                    pointWidth: 15,
+                    minPointLength: 2,
+                    data: [
+                        [$scope.results['ic_vwchi_low'], $scope.results['ic_vwchi_low']] // plota a linha inferior
+                    //  [inf_chi, inf_chi]  
+                    ] ,
+                    enableMouseTracking: false           
+                }, {
+                    type: 'scatter',
+                    data: [
+                        [($scope.results['ic_vwt_low'] + $scope.results['ic_vwt_high'])/2] // ponto do centro
+                    //  [center_chi]  
+                    ],
+                    enableMouseTracking: false
+                }]
+            });
+
         };
 
         $scope.get_rodada = function() {            
@@ -241,7 +514,7 @@
             });
         };
 
-        $scope.status_simulador = function() {
+        $scope.status_simulador = function(disciplina, rho) {
             $http.get('/status')
             .then(function(res) {
                 $scope.res = res.data;
@@ -253,6 +526,7 @@
                     $http.get('/resultado') // pega resultado da simulacao
                     .then(function(result) {
                         $scope.results = result.data;
+                        $scope.plotICCharts($scope.disciplina, $scope.rho);
                         console.log(result.data)
                     });
                 }
@@ -268,6 +542,8 @@
             $scope.rodada_atual = $interval($scope.get_rodada, 1000, rodadas); // ativa checagem rodada
             $scope.check_status = $interval($scope.status_simulador, 1000, rodadas); // ativa checagem simulacao
             $scope.showLoader = true;
+            $scope.disciplina = disciplina;
+            $scope.rho = rho;
             $scope.results = {
                 'e_w': null,
                 'v_w': null,
