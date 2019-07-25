@@ -22,10 +22,14 @@
             'FCFS':{            
                 'EW': {'0.2': 0.25, '0.4': 0.66, '0.6': 1.50, '0.8': 4.00, '0.9': 9.00 },
                 'VW': {'0.2': 0.56, '0.4': 1.77, '0.6': 5.24, '0.8': 24.00, '0.9': 99.00},
+                'ENq': {'0.2': 0.05, '0.4': 0.26, '0.6': 0.89, '0.8': 3.20, '0.9': 8.10},
+                'VNq': {'0.2': 0.072, '0.4': 0.55, '0.6': 2.78, '0.8': 18.56, '0.9': 88.29}
             },
             'LCFS':{
                 'EW': {'0.2': 0.25, '0.4': 0.66, '0.6': 1.50, '0.8': 4.00, '0.9': 9.00 },
                 'VW': {'0.2': 0.71, '0.4': 3.25, '0.6': 16.50, '0.8': 184.00, '0.9': 1719.00},
+                'ENq': {'0.2': 0.05, '0.4': 0.26, '0.6': 0.89, '0.8': 3.20, '0.9': 8.10},
+                'VNq': {'0.2': 0.072, '0.4': 0.55, '0.6': 2.78, '0.8': 18.56, '0.9': 88.29}
             }
         };
 
@@ -371,7 +375,7 @@
                     type: 'columnrange',
                     pointWidth: 2,
                     data: [
-                        [$scope.results['ic_ew_low'], $scope.results['ic_ew_high']]
+                        [$scope.results['ic_enq_low'], $scope.results['ic_enq_high']]
                     //  [inf_chi, sup_chi]
                     ],
                     name: 'IC T-Student'
@@ -380,7 +384,7 @@
                     pointWidth: 15,
                     minPointLength: 2,
                     data: [
-                        [$scope.results['ic_ew_high'], $scope.results['ic_ew_high']] // plota a linha superior
+                        [$scope.results['ic_enq_high'], $scope.results['ic_enq_high']] // plota a linha superior
                     //  [sup_chi, sup_chi]  
                     ],
                     enableMouseTracking: false         
@@ -389,29 +393,29 @@
                     pointWidth: 15,
                     minPointLength: 2,
                     data: [
-                        [$scope.results['ic_ew_low'], $scope.results['ic_ew_low']] // plota a linha inferior
+                        [$scope.results['ic_enq_low'], $scope.results['ic_enq_low']] // plota a linha inferior
                     //  [inf_chi, inf_chi]  
                     ] ,
                     enableMouseTracking: false           
                 }, {
                     type: 'scatter',
                     data: [
-                        [($scope.results['ic_ew_low'] + $scope.results['ic_ew_high'])/2] // ponto do centro
+                        [($scope.results['ic_enq_low'] + $scope.results['ic_enq_high'])/2] // ponto do centro
                     //  [center_chi]  
                     ],
                     enableMouseTracking: false
                 }]
             });
-            var chart_ic_vw = new Highcharts.Chart({
+            var chart_ic_vnq = new Highcharts.Chart({
                 chart: {
-                    renderTo: 'ic_vw',
+                    renderTo: 'ic_vnq',
                     inverted: false
                 },
                 title: {
                     text: 'Intervalo de Confiança'
                 },
                 xAxis: {
-                    categories: ['V(W)']
+                    categories: ['V(Nq)']
                 },
                 yAxis: [{
                     title: {
@@ -419,7 +423,7 @@
                     },
                     gridZIndex: -1,
                     // plota a linha com o valor do analitico pra mostrar se cai no IC ou nao
-                    plotLines: [{  value: $scope.analiticos[disciplina]['VW'][rho],
+                    plotLines: [{  value: $scope.analiticos[disciplina]['VNq'][rho],
                                    color: 'red',
                                    width: 1
                     }]
@@ -446,7 +450,7 @@
                     type: 'columnrange',
                     pointWidth: 2,
                     data: [
-                        [$scope.results['ic_vwt_low'], $scope.results['ic_vwt_high']]
+                        [$scope.results['ic_vnqt_low'], $scope.results['ic_vnqt_high']]
                     //  [inf_chi, sup_chi]
                     ],
                     name: 'IC T-Student'
@@ -454,7 +458,7 @@
                     type: 'columnrange',
                     pointWidth: 2,
                     data: [
-                        [$scope.results['ic_vwchi_low'], $scope.results['ic_vwchi_high']]
+                        [$scope.results['ic_vnqchi_low'], $scope.results['ic_vnqchi_high']]
                     //  [inf_chi, sup_chi]
                     ],
                     name: 'IC Chi-Quadrado'
@@ -463,7 +467,7 @@
                     pointWidth: 15,
                     minPointLength: 2,
                     data: [
-                        [$scope.results['ic_vwt_high'], $scope.results['ic_vwt_high']] // plota a linha superior
+                        [$scope.results['ic_vnqt_high'], $scope.results['ic_vnqt_high']] // plota a linha superior
                     //  [sup_chi, sup_chi]  
                     ],
                     enableMouseTracking: false         
@@ -472,7 +476,7 @@
                     pointWidth: 15,
                     minPointLength: 2,
                     data: [
-                        [$scope.results['ic_vwt_low'], $scope.results['ic_vwt_low']] // plota a linha inferior
+                        [$scope.results['ic_vnqt_low'], $scope.results['ic_vnqt_low']] // plota a linha inferior
                     //  [inf_chi, inf_chi]  
                     ] ,
                     enableMouseTracking: false           
@@ -481,7 +485,7 @@
                     pointWidth: 15,
                     minPointLength: 2,
                     data: [
-                        [$scope.results['ic_vwchi_high'], $scope.results['ic_vwchi_high']] // plota a linha inferior
+                        [$scope.results['ic_vnqchi_high'], $scope.results['ic_vnqchi_high']] // plota a linha inferior
                     //  [inf_chi, inf_chi]  
                     ] ,
                     enableMouseTracking: false           
@@ -490,14 +494,14 @@
                     pointWidth: 15,
                     minPointLength: 2,
                     data: [
-                        [$scope.results['ic_vwchi_low'], $scope.results['ic_vwchi_low']] // plota a linha inferior
+                        [$scope.results['ic_vnqchi_low'], $scope.results['ic_vnqchi_low']] // plota a linha inferior
                     //  [inf_chi, inf_chi]  
                     ] ,
                     enableMouseTracking: false           
                 }, {
                     type: 'scatter',
                     data: [
-                        [($scope.results['ic_vwt_low'] + $scope.results['ic_vwt_high'])/2] // ponto do centro
+                        [($scope.results['ic_vnqt_low'] + $scope.results['ic_vnqt_high'])/2] // ponto do centro
                     //  [center_chi]  
                     ],
                     enableMouseTracking: false
@@ -587,6 +591,27 @@
                 console.log('parei')
                 $scope.plotCharts(rho, disciplina);
             });
+        }
+        $scope.restartanimation = function(){
+                var img1 = $("#x1");
+                img1.removeClass("man1");
+                var img2 = $("#x2");
+                img2.removeClass("man2");
+                var img3 = $("#x3");
+                img3.removeClass("man3");
+                var img4 = $("#x4");
+                img4.removeClass("man4");
+                var img5 = $("#x5");
+                img5.removeClass("man5");
+                var img6 = $("#x6");
+                img6.removeClass("man6");
+
+                img1.addClass("man1");
+                img2.addClass("man2");
+                img3.addClass("man3");
+                img4.addClass("man4");
+                img5.addClass("man5");
+                img6.addClass("man6");
         }
     });
 })();

@@ -11,13 +11,32 @@
         <script src="http://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/highcharts-more.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>    </head>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>    
+    </head>
     <title>SimuladorMM1</title>
     <body ng-controller="SimuladorController">
         <div class="topnav">
             <a class="active" href="main">Simulador de Filas M/M/1</a>
             <a href="animacao">Animação de filas discretas</a>
             <a href="transiente">Determinação da fase transiente</a>
+        </div>
+        <div>
+            <div>
+                <h3>Momentos de chegadas: 0, 7, 13, 15, 17, 18</h3>
+                <h3>Tempo de serviço: 5s</h3>
+                <h3> Tempo ocioso: 3s</h3>
+                <button ng-click="restartanimation()">Restart</button>
+            </div>
+            <!--Man positions: -100px - 347px - 235px - 170px - 105px - 40px -->
+            <div class="queue-space">
+                <img id="x1" class="man1" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
+                <img id="x2" class="man2" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
+                <img id="x3" class="man3" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
+                <img id="x4" class="man4" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
+                <img id="x5" class="man5" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
+                <img id="x6" class="man6" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
+            </div>
+            <div class="servico"></div>
         </div>
     </body>
 </html>

@@ -93,7 +93,7 @@ h1{
 
 h2{
   position: absolute;
-  right: 700px;
+  left: 400px;
 }
 
 table{
@@ -143,4 +143,99 @@ td, th{
 
 a{
   cursor: pointer;
+}
+
+.servico{
+  border: 3px black solid;
+  width: 150px;
+  height: 150px;
+  left: 700px;
+  position: relative;
+  top: -50px;
+  border-radius: 100px;
+}
+
+.queue-space{
+  border-bottom: 3px black solid;
+  border-top: 3px black solid;
+  border-right: 3px black solid;
+  position: relative;
+  top: 100px;
+  width: 300px;
+  left: 400px;
+  height: 150px;
+}
+
+img{
+  height: 140px;
+  padding-top: 5px;
+  position: absolute;
+  overflow:hidden;
+  left: -100px
+}
+
+.man1{
+  animation-name: move_to_service, goaway;
+  animation-duration: 1s, 1s;
+  animation-delay: 0s, 5s;
+  animation-fill-mode: forwards;
+}
+
+.man2{
+  animation-name: move_to_service, goaway;
+  animation-duration: 1s, 1s;
+  animation-delay: 7s, 12s;
+  animation-fill-mode: forwards;
+}
+
+.man3{
+  animation-name: move_to_service, goaway;
+  animation-duration: 1s, 1s;
+  animation-delay: 13s, 18s;
+  animation-fill-mode: forwards;
+}
+
+.man4{
+  animation-name:  move_to_pos1, move_to_service, goaway;
+  animation-duration: 1s, 1s, 1s;
+  animation-delay: 15s, 18s, 23s;
+  animation-fill-mode: forwards;
+}
+
+.man5{
+  animation-name: move_to_pos2, move_to_pos1, move_to_service, goaway;
+  animation-duration: 1s, 1s, 1s, 1s;
+  animation-delay: 17s, 18s, 23s, 28s;
+  animation-fill-mode: forwards;
+}
+
+.man6{
+  animation-name: move_to_pos2, move_to_pos1, move_to_service, goaway;
+  animation-duration: 1s, 1s, 1s, 1s;
+  animation-delay: 18s, 23s, 28s, 33s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes move_to_service {
+  to {left: 347px}
+}
+
+@keyframes move_to_pos1 {
+  to {left: 235px}
+}
+
+@keyframes move_to_pos2 {
+  to {left: 170px;}
+}
+
+@keyframes move_to_pos3 {
+  to {left: 105px;}
+}
+
+@keyframes move_to_pos4 {
+  to {left: 40px;}
+}
+
+@keyframes goaway{
+  to {left: 1000px}
 }
