@@ -530,6 +530,8 @@
                     $http.get('/resultado') // pega resultado da simulacao
                     .then(function(result) {
                         $scope.results = result.data;
+                        var date = new Date();
+                        $scope.tempo_process = ((date.getTime() - $scope.momento_inicial)/1000)/60;
                         $scope.plotICCharts($scope.disciplina, $scope.rho);
                         console.log(result.data)
                     });
@@ -538,11 +540,14 @@
         };
 
         $scope.simular = function(rho, disciplina, kmin, rodadas) {
+            var date = new Date();
+            $scope.tempo_process = null;
             $scope.simulando = true;
             $http.get('/limpar') // limpa logs de simulaçoes passadas
                 .then(function(result) {
                     console.log(result.data)
                 });
+                $scope.momento_inicial = date.getTime();
             $scope.rodada_atual = $interval($scope.get_rodada, 1000, rodadas); // ativa checagem rodada
             $scope.check_status = $interval($scope.status_simulador, 1000, rodadas); // ativa checagem simulacao
             $scope.showLoader = true;

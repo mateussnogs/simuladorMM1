@@ -57,6 +57,8 @@
                 Rodada:
             </p>
             <p ng-show="showLoader" class="rod" style="margin-top: 155px;margin-left: -125px;">{% verbatim %} {{ rodada }} {% endverbatim %}</p>
+            <p ng-show="!showLoader" class="time" style="margin-top: 130px;margin-left: -190px;position: absolute;">Tempo de processamento: </p>
+            <p ng-show="!showLoader" class="time" style="margin-top: 155px;margin-left: -200px;position: absolute;">{% verbatim %} {{ tempo_process }} {% endverbatim %} minutos</p>
             <h2> Resultados:</h2>
             <h4>Pela distribuição t-Student</h4>
             <table id="e">
