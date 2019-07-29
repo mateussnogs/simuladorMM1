@@ -9,6 +9,7 @@ from django.utils import timezone
 from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse
+from ast import literal_eval
 # Create your views here.
 
 
@@ -70,14 +71,14 @@ def resultado_simulacao(request):
         return HttpResponse("Falha simulação")
 
 @csrf_exempt
-def simular_background(request, rho, disciplina, kmin, rodadas):
+def simular_background(request, rho, disciplina, kmin, rodadas, seed_esperta):
     print("chamando simular em background...")
-    simular(rho, disciplina, kmin, rodadas)
+    simular(rho, disciplina, kmin, rodadas, seed_esperta)
     return render(request, 'simulator/main.html', {})
     
 @csrf_exempt
 @background(schedule=timezone.now())
-def simular(rho, disciplina, kmin, rodadas):
+def simular(rho, disciplina, kmin, rodadas, seed_esperta):
     file_rodada = open("rodada_atual.txt", "w") # esvazia arquivo caso esteja cheio
     file_rodada.close()
     context = {
@@ -91,6 +92,16 @@ def simular(rho, disciplina, kmin, rodadas):
     rodadas = int(rodadas)
     disciplina = str(disciplina)
     kmin = int(kmin)
+    if (seed_esperta == '1'):
+        print("seed esperta!")
+        try:
+            file_random_state = open("random_state.txt", "r")        
+            random_state = file_random_state.readline()
+            if (len(random_state) > 0):
+                random.setstate(literal_eval(random_state))
+            file_random_state.close()
+        except:
+            pass
     W = []
     Vw = []
     Nq = []
@@ -102,7 +113,7 @@ def simular(rho, disciplina, kmin, rodadas):
         Vw.append(vi_w) #Conjunto de variaveis aleatorias {Vi}
         Nq.append(nqi) #Conjunto de variaveis aleatorias {Nqi}
         Vnq.append(vi_nq)
-        if (i%7==0): #debug n rodada
+        if (i%501==0): #debug n rodada
             print(i)
         file_rodada = open("rodada_atual.txt", "a")
         file_rodada.write(str(i)+"\n")
@@ -155,11 +166,15 @@ def simular(rho, disciplina, kmin, rodadas):
     context['ic_vnqchi_high'] = ic_vnqchi[2]
     context['ic_vnqchi_pres'] = ic_vnqchi[3]
 
+    file_random_state = open("random_state.txt", "w")
+    file_random_state.write(str(simulador.estado_randomico))
+    file_random_state.close()
+
     context['toplot_EW'] = W
     context['toplot_VW'] = Vw
     context['toplot_ENq'] = Nq
     context['toplot_VNq'] = Vnq
-
+    
     print('end')
     file_status = open("status_simulacao.txt", "w")
     file_status.write("ended")

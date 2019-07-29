@@ -6,6 +6,7 @@
         $scope.disciplina = 'FCFS';
         $scope.kmin = 2500;
         $scope.rodadas = 3200;
+        $scope.seed_esperta = false;
         $scope.showLoader = false;
         $scope.rodada_atual = null;
         $scope.check_status = null;
@@ -608,7 +609,7 @@
             });
         };
 
-        $scope.simular = function(rho, disciplina, kmin, rodadas) {
+        $scope.simular = function(rho, disciplina, kmin, rodadas, seed_esperta) {
             var date = new Date();
             $scope.tempo_process = null;
             $scope.simulando = true;
@@ -650,7 +651,8 @@
                 'toplot_ENq': null,
                 'toplot_VNq': null
              };
-            $http.post('/simular/' + rho + '/' + disciplina + '/' + kmin + '/' + rodadas + '/')
+             seed_esperta = seed_esperta ? 1:0;
+            $http.post('/simular/' + rho + '/' + disciplina + '/' + kmin + '/' + rodadas + '/' + seed_esperta + '/')
             .then(function(res) {
                 $scope.results = res.data; // obsoleto(response, de fato, ja nao vem mais por aqui)
             });

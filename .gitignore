@@ -8,3 +8,4 @@ db.sqlite3
 res_simulacao.txt
 status_simulacao.txt
 rodada_atual.txt
+random_state.txt

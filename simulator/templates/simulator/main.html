@@ -46,13 +46,18 @@
             </div>
 
             <div class="opcoes">
-                <label for="rod">Número de rodada:</label>
+                <label for="rod">Número de rodadas:</label>
                 <input id="rod" type="number" ng-model="rodadas" min="1" max="3200">
+            </div>
+
+            <div class="opcoes">
+                <label for="seed">Mudar para seed esperta</label>
+                <input type="checkbox" ng-model="seed_esperta">
             </div>
         </div>
         <button style="left: 600px;;position: absolute;" ng-click="simular_deterministic(disciplina)">Click</button>
         <p style="left: 300px;;position: relative;">{% verbatim %} {{ respDeterministico }} {% endverbatim %}</p>
-        <h1><a href ng-disabled="simulando" ng-click="simular(rho, disciplina, kmin, rodadas)" class="btn btn-lg btn btn_simular">Simular</a></h1>
+        <h1><a href ng-disabled="simulando" ng-click="simular(rho, disciplina, kmin, rodadas, seed_esperta)" class="btn btn-lg btn btn_simular">Simular</a></h1>
         <div class="after">
             <div ng-show="showLoader" class="loader"></div>
             <p ng-show="showLoader" class="rod">

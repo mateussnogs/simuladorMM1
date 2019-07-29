@@ -145,6 +145,7 @@ class Simulador:
         self.instante_atual = 0
         self.staticts = Statistics
         self.rodada_atual = 0
+        self.estado_randomico = None
         
     def agendar_chegada(self, instante):
         demora_chegar = self.amostrador_chegada.gerar_amostra()
@@ -213,6 +214,7 @@ class Simulador:
                 t_rodada = self.instante_atual - t_rodada
                 media_tempo_espera = self.staticts.media_amostral(tempos_espera)
                 variancia_tempo_espera = self.staticts.var_amostral(tempos_espera, media_tempo_espera)
+                self.estado_randomico = random.getstate()
                 return area_nq/t_rodada, (seg_momento_nq/t_rodada-(area_nq/t_rodada)**2), media_tempo_espera, variancia_tempo_espera
             
 class SimuladorDeterministico:
@@ -296,5 +298,6 @@ class SimuladorDeterministico:
         media_tempo_espera = self.staticts.media_amostral(tempos_espera)
         variancia_tempo_espera = self.staticts.var_amostral(tempos_espera, media_tempo_espera)
         return area_nq/t_rodada, (seg_momento_nq/t_rodada-(area_nq/t_rodada)**2), media_tempo_espera, variancia_tempo_espera
+
             
             
