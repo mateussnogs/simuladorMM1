@@ -95,6 +95,12 @@ class AmostradorExponencial:
         x0 = log(u0)/(-self.lamb)
         return x0
 
+class AmostradorDeterministico:
+    def __init__(self):
+        self.momentosChegada = [0, 5, 8, 15, 17, 18]
+    def getChegada(self, index):
+        return self.momentosChegada[index]
+
 class Fregues:
     def __init__(self, instante_chegada, cor):
         self.instante_chegada = instante_chegada
@@ -208,5 +214,87 @@ class Simulador:
                 media_tempo_espera = self.staticts.media_amostral(tempos_espera)
                 variancia_tempo_espera = self.staticts.var_amostral(tempos_espera, media_tempo_espera)
                 return area_nq/t_rodada, (seg_momento_nq/t_rodada-(area_nq/t_rodada)**2), media_tempo_espera, variancia_tempo_espera
+            
+class SimuladorDeterministico:
+    def __init__(self):
+        self.eventos = Eventos()
+        self.amostrador_chegada = AmostradorDeterministico()
+        self.amostrador_servico = AmostradorDeterministico()
+        self.fila = []
+        self.servidor_ocupado = False
+        self.chegadas = 0
+        self.instante_atual = 0
+        self.staticts = Statistics
+        self.rodada_atual = 0
+        
+    def agendar_chegada(self, instante):
+        instante_ocorrencia = self.amostrador_chegada.getChegada(instante)
+        self.eventos.agendar_evento(Chegada(instante_ocorrencia, Fregues(instante_ocorrencia, self.rodada_atual)))
+        
+    def agendar_partida(self, instante, fregues):
+        demora_partir = 5
+        instante_ocorrencia = instante + demora_partir
+        self.eventos.agendar_evento(Partida(instante_ocorrencia, fregues))
+        
+    def simular(self, disciplina='FCFS'):
+        tempos_espera = []
+        area_nq = 0 # ou primeiro momento
+        seg_momento_nq = 0
+        media_tempo_espera = 0
+        variancia_tempo_espera = 0
+        t_rodada = self.instante_atual
+        if (len(self.eventos.eventos) == 0):
+            self.agendar_chegada(self.chegadas)
+        coletas = 0
+        while(self.instante_atual < 35):
+            evento = self.eventos.proximo_evento()
+            dt = self.instante_atual
+            print(self.instante_atual)
+            self.instante_atual = evento.instante # avança o tempo para instante do evento
+            dt = self.instante_atual - dt            
+            area_nq += len(self.fila)*dt
+            seg_momento_nq += (len(self.fila)**2)*dt
+            # if (len(self.fila) in pmf_nq.keys()):
+            #     pmf_nq[len(self.fila)].append(dt)
+            # else:
+            #     pmf_nq[len(self.fila)] = [dt]
+            # # nq_medias.append(Statistics.media_pmf(pmf_nq, self.instante_atual))
+            if (evento.tipo == 'chegada'):                
+                if(self.servidor_ocupado):
+                    if (disciplina == 'FCFS'):
+                        self.fila.append(evento.fregues)
+                    else:
+                        self.fila.insert(0, evento.fregues)
+                else: # serve fregues
+                    self.servidor_ocupado = True
+                    if (evento.fregues.cor == self.rodada_atual):
+                        tempos_espera.append(0)
+                        coletas += 1
+                    self.agendar_partida(self.instante_atual, evento.fregues)
+                    # lastmedia_tempo = media_tempo_espera
+                    # media_tempo_espera = self.staticts.media_incremental(media_tempo_espera, tempos_espera[coletas-1], coletas)
+                    # variancia_tempo_espera = self.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
+                self.chegadas += 1
+                if(self.chegadas < 6):
+                    self.agendar_chegada(self.chegadas)
+            else: #partida
+                self.servidor_ocupado = False
+                if (len(self.fila) > 0):
+                    self.servidor_ocupado = True
+                    fregues = self.fila.pop(0)
+                    if (fregues.cor == self.rodada_atual):
+                        tempos_espera.append(self.instante_atual-fregues.instante_chegada)                    
+                        coletas += 1
+                    self.agendar_partida(self.instante_atual, fregues)
+                    # lastmedia_tempo = media_tempo_espera
+                    # media_tempo_espera = self.staticts.media_incremental(media_tempo_espera, tempos_espera[coletas-1], coletas)
+                    # variancia_tempo_espera = self.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
+            if (len(self.eventos.eventos) == 0):
+                self.instante_atual += 5
+        self.rodada_atual += 1
+        t_rodada = self.instante_atual - t_rodada
+        media_tempo_espera = self.staticts.media_amostral(tempos_espera)
+        variancia_tempo_espera = self.staticts.var_amostral(tempos_espera, media_tempo_espera)
+        return area_nq/t_rodada, (seg_momento_nq/t_rodada-(area_nq/t_rodada)**2), media_tempo_espera, variancia_tempo_espera
             
             

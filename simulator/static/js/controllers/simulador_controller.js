@@ -597,6 +597,13 @@
                 $scope.plotCharts(rho, disciplina);
             });
         }
+        $scope.simular_deterministic = function(disciplina) {
+            $http.post('/simulardeterministico/' + disciplina + '/')
+            .then(function(res) {
+                console.log('runed')
+                $scope.respDeterministico = res.data;
+            });
+        }
         $scope.restartanimation = function(){
                 var img1 = $("#x1");
                 img1.removeClass("man1");

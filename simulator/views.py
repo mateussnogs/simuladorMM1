@@ -267,6 +267,8 @@ def simular_toplot(request, rho, disciplina, kmin, rodadas):
                 mespera.append(media_tempo_espera)
                 variancia_tempo_espera = simulador.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
                 vespera.append(variancia_tempo_espera)
+                nq_medias.append(Statistics.media_pmf(pmf_nq, simulador.instante_atual))
+                nq_vars.append(Statistics.var_pmf(pmf_nq, simulador.instante_atual))
                 if(coletas>500):
                     sumw = 0
                     sumv = 0
@@ -298,4 +300,24 @@ def simular_toplot(request, rho, disciplina, kmin, rodadas):
     context['ENq'] = nq_medias
     context['VNq'] = nq_vars
     #return nq/t_rodada, media_tempo_espera, variancia_tempo_espera
+    return HttpResponse(json.dumps(context))
+
+@csrf_exempt
+def simular_deterministic(request, disciplina):
+    context = {
+        'e_w': -1,
+        'v_w': -1,
+        'e_nq': -1,
+        'v_nq': -1
+    }
+    simulador = SimuladorDeterministico()
+    disciplina = str(disciplina)
+    
+    nq, v_nq, w, v_w = simulador.simular(disciplina)
+
+    context['e_w'] = w
+    context['v_w'] = v_w
+    context['e_nq'] = nq
+    context['v_nq'] = v_nq
+    print('run')
     return HttpResponse(json.dumps(context))
