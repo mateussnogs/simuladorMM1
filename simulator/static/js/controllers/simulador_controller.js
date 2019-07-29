@@ -158,7 +158,8 @@
             var chart_ic_ew = new Highcharts.Chart({
                 chart: {
                     renderTo: 'ic_ew',
-                    inverted: false
+                    inverted: false,
+                    width: 350,
                 },
                 title: {
                     text: 'Intervalo de Confiança'
@@ -198,6 +199,13 @@
                 series: [{
                     type: 'columnrange',
                     pointWidth: 2,
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
                         [$scope.results['ic_ew_low'], $scope.results['ic_ew_high']]
                     //  [inf_chi, sup_chi]
@@ -223,6 +231,13 @@
                     enableMouseTracking: false           
                 }, {
                     type: 'scatter',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
                         [($scope.results['ic_ew_low'] + $scope.results['ic_ew_high'])/2] // ponto do centro
                     //  [center_chi]  
@@ -233,13 +248,14 @@
             var chart_ic_vw = new Highcharts.Chart({
                 chart: {
                     renderTo: 'ic_vw',
-                    inverted: false
+                    inverted: false,
+                    width: 350,
                 },
                 title: {
                     text: 'Intervalo de Confiança'
                 },
                 xAxis: {
-                    categories: ['V(W)']
+                    categories: ['T-Stu V(W)', 'Chi V(W)']
                 },
                 yAxis: [{
                     title: {
@@ -253,9 +269,10 @@
                     }]
                 }],
                 plotOptions: {
+                    
                     columnrange: {
                         grouping: false,
-                        color: 'navy'
+                        color: 'navy',
                     },
                     scatter: {
                         color: 'navy',
@@ -272,13 +289,21 @@
                 },
                 series: [{
                     type: 'columnrange',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y,4);
+                        }
+                    },
                     pointWidth: 2,
                     data: [
-                        [$scope.results['ic_vwt_low'], $scope.results['ic_vwt_high']]
+                        [$scope.results['ic_vwt_low'], $scope.results['ic_vwt_high']],
+                        [$scope.results['ic_vwchi_low'], $scope.results['ic_vwchi_high']]
                     //  [inf_chi, sup_chi]
                     ],
                     name: 'IC T-Student'
-                }, {
+                }, /*{
                     type: 'columnrange',
                     pointWidth: 2,
                     data: [
@@ -286,12 +311,13 @@
                     //  [inf_chi, sup_chi]
                     ],
                     name: 'IC Chi-Quadrado'
-                },{
+                },*/{
                     type: 'columnrange',
                     pointWidth: 15,
                     minPointLength: 2,
                     data: [
-                        [$scope.results['ic_vwt_high'], $scope.results['ic_vwt_high']] // plota a linha superior
+                        [$scope.results['ic_vwt_high'], $scope.results['ic_vwt_high']], // plota a linha superior
+                        [$scope.results['ic_vwchi_high'], $scope.results['ic_vwchi_high']] // plota a linha superior
                     //  [sup_chi, sup_chi]  
                     ],
                     enableMouseTracking: false         
@@ -300,11 +326,12 @@
                     pointWidth: 15,
                     minPointLength: 2,
                     data: [
-                        [$scope.results['ic_vwt_low'], $scope.results['ic_vwt_low']] // plota a linha inferior
+                        [$scope.results['ic_vwt_low'], $scope.results['ic_vwt_low']], // plota a linha inferior
+                        [$scope.results['ic_vwchi_low'], $scope.results['ic_vwchi_low']] // plota a linha superior
                     //  [inf_chi, inf_chi]  
                     ] ,
                     enableMouseTracking: false           
-                }, {
+                },/* {
                     type: 'columnrange',
                     pointWidth: 15,
                     minPointLength: 2,
@@ -322,10 +349,18 @@
                     //  [inf_chi, inf_chi]  
                     ] ,
                     enableMouseTracking: false           
-                }, {
+                },*/ {
                     type: 'scatter',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
-                        [($scope.results['ic_vwt_low'] + $scope.results['ic_vwt_high'])/2] // ponto do centro
+                        [($scope.results['ic_vwt_low'] + $scope.results['ic_vwt_high'])/2], // ponto do centro
+                        [($scope.results['ic_vwchi_low'] + $scope.results['ic_vwchi_high'])/2] // ponto do centro
                     //  [center_chi]  
                     ],
                     enableMouseTracking: false
@@ -334,7 +369,8 @@
             var chart_ic_enq = new Highcharts.Chart({
                 chart: {
                     renderTo: 'ic_enq',
-                    inverted: false
+                    inverted: false,
+                    width: 350,
                 },
                 title: {
                     text: 'Intervalo de Confiança'
@@ -374,6 +410,13 @@
                 series: [{
                     type: 'columnrange',
                     pointWidth: 2,
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
                         [$scope.results['ic_enq_low'], $scope.results['ic_enq_high']]
                     //  [inf_chi, sup_chi]
@@ -399,6 +442,13 @@
                     enableMouseTracking: false           
                 }, {
                     type: 'scatter',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
                         [($scope.results['ic_enq_low'] + $scope.results['ic_enq_high'])/2] // ponto do centro
                     //  [center_chi]  
@@ -409,13 +459,14 @@
             var chart_ic_vnq = new Highcharts.Chart({
                 chart: {
                     renderTo: 'ic_vnq',
-                    inverted: false
+                    inverted: false,
+                    width:350
                 },
                 title: {
                     text: 'Intervalo de Confiança'
                 },
                 xAxis: {
-                    categories: ['V(Nq)']
+                    categories: ['T-Stu V(Nq)', 'Chi V(Nq)']
                 },
                 yAxis: [{
                     title: {
@@ -449,12 +500,20 @@
                 series: [{
                     type: 'columnrange',
                     pointWidth: 2,
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
-                        [$scope.results['ic_vnqt_low'], $scope.results['ic_vnqt_high']]
+                        [$scope.results['ic_vnqt_low'], $scope.results['ic_vnqt_high']],
+                        [$scope.results['ic_vnqchi_low'], $scope.results['ic_vnqchi_high']],
                     //  [inf_chi, sup_chi]
                     ],
                     name: 'IC T-Student'
-                }, {
+                },/* {
                     type: 'columnrange',
                     pointWidth: 2,
                     data: [
@@ -462,12 +521,13 @@
                     //  [inf_chi, sup_chi]
                     ],
                     name: 'IC Chi-Quadrado'
-                },{
+                },*/{
                     type: 'columnrange',
                     pointWidth: 15,
                     minPointLength: 2,
                     data: [
-                        [$scope.results['ic_vnqt_high'], $scope.results['ic_vnqt_high']] // plota a linha superior
+                        [$scope.results['ic_vnqt_high'], $scope.results['ic_vnqt_high']], // plota a linha superior
+                        [$scope.results['ic_vnqchi_high'], $scope.results['ic_vnqchi_high']]
                     //  [sup_chi, sup_chi]  
                     ],
                     enableMouseTracking: false         
@@ -476,11 +536,12 @@
                     pointWidth: 15,
                     minPointLength: 2,
                     data: [
-                        [$scope.results['ic_vnqt_low'], $scope.results['ic_vnqt_low']] // plota a linha inferior
+                        [$scope.results['ic_vnqt_low'], $scope.results['ic_vnqt_low']], // plota a linha inferior
+                        [$scope.results['ic_vnqchi_low'], $scope.results['ic_vnqchi_low']] // plota a linha inferior
                     //  [inf_chi, inf_chi]  
                     ] ,
                     enableMouseTracking: false           
-                }, {
+                },/* {
                     type: 'columnrange',
                     pointWidth: 15,
                     minPointLength: 2,
@@ -498,10 +559,18 @@
                     //  [inf_chi, inf_chi]  
                     ] ,
                     enableMouseTracking: false           
-                }, {
+                },*/ {
                     type: 'scatter',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
-                        [($scope.results['ic_vnqt_low'] + $scope.results['ic_vnqt_high'])/2] // ponto do centro
+                        [($scope.results['ic_vnqt_low'] + $scope.results['ic_vnqt_high'])/2], // ponto do centro
+                        [($scope.results['ic_vnqchi_low'] + $scope.results['ic_vnqchi_high'])/2] // ponto do centro
                     //  [center_chi]  
                     ],
                     enableMouseTracking: false
