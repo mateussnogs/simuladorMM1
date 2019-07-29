@@ -199,6 +199,13 @@
                 series: [{
                     type: 'columnrange',
                     pointWidth: 2,
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
                         [$scope.results['ic_ew_low'], $scope.results['ic_ew_high']]
                     //  [inf_chi, sup_chi]
@@ -224,6 +231,13 @@
                     enableMouseTracking: false           
                 }, {
                     type: 'scatter',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
                         [($scope.results['ic_ew_low'] + $scope.results['ic_ew_high'])/2] // ponto do centro
                     //  [center_chi]  
@@ -275,6 +289,13 @@
                 },
                 series: [{
                     type: 'columnrange',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y,4);
+                        }
+                    },
                     pointWidth: 2,
                     data: [
                         [$scope.results['ic_vwt_low'], $scope.results['ic_vwt_high']],
@@ -330,6 +351,13 @@
                     enableMouseTracking: false           
                 },*/ {
                     type: 'scatter',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
                         [($scope.results['ic_vwt_low'] + $scope.results['ic_vwt_high'])/2], // ponto do centro
                         [($scope.results['ic_vwchi_low'] + $scope.results['ic_vwchi_high'])/2] // ponto do centro
@@ -382,6 +410,13 @@
                 series: [{
                     type: 'columnrange',
                     pointWidth: 2,
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
                         [$scope.results['ic_enq_low'], $scope.results['ic_enq_high']]
                     //  [inf_chi, sup_chi]
@@ -407,6 +442,13 @@
                     enableMouseTracking: false           
                 }, {
                     type: 'scatter',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
                         [($scope.results['ic_enq_low'] + $scope.results['ic_enq_high'])/2] // ponto do centro
                     //  [center_chi]  
@@ -458,6 +500,13 @@
                 series: [{
                     type: 'columnrange',
                     pointWidth: 2,
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
                         [$scope.results['ic_vnqt_low'], $scope.results['ic_vnqt_high']],
                         [$scope.results['ic_vnqchi_low'], $scope.results['ic_vnqchi_high']],
@@ -512,6 +561,13 @@
                     enableMouseTracking: false           
                 },*/ {
                     type: 'scatter',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
                     data: [
                         [($scope.results['ic_vnqt_low'] + $scope.results['ic_vnqt_high'])/2], // ponto do centro
                         [($scope.results['ic_vnqchi_low'] + $scope.results['ic_vnqchi_high'])/2] // ponto do centro
