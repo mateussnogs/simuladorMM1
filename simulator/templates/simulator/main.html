@@ -16,7 +16,7 @@
     <body ng-controller="SimuladorController">
         <div class="topnav">
             <a class="active" href="main">Simulador de Filas M/M/1</a>
-            <a href="animacao">Animação de filas discretas</a>
+            <a href="animacao">Simulação em tempo discreto</a>
             <a href="transiente">Determinação da fase transiente</a>
         </div>
         <div class="before">
@@ -50,8 +50,6 @@
                 <input id="rod" type="number" ng-model="rodadas" min="1" max="3200">
             </div>
         </div>
-        <button style="left: 600px;;position: absolute;" ng-click="simular_deterministic(disciplina)">Click</button>
-        <p style="left: 300px;;position: relative;">{% verbatim %} {{ respDeterministico }} {% endverbatim %}</p>
         <h1><a href ng-disabled="simulando" ng-click="simular(rho, disciplina, kmin, rodadas)" class="btn btn-lg btn btn_simular">Simular</a></h1>
         <div class="after">
             <div ng-show="showLoader" class="loader"></div>
