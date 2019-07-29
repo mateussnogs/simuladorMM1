@@ -17,15 +17,17 @@
     <body ng-controller="SimuladorController">
         <div class="topnav">
             <a class="active" href="main">Simulador de Filas M/M/1</a>
-            <a href="animacao">Animação de filas discretas</a>
+            <a href="animacao">Simulação em tempo discreto</a>
             <a href="transiente">Determinação da fase transiente</a>
         </div>
         <div>
             <div>
-                <h3>Momentos de chegadas: 0, 7, 13, 15, 17, 18</h3>
+                <h3>Momentos de chegadas: 0, 5, 8, 15, 17, 18</h3>
                 <h3>Tempo de serviço: 5s</h3>
-                <h3> Tempo ocioso: 3s</h3>
+                <h3> Tempo ocioso: 5s</h3>
                 <button ng-click="restartanimation()">Restart</button>
+                <button style="left: 600px;;position: absolute;" ng-click="simular_deterministic(disciplina)">Click</button>
+                <p style="left: 300px;;position: relative;">{% verbatim %} {{ respDeterministico }} {% endverbatim %}</p>        
             </div>
             <!--Man positions: -100px - 347px - 235px - 170px - 105px - 40px -->
             <div class="queue-space">

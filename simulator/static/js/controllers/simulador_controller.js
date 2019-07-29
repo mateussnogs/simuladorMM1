@@ -580,7 +580,7 @@
 
         };
 
-        $scope.get_rodada = function() {            
+        $scope.get_rodada = function() {
             $http.get('/rodada')
             .then(function(res) {
                 $scope.res = res.data;
@@ -676,6 +676,7 @@
             });
         }
         $scope.restartanimation = function(){
+            console.log($("#x1"))
                 var img1 = $("#x1");
                 img1.removeClass("man1");
                 var img2 = $("#x2");
@@ -688,13 +689,19 @@
                 img5.removeClass("man5");
                 var img6 = $("#x6");
                 img6.removeClass("man6");
-
-                img1.addClass("man1");
-                img2.addClass("man2");
-                img3.addClass("man3");
-                img4.addClass("man4");
-                img5.addClass("man5");
-                img6.addClass("man6");
+                $('button').css({
+                    'animation-name': 'move_to_service',
+                    'animation-duration': '1s',
+                    'animation-delay': '0s',
+                    'animation-fill-mode': 'forwards'});
+                setTimeout(function() {
+                    img1.addClass("man1");
+                    img2.addClass("man2");
+                    img3.addClass("man3");
+                    img4.addClass("man4");
+                    img5.addClass("man5");
+                    img6.addClass("man6");
+                }, 1000);
         }
     });
 })();

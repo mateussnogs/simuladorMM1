@@ -2,6 +2,7 @@ import random
 from math import log
 # from scipy.stats import t, chi2
 from math import sqrt
+import time
 
 class Statistics:
     @staticmethod
@@ -251,9 +252,10 @@ class SimuladorDeterministico:
         while(self.instante_atual < 35):
             evento = self.eventos.proximo_evento()
             dt = self.instante_atual
-            print(self.instante_atual)
             self.instante_atual = evento.instante # avança o tempo para instante do evento
-            dt = self.instante_atual - dt            
+            dt = self.instante_atual - dt
+            time.sleep(dt)
+            print(self.instante_atual)
             area_nq += len(self.fila)*dt
             seg_momento_nq += (len(self.fila)**2)*dt
             # if (len(self.fila) in pmf_nq.keys()):
