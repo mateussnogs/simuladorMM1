@@ -212,19 +212,6 @@ def simular_toplot(request, rho, disciplina, kmin, rodadas):
             pmf_nq[len(simulador.fila)].append(dt)
         else:
             pmf_nq[len(simulador.fila)] = [dt]
-        nq_medias.append(Statistics.media_pmf(pmf_nq, simulador.instante_atual))
-        nq_vars.append(Statistics.var_pmf(pmf_nq, simulador.instante_atual))
-        if(coletas>500):
-            sumnq = 0
-            sumvnq = 0
-            for k in range(coletas-500, coletas):
-                sumnq += nq_medias[k]
-                sumvnq += nq_vars[k]
-            medias_moveis_nq.append(sumnq/500)    
-            medias_moveis_vnq.append(sumvnq/500)    
-        else:
-            medias_moveis_nq.append(0)    
-            medias_moveis_vnq.append(0)  
         if (evento.tipo == 'chegada'):                
             if(simulador.servidor_ocupado):
                 if (disciplina == 'FCFS'):
@@ -243,17 +230,27 @@ def simular_toplot(request, rho, disciplina, kmin, rodadas):
                 mespera.append(media_tempo_espera)
                 variancia_tempo_espera = simulador.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
                 vespera.append(variancia_tempo_espera)
+                nq_medias.append(Statistics.media_pmf(pmf_nq, simulador.instante_atual))
+                nq_vars.append(Statistics.var_pmf(pmf_nq, simulador.instante_atual))
                 if(coletas>500):
                     sumw = 0
                     sumv = 0
+                    sumnq = 0
+                    sumvnq = 0  
                     for k in range(coletas-500, coletas):
                         sumw += mespera[k]
                         sumv += vespera[k]
+                        sumnq += nq_medias[k]
+                        sumvnq += nq_vars[k]
+                    medias_moveis_nq.append(sumnq/500)    
+                    medias_moveis_vnq.append(sumvnq/500)  
                     medias_moveis_w.append(sumw/500)
                     medias_moveis_v.append(sumv/500)    
                 else:
                     medias_moveis_w.append(0)
                     medias_moveis_v.append(0)
+                    medias_moveis_nq.append(0)    
+                    medias_moveis_vnq.append(0)  
             simulador.agendar_chegada(simulador.instante_atual)
         else: #partida
             simulador.servidor_ocupado = False
@@ -273,14 +270,22 @@ def simular_toplot(request, rho, disciplina, kmin, rodadas):
                 if(coletas>500):
                     sumw = 0
                     sumv = 0
+                    sumnq = 0
+                    sumvnq = 0  
                     for k in range(coletas-500, coletas):
                         sumw += mespera[k]
                         sumv += vespera[k]
+                        sumnq += nq_medias[k]
+                        sumvnq += nq_vars[k]
+                    medias_moveis_nq.append(sumnq/500)    
+                    medias_moveis_vnq.append(sumvnq/500)  
                     medias_moveis_w.append(sumw/500)
-                    medias_moveis_v.append(sumv/500)       
+                    medias_moveis_v.append(sumv/500)    
                 else:
                     medias_moveis_w.append(0)
-                    medias_moveis_v.append(0) 
+                    medias_moveis_v.append(0)
+                    medias_moveis_nq.append(0)    
+                    medias_moveis_vnq.append(0)  
                     #t_rodada = simulador.instante_atual - t_rodada
                     #media_tempo_espera = self.staticts.media_amostral(tempos_espera)
                     #variancia_tempo_espera = self.staticts.var_amostral(tempos_espera)
