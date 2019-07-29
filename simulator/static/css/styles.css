@@ -145,6 +145,27 @@ a{
   cursor: pointer;
 }
 
+/* Tooltip text */
+.mytooltip .mytooltiptext {
+  visibility: hidden;
+  max-width: 150px;
+  background-color: #f3ee87;
+  color: black;
+  border: 1px black solid;
+  text-align: center;
+  padding: 5px 5px;
+  border-radius: 6px;
+  /* Position the tooltip text - see examples below! */
+  position: absolute;
+  z-index: 1;
+  margin-top: 10px;
+}
+
+/* Show the tooltip text when you mouse over the tooltip container */
+.mytooltip:hover .mytooltiptext {
+  visibility: visible;
+}
+
 .servico{
   border: 3px black solid;
   width: 150px;

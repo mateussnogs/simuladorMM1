@@ -73,29 +73,41 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><a ng-click="plotRChart('EW', 'ic_ew_')">E[W]</a></td>
-                        <td>{% verbatim %} {{ results['e_w'] }} {% endverbatim %}</td>
+                        <td>E[W]</td>
+                        <td class="mytooltip">
+                            {% verbatim %} {{ results['e_w'] }} {% endverbatim %}
+                            <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['EW'][rho] }} {% endverbatim %}</span>
+                        </td>
                         <td>{% verbatim %} {{ results['ic_ew_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_ew_high'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_ew_pres']*100 }} {% endverbatim %} %</td>
                     </tr>
                     <tr>
-                        <td><a ng-click="plotRChart('VW', 'ic_vwt_')">V(W)</a></td>
-                        <td>{% verbatim %} {{ results['v_w'] }} {% endverbatim %}</td>
+                        <td>V(W)</td>
+                        <td class="mytooltip">
+                            {% verbatim %} {{ results['v_w'] }} {% endverbatim %}
+                            <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['VW'][rho] }} {% endverbatim %}</span>
+                        </td>
                         <td>{% verbatim %} {{ results['ic_vwt_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vwt_high'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vwt_pres']*100 }} {% endverbatim %} %</td>
                     </tr>
                     <tr>
-                        <td><a ng-click="plotRChart('ENq', 'ic_enq_')">E[Nq]</a></td>
-                        <td>{% verbatim %} {{ results['e_nq'] }} {% endverbatim %}</td>
+                        <td>E[Nq]</td>
+                        <td class="mytooltip">
+                            {% verbatim %} {{ results['e_nq'] }} {% endverbatim %}
+                            <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['ENq'][rho] }} {% endverbatim %}</span>
+                        </td>
                         <td>{% verbatim %} {{ results['ic_enq_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_enq_high'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_enq_pres']*100 }} {% endverbatim %} %</td>
                     </tr>
                     <tr>
-                        <td><a ng-click="plotRChart('VNq', 'ic_vnqt_')">V(Nq)</a></td>
-                        <td>{% verbatim %} {{ results['v_nq'] }} {% endverbatim %}</td>
+                        <td>V(Nq)</td>
+                        <td class="mytooltip">
+                            {% verbatim %} {{ results['v_nq'] }} {% endverbatim %}
+                            <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['VNq'][rho] }} {% endverbatim %}</span>
+                        </td>
                         <td>{% verbatim %} {{ results['ic_vnqt_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vnqt_high'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vnqt_pres']*100 }} {% endverbatim %} %</td>
@@ -115,15 +127,21 @@
                 </thead>
                 <tbody>
                     <tr>
-                        <td><a ng-click="plotRChart('VW', 'ic_vwchi_')">V(W)</a></td>
-                        <td>{% verbatim %} {{ results['v_w'] }} {% endverbatim %}</td>
+                        <td>V(W)</td>
+                        <td class="mytooltip">
+                            {% verbatim %} {{ results['v_w'] }} {% endverbatim %}
+                            <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['VW'][rho] }} {% endverbatim %}</span>
+                        </td>
                         <td>{% verbatim %} {{ results['ic_vwchi_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vwchi_high'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vwchi_pres'] * 100 }} {% endverbatim %} %</td>
                     </tr>
                     <tr>
-                        <td><a ng-click="plotRChart('VNq', 'ic_vnqchi_')">V(Nq)</a></td>
-                        <td>{% verbatim %} {{ results['v_nq'] }} {% endverbatim %}</td>
+                        <td>V(Nq)</td>
+                        <td class="mytooltip">
+                            {% verbatim %} {{ results['v_nq'] }} {% endverbatim %}
+                            <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['VNq'][rho] }} {% endverbatim %}</span>
+                        </td>
                         <td>{% verbatim %} {{ results['ic_vnqchi_low'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vnqchi_high'] }} {% endverbatim %}</td>
                         <td>{% verbatim %} {{ results['ic_vnqchi_pres']*100 }} {% endverbatim %} %</td>
