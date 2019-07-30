@@ -203,30 +203,25 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
         'v_w': -1,
         'e_nq': -1,
         'v_nq': -1,
-        'ic_ew_low': [],
-        'ic_ew_high': [],
-        'ic_enq_low': [],
-        'ic_enq_high': [],
-        'ic_vwt_low': [],
-        'ic_vwt_high': [],
-        'ic_vwchi_low': [],
-        'ic_vwchi_high': [],
-        'ic_vnqt_low': [],
-        'ic_vnqt_high': [],
-        'ic_vnqchi_low': [],
-        'ic_vnqchi_high': []
+        'ic_ew': [],
+        'ic_enq': [],
+        'ic_vwt': [],
+        'ic_vwchi': [],
+        'ic_vnqt': [],
+        'ic_vnqchi': [],
+        'kmins': []
     }
     analiticoF = {
-        'EW': {'0.2': 0.25, '0.4': 0.6667, '0.6': 1.50, '0.8': 4.00, '0.9': 9.00 },
-        'VW': {'0.2': 0.5625, '0.4': 1.7778, '0.6': 5.25, '0.8': 24.00, '0.9': 99.00},
-        'ENq': {'0.2': 0.05, '0.4': 0.2667, '0.6': 0.9, '0.8': 3.20, '0.9': 8.10},
-        'VNq': {'0.2': 0.0725, '0.4': 0.5511, '0.6': 2.79, '0.8': 18.56, '0.9': 88.29}
+        'EW': {'0.2': 0.2500, '0.4': 0.6667, '0.6': 1.5000, '0.8': 4.0000, '0.9': 9.0000 },
+        'VW': {'0.2': 0.5625, '0.4': 1.7778, '0.6': 5.2500, '0.8': 24.0000, '0.9': 99.0000},
+        'ENq': {'0.2': 0.0500, '0.4': 0.2667, '0.6': 0.9000, '0.8': 3.2000, '0.9': 8.1000},
+        'VNq': {'0.2': 0.0725, '0.4': 0.5511, '0.6': 2.7900, '0.8': 18.5600, '0.9': 88.2900}
     }
     analiticoL = {
-        'EW': {'0.2': 0.25, '0.4': 0.6667, '0.6': 1.50, '0.8': 4.00, '0.9': 9.00 },
-        'VW': {'0.2': 0.7187, '0.4': 3.2592, '0.6': 16.50, '0.8': 184.00, '0.9': 1719.00},
-        'ENq': {'0.2': 0.05, '0.4': 0.2667, '0.6': 0.9, '0.8': 3.20, '0.9': 8.10},
-        'VNq': {'0.2': 0.0725, '0.4': 0.5511, '0.6': 2.79, '0.8': 18.56, '0.9': 88.29}
+        'EW': {'0.2': 0.2500, '0.4': 0.6667, '0.6': 1.5000, '0.8': 4.0000, '0.9': 9.0000 },
+        'VW': {'0.2': 0.7187, '0.4': 3.2592, '0.6': 16.5000, '0.8': 184.0000, '0.9': 1719.0000},
+        'ENq': {'0.2': 0.0500, '0.4': 0.2667, '0.6': 0.9000, '0.8': 3.2000, '0.9': 8.1000},
+        'VNq': {'0.2': 0.0725, '0.4': 0.5511, '0.6': 2.7900, '0.8': 18.5600, '0.9': 88.2900}
     }
     rho = float(rho)
     simulador = Simulador(rho)
@@ -246,10 +241,7 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
             file_random_state.close()
         except:
             pass
-    W = []
-    Vw = []
-    Nq = []
-    Vnq = []
+
     kmin_w = [0, 0]
     kmin_nq = [0, 0]
     kmin_vnq = [0, 0]
@@ -261,6 +253,10 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
     k = 5
     while(k>0):
         print(k)
+        W = []
+        Vw = []
+        Nq = []
+        Vnq = []
         for i in range(rodadas):
             nqi, vi_nq, wi, vi_w = simulador.simular(disciplina, k)
             W.append(wi) #Conjunto de variaveis aleatorias {Wi}
@@ -310,58 +306,46 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
             analiticoAux = analitico['EW']
             if((analiticoAux[str(rho)] < ic_w[1] or analiticoAux[str(rho)] > ic_w[2]) and (not analiticoin_w)):
                 print(ic_w[1], analiticoAux[str(rho)], ic_w[2])
-                if(k%1000==0):
-                    context['ic_ew_low'].append(ic_w[1])
-                    context['ic_ew_high'].append(ic_w[2])
+                context['ic_ew'].append([ic_w[1], ic_w[2]])
             else:
-                context['ic_ew_low'].append(ic_w[1])
-                context['ic_ew_high'].append(ic_w[2])
-                analiticoin_w = True
-                kmin_w[1] = k
+                if(not analiticoin_w):
+                    context['ic_ew'].append([ic_w[1], ic_w[2]])
+                    analiticoin_w = True
+                    kmin_w[1] = k
                 print('ic ok!')
             analiticoAux = analitico['ENq']
             if((analiticoAux[str(rho)] < ic_nq[1] or analiticoAux[str(rho)] > ic_nq[2]) and (not analiticoin_nq)):
                 print(ic_nq[1], analiticoAux[str(rho)], ic_nq[2])
-                if(k%1000==0):
-                    context['ic_enq_low'].append(ic_nq[1])
-                    context['ic_enq_high'].append(ic_nq[2])
+                context['ic_enq'].append([ic_nq[1], ic_nq[2]])
             else:
-                context['ic_enq_low'].append(ic_nq[1])
-                context['ic_enq_high'].append(ic_nq[2])
-                analiticoin_nq = True
-                kmin_nq[1] = k
+                if(not analiticoin_nq):
+                    context['ic_enq'].append([ic_nq[1], ic_nq[2]])
+                    analiticoin_nq = True
+                    kmin_nq[1] = k
                 print('ic ok!')
             analiticoAux = analitico['VW']
             if((analiticoAux[str(rho)] < ic_vwchi[1] or analiticoAux[str(rho)] > ic_vwchi[2]) and (not analiticoin_vw)):
                 print(ic_vwchi[1], analiticoAux[str(rho)], ic_vwchi[2])
-                if(k%1000==0):
-                    context['ic_vwt_low'].append(ic_vwt[1])
-                    context['ic_vwt_high'].append(ic_vwt[2])
-                    context['ic_vwchi_low'].append(ic_vwchi[1])
-                    context['ic_vwchi_high'].append(ic_vwchi[2])
+                context['ic_vwt'].append([ic_vwt[1], ic_vwt[2]])
+                context['ic_vwchi'].append([ic_vwchi[1], ic_vwchi[2]])
             else:
-                context['ic_vwt_low'].append(ic_vwt[1])
-                context['ic_vwt_high'].append(ic_vwt[2])
-                context['ic_vwchi_low'].append(ic_vwchi[1])
-                context['ic_vwchi_high'].append(ic_vwchi[2])
-                analiticoin_vw = True
-                kmin_vw[1] = k
+                if(not analiticoin_vw):
+                    context['ic_vwt'].append([ic_vwt[1], ic_vwt[2]])
+                    context['ic_vwchi'].append([ic_vwchi[1], ic_vwchi[2]])
+                    analiticoin_vw = True
+                    kmin_vw[1] = k
                 print('ic ok!')
             analiticoAux = analitico['VNq']
             if((analiticoAux[str(rho)] < ic_vnqchi[1] or analiticoAux[str(rho)] > ic_vnqchi[2]) and (not analiticoin_vnq)):
                 print(ic_vnqchi[1], analiticoAux[str(rho)], ic_vnqchi[2])
-                if(k%1000==0):
-                    context['ic_vnqt_low'].append(ic_vnqt[1])
-                    context['ic_vnqt_high'].append(ic_vnqt[2])
-                    context['ic_vnqchi_low'].append(ic_vnqchi[1])
-                    context['ic_vnqchi_high'].append(ic_vnqchi[2])
+                context['ic_vnqt'].append([ic_vnqt[1], ic_vnqt[2]])
+                context['ic_vnqchi'].append([ic_vnqchi[1], ic_vnqchi[2]])
             else:
-                context['ic_vnqt_low'].append(ic_vnqt[1])
-                context['ic_vnqt_high'].append(ic_vnqt[2])
-                context['ic_vnqchi_low'].append(ic_vnqchi[1])
-                context['ic_vnqchi_high'].append(ic_vnqchi[2])
-                analiticoin_vnq = True
-                kmin_vnq[1] = k
+                if(not analiticoin_vnq):
+                    context['ic_vnqt'].append([ic_vnqt[1], ic_vnqt[2]])
+                    context['ic_vnqchi'].append([ic_vnqchi[1], ic_vnqchi[2]])
+                    analiticoin_vnq = True
+                    kmin_vnq[1] = k
                 print('ic ok!')
             if(analiticoin_w and analiticoin_nq and analiticoin_vw and analiticoin_vnq):
                 k = -1
@@ -382,14 +366,10 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
             else:
                 k += 5
 
-    context['kmins'].append(kmin_w[0])
-    context['kmins'].append(kmin_w[1])
-    context['kmins'].append(kmin_nq[0])
-    context['kmins'].append(kmin_nq[1])
-    context['kmins'].append(kmin_vw[0])
-    context['kmins'].append(kmin_vw[1])
-    context['kmins'].append(kmin_vnq[0])
-    context['kmins'].append(kmin_vnq[1])
+    context['kmins'].append([kmin_w[0], kmin_w[1]])
+    context['kmins'].append([kmin_nq[0], kmin_nq[1]])
+    context['kmins'].append([kmin_vw[0], kmin_vw[1]])
+    context['kmins'].append([kmin_vnq[0], kmin_vnq[1]])
 
     file_random_state = open("random_state.txt", "w")
     file_random_state.write(str(simulador.estado_randomico))

@@ -159,7 +159,11 @@
             <div ng-if="hasKResults">
                 <h2> Resultados:</h2>
                 <p>Kmins:</p>
-                <p ng-repeat="k in results['kmins']">{% verbatim %} {{ k }} {% endverbatim %}</p>
+                <p>Precisao: {% verbatim %} {{ results['kmins'][0][0] }} {% endverbatim %}, Analitico no IC: {% verbatim %} {{ results['kmins'][0][1] }} {% endverbatim %}</p>
+                <p>Precisao: {% verbatim %} {{ results['kmins'][1][0] }} {% endverbatim %}, Analitico no IC: {% verbatim %} {{ results['kmins'][1][1] }} {% endverbatim %}</p>
+                <p>Precisao: {% verbatim %} {{ results['kmins'][2][0] }} {% endverbatim %}, Analitico no IC: {% verbatim %} {{ results['kmins'][2][1] }} {% endverbatim %}</p>
+                <p>Precisao: {% verbatim %} {{ results['kmins'][3][0] }} {% endverbatim %}, Analitico no IC: {% verbatim %} {{ results['kmins'][3][1] }} {% endverbatim %}</p>
+
         </div>
         <div class="row" style="float: left;" >
             <div id="ic_ew" style="float: left;"></div>

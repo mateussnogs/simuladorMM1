@@ -124,37 +124,6 @@
             $scope.showLoader = false;
         };
 
-        $scope.plotRChart = function (metrica, icname) {
-            let icrange = [$scope.results[icname + 'low'], $scope.results[icname + 'high']];
-            //metrica = 'toplot_' + metrica;
-            let l = $scope.results['toplot_' + metrica].length;
-            let icarangear = [];
-            for(var i=0; i<l; i++){
-                icarangear[i] = [i, icrange[0], icrange[1]];
-            }
-            var chart = new Highcharts.Chart({
-                chart: {
-                    renderTo: 'graph_results',
-                    width: 1200
-                },
-                plotOptions: {
-                    series: {
-                        pointStart: 1
-                    }
-                },
-                series: [{
-                    name: name,
-                    data: $scope.results['toplot_' + metrica],
-                    color: 'black'
-                },{
-                    type: 'arearange',
-                    name: 'IC',
-                    data: icarangear,
-                    color: 'yellow'
-                }],
-            });            
-        };
-
         $scope.plotICCharts = function (disciplina, rho) {         
             var chart_ic_ew = new Highcharts.Chart({
                 chart: {
@@ -580,6 +549,176 @@
 
         };
 
+        $scope.plotICCharts_kmin = function (disciplina, rho) {         
+            var chart_ic_ew = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'ic_ew',
+                    inverted: false,
+                    width: 500,
+                },
+                title: {
+                    text: 'Intervalo de Confiança'
+                },
+                yAxis: [{
+                    title: {
+                        text:  'Valor Analítico'
+                    },
+                    gridZIndex: -1,
+                    // plota a linha com o valor do analitico pra mostrar se cai no IC ou nao
+                    plotLines: [{  value: $scope.analiticos[disciplina]['EW'][rho],
+                                   color: 'red',
+                                   width: 1,
+                                   zIndex: 5
+                    }]
+                }],            
+                tooltip: {
+                    shared: true
+                },
+                legend: {
+                    enabled: false
+                },
+                series: [{
+                    type: 'columnrange',
+                    name: 'ICs',
+                    data: $scope.results['ic_ew'],
+                    enableMouseTracking: false,
+                    color: blue,
+                    opacity: 0.8
+                }]
+            });
+            var chart_ic_vw = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'ic_vw',
+                    inverted: false,
+                    width: 500,
+                },
+                title: {
+                    text: 'Intervalo de Confiança'
+                },
+                yAxis: [{
+                    title: {
+                        text:  'Valor Analítico'
+                    },
+                    gridZIndex: -1,
+                    // plota a linha com o valor do analitico pra mostrar se cai no IC ou nao
+                    plotLines: [{  value: $scope.analiticos[disciplina]['VW'][rho],
+                                   color: 'red',
+                                   width: 1,
+                                   zIndex: 5
+                    }]
+                }],            
+                tooltip: {
+                    shared: true
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    columnrange: {
+                        grouping: false
+                    }
+                },
+                series: [{
+                    type: 'columnrange',
+                    name: 'ICs',
+                    data: $scope.results['ic_vwt'],
+                    enableMouseTracking: false,
+
+                }, {
+                    type: 'columnrange',
+                    name: 'ICs',
+                    data: $scope.results['ic_vwchi'],
+                    enableMouseTracking: false,
+                    color: '#7cb5ec',
+                    opacity: 0.8
+                }]
+            });
+            var chart_ic_enq = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'ic_enq',
+                    inverted: false,
+                    width: 500,
+                },
+                title: {
+                    text: 'Intervalo de Confiança'
+                },
+                yAxis: [{
+                    title: {
+                        text:  'Valor Analítico'
+                    },
+                    gridZIndex: -1,
+                    // plota a linha com o valor do analitico pra mostrar se cai no IC ou nao
+                    plotLines: [{  value: $scope.analiticos[disciplina]['ENq'][rho],
+                                   color: 'red',
+                                   width: 1,
+                                   zIndex: 5
+                    }]
+                }],            
+                tooltip: {
+                    shared: true
+                },
+                legend: {
+                    enabled: false
+                },
+                plotOptions: {
+                    columnrange: {
+                        grouping: false
+                    }
+                },
+                series: [{
+                    type: 'columnrange',
+                    name: 'ICs',
+                    data: $scope.results['ic_enq'],
+                    enableMouseTracking: false,
+                    color: blue,
+                    opacity: 0.8
+                }]
+            });
+            var chart_ic_vnq = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'ic_vnq',
+                    inverted: false,
+                    width: 500,
+                },
+                title: {
+                    text: 'Intervalo de Confiança'
+                },
+                yAxis: [{
+                    title: {
+                        text:  'Valor Analítico'
+                    },
+                    gridZIndex: -1,
+                    // plota a linha com o valor do analitico pra mostrar se cai no IC ou nao
+                    plotLines: [{  value: $scope.analiticos[disciplina]['VNq'][rho],
+                                   color: 'red',
+                                   width: 1,
+                                   zIndex: 5
+                    }]
+                }],        
+                plotOptions: {
+                    columnrange: {
+                        grouping: false
+                    }
+                },
+                tooltip: {
+                    shared: true
+                },
+                series: [{
+                    type: 'columnrange',
+                    name: 'ICs',
+                    data: $scope.results['ic_vnqt'],
+                    enableMouseTracking: false
+                }, {
+                    type: 'columnrange',
+                    name: 'ICs',
+                    data: $scope.results['ic_vnqchi'],
+                    enableMouseTracking: false,
+                    color: '#7cb5ec',
+                    opacity: 0.8
+                }]
+            });
+        };
+
         $scope.get_rodada = function() {
             $http.get('/rodada')
             .then(function(res) {
@@ -602,7 +741,12 @@
                         $scope.results = result.data;
                         var date = new Date();
                         $scope.tempo_process = ((date.getTime() - $scope.momento_inicial)/1000)/60;
-                        $scope.plotICCharts($scope.disciplina, $scope.rho);
+                        if($scope.hasKResults){
+                            $scope.plotICCharts_kmin($scope.disciplina, $scope.rho);
+                        }
+                        else{
+                            $scope.plotICCharts($scope.disciplina, $scope.rho);
+                        }
                         console.log(result.data)
                     });
                 }
