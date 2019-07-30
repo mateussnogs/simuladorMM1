@@ -303,3 +303,32 @@ class SimuladorDeterministico:
 
             
             
+def get_equilibrio(rho, disciplina):
+    k = 0
+    if disciplina == 'FCFS':
+        if rho == 0.2:
+            k = 4500
+        elif rho == 0.4:
+            k = 4500
+        elif rho == 0.6:
+            k = 4500
+        elif rho == 0.8:
+            k = 4500
+        elif rho == 0.9:
+            k = 4500
+    else: # LCFS
+        if rho == 0.2:
+            k = 5000
+        elif rho == 0.4:
+            k = 5000
+        elif rho == 0.6:
+            k = 4500
+        elif rho == 0.8:
+            k = 4500
+        elif rho == 0.9:
+            k = 4500
+    simulador = Simulador(rho)
+    simulador.simular(disciplina, k)
+    print("equilibrio uhul")
+    return simulador
+        
