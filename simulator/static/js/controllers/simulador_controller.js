@@ -610,6 +610,7 @@
         };
 
         $scope.simular = function(rho, disciplina, kmin, rodadas, seed_esperta) {
+            $scope.hasKResults = false;
             var date = new Date();
             $scope.tempo_process = null;
             $scope.simulando = true;
@@ -655,6 +656,29 @@
             $http.post('/simular/' + rho + '/' + disciplina + '/' + kmin + '/' + rodadas + '/' + seed_esperta + '/')
             .then(function(res) {
                 $scope.results = res.data; // obsoleto(response, de fato, ja nao vem mais por aqui)
+                $scope.hasTableResults = true;
+            });
+        }
+        $scope.simularkmin = function(rho, disciplina, rodadas, seed_esperta) {
+            $scope.hasTableResults = false;
+            var date = new Date();
+            $scope.tempo_process = null;
+            $scope.simulando = true;
+            $http.get('/limpar') // limpa logs de simulaçoes passadas
+                .then(function(result) {
+                    console.log(result.data)
+                });
+            $scope.momento_inicial = date.getTime();
+            $scope.rodada_atual = $interval($scope.get_rodada, 1000, rodadas); // ativa checagem rodada
+            $scope.check_status = $interval($scope.status_simulador, 1000, rodadas); // ativa checagem simulacao
+            $scope.showLoader = true;
+            $scope.disciplina = disciplina;
+            $scope.rho = rho;
+            seed_esperta = seed_esperta ? 1:0;
+            $http.post('/simular_kmin/' + rho + '/' + disciplina + '/' + rodadas + '/' + seed_esperta + '/')
+            .then(function(res) {
+                $scope.results = res.data; // obsoleto(response, de fato, ja nao vem mais por aqui)
+                $scope.hasKResults = true;
             });
         }
         $scope.simular_toplot = function(rho, disciplina, kmin, rodadas) {

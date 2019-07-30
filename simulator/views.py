@@ -75,7 +75,13 @@ def simular_background(request, rho, disciplina, kmin, rodadas, seed_esperta):
     print("chamando simular em background...")
     simular(rho, disciplina, kmin, rodadas, seed_esperta)
     return render(request, 'simulator/main.html', {})
-    
+
+@csrf_exempt
+def simular_background2(request, rho, disciplina, rodadas, seed_esperta):
+    print("chamando simular em background...")
+    simular_kmin(rho, disciplina, rodadas, seed_esperta)
+    return render(request, 'simulator/main.html', {})
+       
 @csrf_exempt
 @background(schedule=timezone.now())
 def simular(rho, disciplina, kmin, rodadas, seed_esperta):
@@ -87,9 +93,9 @@ def simular(rho, disciplina, kmin, rodadas, seed_esperta):
         'e_nq': -1,
         'v_nq': -1
     }
+    
     rho = float(rho)
-    simulador = get_equilibrio(rho, disciplina)
-    # simulador = Simulador(rho)
+    simulador = Simulador(rho)
     rodadas = int(rodadas)
     disciplina = str(disciplina)
     kmin = int(kmin)
@@ -175,6 +181,216 @@ def simular(rho, disciplina, kmin, rodadas, seed_esperta):
     context['toplot_VW'] = Vw
     context['toplot_ENq'] = Nq
     context['toplot_VNq'] = Vnq
+    
+    print('end')
+    file_status = open("status_simulacao.txt", "w")
+    file_status.write("ended")
+    file_status.close()
+    print('salvando resultado simulação')
+    file_res_simulacao = open("res_simulacao.txt", "w")
+    file_res_simulacao.write(json.dumps(context))
+    print("resultado salvo")
+    file_res_simulacao.close()
+    return HttpResponse(json.dumps(context))
+
+@csrf_exempt
+@background(schedule=timezone.now())
+def simular_kmin(rho, disciplina, rodadas, seed_esperta):
+    file_rodada = open("rodada_atual.txt", "w") # esvazia arquivo caso esteja cheio
+    file_rodada.close()
+    context = {
+        'e_w': -1,
+        'v_w': -1,
+        'e_nq': -1,
+        'v_nq': -1,
+        'ic_ew_low': [],
+        'ic_ew_high': [],
+        'ic_enq_low': [],
+        'ic_enq_high': [],
+        'ic_vwt_low': [],
+        'ic_vwt_high': [],
+        'ic_vwchi_low': [],
+        'ic_vwchi_high': [],
+        'ic_vnqt_low': [],
+        'ic_vnqt_high': [],
+        'ic_vnqchi_low': [],
+        'ic_vnqchi_high': []
+    }
+    analiticoF = {
+        'EW': {'0.2': 0.25, '0.4': 0.6667, '0.6': 1.50, '0.8': 4.00, '0.9': 9.00 },
+        'VW': {'0.2': 0.5625, '0.4': 1.7778, '0.6': 5.25, '0.8': 24.00, '0.9': 99.00},
+        'ENq': {'0.2': 0.05, '0.4': 0.2667, '0.6': 0.9, '0.8': 3.20, '0.9': 8.10},
+        'VNq': {'0.2': 0.0725, '0.4': 0.5511, '0.6': 2.79, '0.8': 18.56, '0.9': 88.29}
+    }
+    analiticoL = {
+        'EW': {'0.2': 0.25, '0.4': 0.6667, '0.6': 1.50, '0.8': 4.00, '0.9': 9.00 },
+        'VW': {'0.2': 0.7187, '0.4': 3.2592, '0.6': 16.50, '0.8': 184.00, '0.9': 1719.00},
+        'ENq': {'0.2': 0.05, '0.4': 0.2667, '0.6': 0.9, '0.8': 3.20, '0.9': 8.10},
+        'VNq': {'0.2': 0.0725, '0.4': 0.5511, '0.6': 2.79, '0.8': 18.56, '0.9': 88.29}
+    }
+    rho = float(rho)
+    simulador = Simulador(rho)
+    rodadas = int(rodadas)
+    disciplina = str(disciplina)
+    if(disciplina == 'FCFS'):
+        analitico = analiticoF
+    else:
+        analitico = analiticoL
+    if (seed_esperta == '1'):
+        print("seed esperta!")
+        try:
+            file_random_state = open("random_state.txt", "r")        
+            random_state = file_random_state.readline()
+            if (len(random_state) > 0):
+                random.setstate(literal_eval(random_state))
+            file_random_state.close()
+        except:
+            pass
+    W = []
+    Vw = []
+    Nq = []
+    Vnq = []
+    kmin_w = [0, 0]
+    kmin_nq = [0, 0]
+    kmin_vnq = [0, 0]
+    kmin_vw = [0, 0]
+    analiticoin_w = False
+    analiticoin_nq = False
+    analiticoin_vnq = False
+    analiticoin_vw = False
+    k = 5
+    while(k>0):
+        print(k)
+        for i in range(rodadas):
+            nqi, vi_nq, wi, vi_w = simulador.simular(disciplina, k)
+            W.append(wi) #Conjunto de variaveis aleatorias {Wi}
+            Vw.append(vi_w) #Conjunto de variaveis aleatorias {Vi}
+            Nq.append(nqi) #Conjunto de variaveis aleatorias {Nqi}
+            Vnq.append(vi_nq)
+            if (i%501==0): #debug n rodada
+                print(i)
+            file_rodada = open("rodada_atual.txt", "a")
+            file_rodada.write(str(i)+"\n")
+            file_rodada.close()
+        file_rodada = open("rodada_atual.txt", "w") # esvazia arquivo ja que simulacao acabou
+        file_rodada.close()
+        #Variaveis para ICs        
+        mi_chapeu_w = Statistics.media_amostral(W)
+        mi_chapeu_vw = Statistics.media_amostral(Vw)
+        mi_chapeu_nq = Statistics.media_amostral(Nq)
+        mi_chapeu_vnq = Statistics.media_amostral(Vnq)
+        sigma_chapeu2_w = Statistics.var_amostral(W, mi_chapeu_w)
+        sigma_chapeu2_vw = Statistics.var_amostral(Vw, mi_chapeu_vw)
+        sigma_chapeu2_nq = Statistics.var_amostral(Nq, mi_chapeu_nq)
+        sigma_chapeu2_vnq = Statistics.var_amostral(Vnq, mi_chapeu_vnq)
+
+        #ic medias
+        ic_w = Statistics.intervalo_de_confianca_tstudent(mi_chapeu_w, sigma_chapeu2_w, rodadas, 0.95)
+        ic_nq = Statistics.intervalo_de_confianca_tstudent(mi_chapeu_nq, sigma_chapeu2_nq, rodadas, 0.95)
+        #ic variancias pela tstudent
+        ic_vwt = Statistics.intervalo_de_confianca_tstudent(mi_chapeu_vw, sigma_chapeu2_vw, rodadas, 0.95)
+        ic_vnqt = Statistics.intervalo_de_confianca_tstudent(mi_chapeu_vnq, sigma_chapeu2_vnq, rodadas, 0.95)    
+        #ic variancias pela chi2
+        ic_vwchi = Statistics.intervalo_de_confianca_chi2(mi_chapeu_vw, rodadas, 0.95)
+        ic_vnqchi = Statistics.intervalo_de_confianca_chi2(mi_chapeu_vnq, rodadas, 0.95)
+
+        if(ic_w[3] <= 0.05 and kmin_w[0] == 0):
+            kmin_w[0] = k
+            print('precisao ok!')
+        if(ic_nq[3] <= 0.05 and kmin_nq[0] == 0):
+            kmin_nq[0] = k
+            print('precisao ok!')
+        if(ic_vwt[3] <=0.05 and kmin_vw[0] == 0):
+            kmin_vw[0] = k
+            print('precisao ok!')
+        if(ic_vnqt[3] <= 0.05 and kmin_vnq[0] == 0):
+            kmin_vnq[0] = k
+            print('precisao ok!')
+        if(kmin_w[0] > 0 and kmin_nq[0] > 0 and kmin_vw[0] > 0 and kmin_vnq[0] > 0):
+            analiticoAux = analitico['EW']
+            print(ic_w[1], analiticoAux[str(rho)], ic_w[2])
+            if(analiticoAux[str(rho)] < ic_w[1] or analiticoAux[str(rho)] > ic_w[2]):
+                if(k%1000==0):
+                    context['ic_ew_low'].append(ic_w[1])
+                    context['ic_ew_high'].append(ic_w[2])
+            else:
+                context['ic_ew_low'].append(ic_w[1])
+                context['ic_ew_high'].append(ic_w[2])
+                analiticoin_w = True
+                kmin_w[1] = k
+                print('ic ok!')
+            analiticoAux = analitico['ENq']
+            if(analiticoAux[str(rho)] < ic_nq[1] or analiticoAux[str(rho)] > ic_nq[2]):
+                if(k%1000==0):
+                    context['ic_enq_low'].append(ic_nq[1])
+                    context['ic_enq_high'].append(ic_nq[2])
+            else:
+                context['ic_enq_low'].append(ic_nq[1])
+                context['ic_enq_high'].append(ic_nq[2])
+                analiticoin_nq = True
+                kmin_nq[1] = k
+                print('ic ok!')
+            analiticoAux = analitico['VW']
+            if(analiticoAux[str(rho)] < ic_vwchi[1] or analiticoAux[str(rho)] > ic_vwchi[2]):
+                if(k%1000==0):
+                    context['ic_vwt_low'].append(ic_vwt[1])
+                    context['ic_vwt_high'].append(ic_vwt[2])
+                    context['ic_vwchi_low'].append(ic_vwchi[1])
+                    context['ic_vwchi_high'].append(ic_vwchi[2])
+            else:
+                context['ic_vwt_low'].append(ic_vwt[1])
+                context['ic_vwt_high'].append(ic_vwt[2])
+                context['ic_vwchi_low'].append(ic_vwchi[1])
+                context['ic_vwchi_high'].append(ic_vwchi[2])
+                analiticoin_vw = True
+                kmin_vw[1] = k
+                print('ic ok!')
+            analiticoAux = analitico['VNq']
+            if(analiticoAux[str(rho)] < ic_vnqchi[1] or analiticoAux[str(rho)] > ic_vnqchi[2]):
+                if(k%1000==0):
+                    context['ic_vnqt_low'].append(ic_vnqt[1])
+                    context['ic_vnqt_high'].append(ic_vnqt[2])
+                    context['ic_vnqchi_low'].append(ic_vnqchi[1])
+                    context['ic_vnqchi_high'].append(ic_vnqchi[2])
+            else:
+                context['ic_vnqt_low'].append(ic_vnqt[1])
+                context['ic_vnqt_high'].append(ic_vnqt[2])
+                context['ic_vnqchi_low'].append(ic_vnqchi[1])
+                context['ic_vnqchi_high'].append(ic_vnqchi[2])
+                analiticoin_vnq = True
+                kmin_vnq[1] = k
+                print('ic ok!')
+            if(analiticoin_w and analiticoin_nq and analiticoin_vw and analiticoin_vnq):
+                k = -1
+            else:
+                if(k > 10000):
+                    k += 5000
+                else:
+                    if(k > 1000):
+                        k += 1000
+                    else:
+                        if(k%100 == 0):
+                            k += 100
+                        else:
+                            k = 100
+        else: 
+            if(k==1):
+                k = 5
+            else:
+                k += 5
+
+    context['kmins'].append(kmin_w[0])
+    context['kmins'].append(kmin_w[1])
+    context['kmins'].append(kmin_nq[0])
+    context['kmins'].append(kmin_nq[1])
+    context['kmins'].append(kmin_vw[0])
+    context['kmins'].append(kmin_vw[1])
+    context['kmins'].append(kmin_vnq[0])
+    context['kmins'].append(kmin_vnq[1])
+
+    file_random_state = open("random_state.txt", "w")
+    file_random_state.write(str(simulador.estado_randomico))
+    file_random_state.close()
     
     print('end')
     file_status = open("status_simulacao.txt", "w")

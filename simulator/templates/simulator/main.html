@@ -55,9 +55,8 @@
                 <input type="checkbox" ng-model="seed_esperta">
             </div>
         </div>
-        <button style="left: 600px;;position: absolute;" ng-click="simular_deterministic(disciplina)">Click</button>
-        <p style="left: 300px;;position: relative;">{% verbatim %} {{ respDeterministico }} {% endverbatim %}</p>
         <h1><a href ng-disabled="simulando" ng-click="simular(rho, disciplina, kmin, rodadas, seed_esperta)" class="btn btn-lg btn btn_simular">Simular</a></h1>
+        <h1 style="top:90px"><a href ng-disabled="simulando" ng-click="simularkmin(rho, disciplina, rodadas, seed_esperta)" class="btn btn-lg btn btn_simular">Teste Kmin</a></h1>
         <div class="after">
             <div ng-show="showLoader" class="loader"></div>
             <p ng-show="showLoader" class="rod">
@@ -66,95 +65,101 @@
             <p ng-show="showLoader" class="rod" style="margin-top: 155px;margin-left: -125px;">{% verbatim %} {{ rodada }} {% endverbatim %}</p>
             <p ng-show="!showLoader" class="time" style="margin-top: 130px;margin-left: -190px;position: absolute;">Tempo de processamento: </p>
             <p ng-show="!showLoader" class="time" style="margin-top: 155px;margin-left: -200px;position: absolute;">{% verbatim %} {{ tempo_process }} {% endverbatim %} minutos</p>
-            <h2> Resultados:</h2>
-            <h4>Pela distribuição t-Student</h4>
-            <table id="e">
-                <thead>
-                    <tr>
-                        <th>Métrica</th>
-                        <th>Valor Obtido</th>
-                        <th>Lim Inf IC</th>
-                        <th>Lim Sup IC</th>
-                        <th>Precisão</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>E[W]</td>
-                        <td class="mytooltip">
-                            {% verbatim %} {{ results['e_w'] }} {% endverbatim %}
-                            <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['EW'][rho] }} {% endverbatim %}</span>
-                        </td>
-                        <td>{% verbatim %} {{ results['ic_ew_low'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_ew_high'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_ew_pres']*100 }} {% endverbatim %} %</td>
-                    </tr>
-                    <tr>
-                        <td>V(W)</td>
-                        <td class="mytooltip">
-                            {% verbatim %} {{ results['v_w'] }} {% endverbatim %}
-                            <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['VW'][rho] }} {% endverbatim %}</span>
-                        </td>
-                        <td>{% verbatim %} {{ results['ic_vwt_low'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_vwt_high'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_vwt_pres']*100 }} {% endverbatim %} %</td>
-                    </tr>
-                    <tr>
-                        <td>E[Nq]</td>
-                        <td class="mytooltip">
-                            {% verbatim %} {{ results['e_nq'] }} {% endverbatim %}
-                            <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['ENq'][rho] }} {% endverbatim %}</span>
-                        </td>
-                        <td>{% verbatim %} {{ results['ic_enq_low'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_enq_high'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_enq_pres']*100 }} {% endverbatim %} %</td>
-                    </tr>
-                    <tr>
-                        <td>V(Nq)</td>
-                        <td class="mytooltip">
-                            {% verbatim %} {{ results['v_nq'] }} {% endverbatim %}
-                            <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['VNq'][rho] }} {% endverbatim %}</span>
-                        </td>
-                        <td>{% verbatim %} {{ results['ic_vnqt_low'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_vnqt_high'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_vnqt_pres']*100 }} {% endverbatim %} %</td>
-                    </tr>
-                </tbody>
-            </table>
-            <h4> Pela distribuição Chi-Quadrado</h4>
-            <table id="v">
-                <thead>
-                    <tr>
-                        <th>Métrica</th>
-                        <th>Valor Obtido</th>
-                        <th>Lim Inf IC</th>
-                        <th>Lim Sup IC</th>
-                        <th>Precisão</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>V(W)</td>
-                        <td class="mytooltip">
-                            {% verbatim %} {{ results['v_w'] }} {% endverbatim %}
-                            <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['VW'][rho] }} {% endverbatim %}</span>
-                        </td>
-                        <td>{% verbatim %} {{ results['ic_vwchi_low'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_vwchi_high'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_vwchi_pres'] * 100 }} {% endverbatim %} %</td>
-                    </tr>
-                    <tr>
-                        <td>V(Nq)</td>
-                        <td class="mytooltip">
-                            {% verbatim %} {{ results['v_nq'] }} {% endverbatim %}
-                            <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['VNq'][rho] }} {% endverbatim %}</span>
-                        </td>
-                        <td>{% verbatim %} {{ results['ic_vnqchi_low'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_vnqchi_high'] }} {% endverbatim %}</td>
-                        <td>{% verbatim %} {{ results['ic_vnqchi_pres']*100 }} {% endverbatim %} %</td>
-                    </tr>
-                </tbody>
-            </table>
+            <div ng-if="hasTableResults">
+                <h2> Resultados:</h2>
+                <h4>Pela distribuição t-Student</h4>
+                <table id="e">
+                    <thead>
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Valor Obtido</th>
+                            <th>Lim Inf IC</th>
+                            <th>Lim Sup IC</th>
+                            <th>Precisão</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>E[W]</td>
+                            <td class="mytooltip">
+                                {% verbatim %} {{ results['e_w'] }} {% endverbatim %}
+                                <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['EW'][rho] }} {% endverbatim %}</span>
+                            </td>
+                            <td>{% verbatim %} {{ results['ic_ew_low'] }} {% endverbatim %}</td>
+                            <td>{% verbatim %} {{ results['ic_ew_high'] }} {% endverbatim %}</td>
+                            <td>{% verbatim %} {{ results['ic_ew_pres']*100 }} {% endverbatim %} %</td>
+                        </tr>
+                        <tr>
+                            <td>V(W)</td>
+                            <td class="mytooltip">
+                                {% verbatim %} {{ results['v_w'] }} {% endverbatim %}
+                                <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['VW'][rho] }} {% endverbatim %}</span>
+                            </td>
+                            <td>{% verbatim %} {{ results['ic_vwt_low'] }} {% endverbatim %}</td>
+                            <td>{% verbatim %} {{ results['ic_vwt_high'] }} {% endverbatim %}</td>
+                            <td>{% verbatim %} {{ results['ic_vwt_pres']*100 }} {% endverbatim %} %</td>
+                        </tr>
+                        <tr>
+                            <td>E[Nq]</td>
+                            <td class="mytooltip">
+                                {% verbatim %} {{ results['e_nq'] }} {% endverbatim %}
+                                <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['ENq'][rho] }} {% endverbatim %}</span>
+                            </td>
+                            <td>{% verbatim %} {{ results['ic_enq_low'] }} {% endverbatim %}</td>
+                            <td>{% verbatim %} {{ results['ic_enq_high'] }} {% endverbatim %}</td>
+                            <td>{% verbatim %} {{ results['ic_enq_pres']*100 }} {% endverbatim %} %</td>
+                        </tr>
+                        <tr>
+                            <td>V(Nq)</td>
+                            <td class="mytooltip">
+                                {% verbatim %} {{ results['v_nq'] }} {% endverbatim %}
+                                <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['VNq'][rho] }} {% endverbatim %}</span>
+                            </td>
+                            <td>{% verbatim %} {{ results['ic_vnqt_low'] }} {% endverbatim %}</td>
+                            <td>{% verbatim %} {{ results['ic_vnqt_high'] }} {% endverbatim %}</td>
+                            <td>{% verbatim %} {{ results['ic_vnqt_pres']*100 }} {% endverbatim %} %</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <h4> Pela distribuição Chi-Quadrado</h4>
+                <table id="v">
+                    <thead>
+                        <tr>
+                            <th>Métrica</th>
+                            <th>Valor Obtido</th>
+                            <th>Lim Inf IC</th>
+                            <th>Lim Sup IC</th>
+                            <th>Precisão</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>V(W)</td>
+                            <td class="mytooltip">
+                                {% verbatim %} {{ results['v_w'] }} {% endverbatim %}
+                                <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['VW'][rho] }} {% endverbatim %}</span>
+                            </td>
+                            <td>{% verbatim %} {{ results['ic_vwchi_low'] }} {% endverbatim %}</td>
+                            <td>{% verbatim %} {{ results['ic_vwchi_high'] }} {% endverbatim %}</td>
+                            <td>{% verbatim %} {{ results['ic_vwchi_pres'] * 100 }} {% endverbatim %} %</td>
+                        </tr>
+                        <tr>
+                            <td>V(Nq)</td>
+                            <td class="mytooltip">
+                                {% verbatim %} {{ results['v_nq'] }} {% endverbatim %}
+                                <span class="mytooltiptext">Valor analítico: {% verbatim %} {{ analiticos[disciplina]['VNq'][rho] }} {% endverbatim %}</span>
+                            </td>
+                            <td>{% verbatim %} {{ results['ic_vnqchi_low'] }} {% endverbatim %}</td>
+                            <td>{% verbatim %} {{ results['ic_vnqchi_high'] }} {% endverbatim %}</td>
+                            <td>{% verbatim %} {{ results['ic_vnqchi_pres']*100 }} {% endverbatim %} %</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div ng-if="hasKResults">
+                <h2> Resultados:</h2>
+                <p>Kmins:</p>
+                <p ng-repeat="k in results['kmins']">{% verbatim %} {{ k }} {% endverbatim %}</p>
         </div>
         <div class="row" style="float: left;" >
             <div id="ic_ew" style="float: left;"></div>
