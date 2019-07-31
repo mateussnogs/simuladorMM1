@@ -15,7 +15,7 @@
     <title>SimuladorMM1</title>
     <body ng-controller="SimuladorController">
         <div class="topnav">
-            <a class="active" href="main">Simulador de Filas M/M/1</a>
+            <a class="active" href="/">Simulador de Filas M/M/1</a>
             <a href="kmin">Teste Kmin</a>
             <a href="animacao">Simulação em tempo discreto</a>
             <a href="transiente">Determinação da fase transiente</a>
@@ -38,8 +38,13 @@
                     <option value='LCFS'>LCFS</option>
                 </select>
             </div>
+
+            <div class="opcoes" style="padding: 25px;">
+                <label for="seed">Mudar para seed esperta</label>
+                <input type="checkbox" ng-model="seed_esperta">
+            </div>
         </div>
-        <h1><a href class="btn btn-lg btn btn_transiente" ng-click="simular_toplot(rho, disciplina, kmin, rodadas)"> Roda </a></h1>
+        <h1 style="position:relative; margin-top: 5%;"><a href class="btn btn-lg btn btn_transiente" ng-click="simular_toplot(rho, disciplina, kmin, rodadas, seed_esperta)"> Roda </a></h1>
         <div ng-show="showLoader" class="loader" style="margin-left: 700px;"></div>
         <div ng-show="chartReady" id="graph">
             <div class="row">
