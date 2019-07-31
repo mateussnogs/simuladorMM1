@@ -22,11 +22,10 @@ def animacao(request):
 @csrf_exempt
 def transiente(request):    
     return render(request, 'simulator/transiente.html', {})
-
 @csrf_exempt
 def kmin(request):    
     return render(request, 'simulator/kmin.html', {})
-        
+
 def limpar_arquivos_simulacao(request):
     file_status = open("status_simulacao.txt", "w") # abre para apagar/reiniciar status apenas
     file_status.close()

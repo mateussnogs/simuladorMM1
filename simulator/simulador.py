@@ -240,6 +240,7 @@ class SimuladorDeterministico:
         self.eventos.agendar_evento(Partida(instante_ocorrencia, fregues))
         
     def simular(self, disciplina='FCFS'):
+        print(disciplina)
         tempos_espera = []
         area_nq = 0 # ou primeiro momento
         seg_momento_nq = 0
@@ -298,6 +299,7 @@ class SimuladorDeterministico:
                 time.sleep(5)
         self.rodada_atual += 1
         t_rodada = self.instante_atual - t_rodada
+        print(tempos_espera)
         media_tempo_espera = self.staticts.media_amostral(tempos_espera)
         variancia_tempo_espera = self.staticts.var_amostral(tempos_espera, media_tempo_espera)
         return area_nq/t_rodada, (seg_momento_nq/t_rodada-(area_nq/t_rodada)**2), media_tempo_espera, variancia_tempo_espera

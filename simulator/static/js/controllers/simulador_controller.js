@@ -124,7 +124,7 @@
             $scope.showLoader = false;
         };
 
-        $scope.plotICCharts = function (disciplina, rho) {         
+        $scope.plotICCharts = function (disciplina, rho) {    
             var chart_ic_ew = new Highcharts.Chart({
                 chart: {
                     renderTo: 'ic_ew',
@@ -213,6 +213,21 @@
                     //  [center_chi]  
                     ],
                     enableMouseTracking: false
+                }, {
+                    type: 'scatter',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
+                    color: 'black',
+                    data: [
+                        [$scope.results['e_w']] // ponto do centro
+                    //  [center_chi]  
+                    ],
+                    enableMouseTracking: false
                 }]
             });
             var chart_ic_vw = new Highcharts.Chart({
@@ -273,15 +288,7 @@
                     //  [inf_chi, sup_chi]
                     ],
                     name: 'IC T-Student'
-                }, /*{
-                    type: 'columnrange',
-                    pointWidth: 2,
-                    data: [
-                        [$scope.results['ic_vwchi_low'], $scope.results['ic_vwchi_high']]
-                    //  [inf_chi, sup_chi]
-                    ],
-                    name: 'IC Chi-Quadrado'
-                },*/{
+                }, {
                     type: 'columnrange',
                     pointWidth: 15,
                     minPointLength: 2,
@@ -301,25 +308,7 @@
                     //  [inf_chi, inf_chi]  
                     ] ,
                     enableMouseTracking: false           
-                },/* {
-                    type: 'columnrange',
-                    pointWidth: 15,
-                    minPointLength: 2,
-                    data: [
-                        [$scope.results['ic_vwchi_high'], $scope.results['ic_vwchi_high']] // plota a linha inferior
-                    //  [inf_chi, inf_chi]  
-                    ] ,
-                    enableMouseTracking: false           
                 }, {
-                    type: 'columnrange',
-                    pointWidth: 15,
-                    minPointLength: 2,
-                    data: [
-                        [$scope.results['ic_vwchi_low'], $scope.results['ic_vwchi_low']] // plota a linha inferior
-                    //  [inf_chi, inf_chi]  
-                    ] ,
-                    enableMouseTracking: false           
-                },*/ {
                     type: 'scatter',
                     dataLabels: {
                         enabled: true,
@@ -331,6 +320,21 @@
                     data: [
                         [($scope.results['ic_vwt_low'] + $scope.results['ic_vwt_high'])/2], // ponto do centro
                         [($scope.results['ic_vwchi_low'] + $scope.results['ic_vwchi_high'])/2] // ponto do centro
+                    //  [center_chi]  
+                    ],
+                    enableMouseTracking: false
+                }, {
+                    type: 'scatter',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
+                    color: 'black',
+                    data: [
+                        [$scope.results['v_w']] // ponto do centro
                     //  [center_chi]  
                     ],
                     enableMouseTracking: false
@@ -424,6 +428,21 @@
                     //  [center_chi]  
                     ],
                     enableMouseTracking: false
+                }, {
+                    type: 'scatter',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
+                    color: 'black',
+                    data: [
+                        [$scope.results['e_nq']] // ponto do centro
+                    //  [center_chi]  
+                    ],
+                    enableMouseTracking: false
                 }]
             });
             var chart_ic_vnq = new Highcharts.Chart({
@@ -483,15 +502,7 @@
                     //  [inf_chi, sup_chi]
                     ],
                     name: 'IC T-Student'
-                },/* {
-                    type: 'columnrange',
-                    pointWidth: 2,
-                    data: [
-                        [$scope.results['ic_vnqchi_low'], $scope.results['ic_vnqchi_high']]
-                    //  [inf_chi, sup_chi]
-                    ],
-                    name: 'IC Chi-Quadrado'
-                },*/{
+                }, {
                     type: 'columnrange',
                     pointWidth: 15,
                     minPointLength: 2,
@@ -511,25 +522,7 @@
                     //  [inf_chi, inf_chi]  
                     ] ,
                     enableMouseTracking: false           
-                },/* {
-                    type: 'columnrange',
-                    pointWidth: 15,
-                    minPointLength: 2,
-                    data: [
-                        [$scope.results['ic_vnqchi_high'], $scope.results['ic_vnqchi_high']] // plota a linha inferior
-                    //  [inf_chi, inf_chi]  
-                    ] ,
-                    enableMouseTracking: false           
                 }, {
-                    type: 'columnrange',
-                    pointWidth: 15,
-                    minPointLength: 2,
-                    data: [
-                        [$scope.results['ic_vnqchi_low'], $scope.results['ic_vnqchi_low']] // plota a linha inferior
-                    //  [inf_chi, inf_chi]  
-                    ] ,
-                    enableMouseTracking: false           
-                },*/ {
                     type: 'scatter',
                     dataLabels: {
                         enabled: true,
@@ -541,6 +534,21 @@
                     data: [
                         [($scope.results['ic_vnqt_low'] + $scope.results['ic_vnqt_high'])/2], // ponto do centro
                         [($scope.results['ic_vnqchi_low'] + $scope.results['ic_vnqchi_high'])/2] // ponto do centro
+                    //  [center_chi]  
+                    ],
+                    enableMouseTracking: false
+                }, {
+                    type: 'scatter',
+                    dataLabels: {
+                        enabled: true,
+                        // inside: true,
+                        formatter: function () {
+                            return Highcharts.numberFormat(this.y, 4);
+                        }
+                    },
+                    color: 'black',
+                    data: [
+                        [$scope.results['v_nq']] // ponto do centro
                     //  [center_chi]  
                     ],
                     enableMouseTracking: false
@@ -846,6 +854,12 @@
             });
         }
         $scope.startanimation = function(disciplina){
+            $scope.respDeterministico = {
+                'e_w': null,
+                'v_w': null,
+                'e_nq': null,
+                'v_nq': null
+            };
             resetWatch();
             startWatch();
             $http.post('/simulardeterministico/' + disciplina + '/')
