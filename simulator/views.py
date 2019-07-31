@@ -433,7 +433,7 @@ def simular_toplot(request, rho, disciplina, kmin, rodadas, seed_esperta):
     if (len(simulador.eventos.eventos) == 0):
         simulador.agendar_chegada(simulador.instante_atual)
     coletas = 0
-    t_end = time.time() + 5
+    t_end = time.time() + 60
     while time.time() < t_end:
         evento = simulador.eventos.proximo_evento()
         dt = simulador.instante_atual

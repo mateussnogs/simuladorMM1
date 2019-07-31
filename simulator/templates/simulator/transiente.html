@@ -43,6 +43,10 @@
                 <label for="seed">Mudar para seed esperta</label>
                 <input type="checkbox" ng-model="seed_esperta">
             </div>
+
+            <div>
+                <h1 ng-show="showLoader">Aguarde 60 segundos</h1>
+            </div>
         </div>
         <h1 style="position:relative; margin-top: 5%;"><a href class="btn btn-lg btn btn_transiente" ng-click="simular_toplot(rho, disciplina, kmin, rodadas, seed_esperta)"> Roda </a></h1>
         <div ng-show="showLoader" class="loader" style="margin-left: 700px;"></div>
