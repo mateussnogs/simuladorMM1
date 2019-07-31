@@ -195,6 +195,7 @@ def simular(rho, disciplina, kmin, rodadas, seed_esperta):
 
 @csrf_exempt
 @background(schedule=timezone.now())
+#simulacoes para achar kmin
 def simular_kmin(rho, disciplina, rodadas, seed_esperta):
     file_rodada = open("rodada_atual.txt", "w") # esvazia arquivo caso esteja cheio
     file_rodada.close()
@@ -324,8 +325,8 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
                     kmin_nq[1] = k
                 print('ic ok!')
             analiticoAux = analitico['VW']
-            if((analiticoAux[str(rho)] < ic_vwchi[1] or analiticoAux[str(rho)] > ic_vwchi[2]) and (not analiticoin_vw)):
-                print(ic_vwchi[1], analiticoAux[str(rho)], ic_vwchi[2])
+            if((analiticoAux[str(rho)] < ic_vwt[1] or analiticoAux[str(rho)] > ic_vwt[2]) and (not analiticoin_vw)):
+                print(ic_vwt[1], analiticoAux[str(rho)], ic_vwt[2])
                 context['ic_vwt'].append([ic_vwt[1], ic_vwt[2]])
                 context['ic_vwchi'].append([ic_vwchi[1], ic_vwchi[2]])
             else:
@@ -336,8 +337,8 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
                     kmin_vw[1] = k
                 print('ic ok!')
             analiticoAux = analitico['VNq']
-            if((analiticoAux[str(rho)] < ic_vnqchi[1] or analiticoAux[str(rho)] > ic_vnqchi[2]) and (not analiticoin_vnq)):
-                print(ic_vnqchi[1], analiticoAux[str(rho)], ic_vnqchi[2])
+            if((analiticoAux[str(rho)] < ic_vnqt[1] or analiticoAux[str(rho)] > ic_vnqt[2]) and (not analiticoin_vnq)):
+                print(ic_vnqt[1], analiticoAux[str(rho)], ic_vnqt[2])
                 context['ic_vnqt'].append([ic_vnqt[1], ic_vnqt[2]])
                 context['ic_vnqchi'].append([ic_vnqchi[1], ic_vnqchi[2]])
             else:
@@ -356,15 +357,12 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
                     if(k >= 1000):
                         k += 1000
                     else:
-                        if(k%100 == 0):
+                        if(k >= 100):
                             k += 100
                         else:
-                            k = 100
+                            k += 5
         else: 
-            if(k==1):
-                k = 5
-            else:
-                k += 5
+            k += 5
 
     context['kmins'].append([kmin_w[0], kmin_w[1]])
     context['kmins'].append([kmin_nq[0], kmin_nq[1]])
@@ -387,6 +385,7 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
     return HttpResponse(json.dumps(context))
 
 @csrf_exempt
+#simulacao para gerar graficos para analise de fase transiente
 def simular_toplot(request, rho, disciplina, kmin, rodadas):
     rho = float(rho)
     simulador = Simulador(rho)
@@ -518,6 +517,7 @@ def simular_toplot(request, rho, disciplina, kmin, rodadas):
     return HttpResponse(json.dumps(context))
 
 @csrf_exempt
+#simulacao em tempos deterministicos
 def simular_deterministic(request, disciplina):
     context = {
         'e_w': -1,
@@ -527,12 +527,30 @@ def simular_deterministic(request, disciplina):
     }
     simulador = SimuladorDeterministico()
     disciplina = str(disciplina)
-    
-    nq, v_nq, w, v_w = simulador.simular(disciplina)
-
-    context['e_w'] = w
-    context['v_w'] = v_w
-    context['e_nq'] = nq
-    context['v_nq'] = v_nq
+    W = []
+    Vw = []
+    Nq = []
+    Vnq = []
+    for i in range(3):
+        nq, v_nq, w, v_w = simulador.simular(disciplina)
+        W.append(w) #Conjunto de variaveis aleatorias {Wi}
+        Vw.append(v_w) #Conjunto de variaveis aleatorias {Vi}
+        Nq.append(nq) #Conjunto de variaveis aleatorias {Nqi}
+        Vnq.append(v_nq)
+        simulador.fila = []
+        simulador.servidor_ocupado = False
+        simulador.chegadas = 0
+        simulador.instante_atual = 0
+        simulador.staticts = Statistics
+        simulador.rodada_atual = 0
+     
+    mi_chapeu_w = Statistics.media_amostral(W)
+    mi_chapeu_vw = Statistics.media_amostral(Vw)
+    mi_chapeu_nq = Statistics.media_amostral(Nq)
+    mi_chapeu_vnq = Statistics.media_amostral(Vnq)
+    context['e_w'] = mi_chapeu_w
+    context['v_w'] = mi_chapeu_vw
+    context['e_nq'] = mi_chapeu_nq
+    context['v_nq'] = mi_chapeu_vnq
     print('run')
     return HttpResponse(json.dumps(context))

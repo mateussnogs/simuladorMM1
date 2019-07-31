@@ -21,22 +21,48 @@
             <a href="transiente">Determinação da fase transiente</a>
         </div>
         <div>
+            <p id="res"><span id="min">0</span> : <span id="sec">00</span> : <span id="msec">000</span></p>
             <div>
-                <h3>Momentos de chegadas: 0, 5, 8, 15, 17, 18</h3>
-                <h3>Tempo de serviço: 5s</h3>
-                <h3> Tempo ocioso: 5s</h3>
-                <button ng-click="restartanimation()">Restart</button>
-                <button style="left: 600px;position: absolute;" ng-click="simular_deterministic(disciplina)">Click</button>
-                <p style="left: 300px;position: relative;">{% verbatim %} {{ respDeterministico }} {% endverbatim %}</p>        
+                <div class="opcoes" style="width: 20%; height: 50px;padding-top: 8px;">
+                    <label for="disc">Disciplina:</label>
+                    <select id="disc" ng-model="disciplina">
+                        <option value='FCFS'>FCFS</option>
+                        <option value='LCFS'>LCFS</option>
+                    </select>
+                </div>
+                <div class="opcoes" style="width: 20%; height: 190px;padding-top: 8px;">
+                    <h3>Tempo de serviço: 5s</h3>
+                    <h3> Tempo ocioso: 5s</h3>
+                    <h3> Momentos de chegada: [0, 5, 8, 15, 17, 18]</h3>
+                </div>
+                <h1><a href class="btn btn-lg btn btn_deterministic" ng-click="startanimation()">Start</a></h1>
+                <table style="left: 500px;top: 100px;">
+                    <tr>
+                        <td>E[W]</td>
+                        <td>{% verbatim %} {{ respDeterministico['e_w'] }} {% endverbatim %}</td>
+                    </tr>
+                    <tr>
+                        <td>V(W)</td>
+                        <td>{% verbatim %} {{ respDeterministico['v_w'] }} {% endverbatim %}</td>
+                    </tr>
+                    <tr>
+                        <td>E[Nq]</td>
+                        <td>{% verbatim %} {{ respDeterministico['e_nq'] }} {% endverbatim %}</td>
+                    </tr>
+                    <tr>
+                        <td>V(Nq)</td>
+                        <td>{% verbatim %} {{ respDeterministico['v_nq'] }} {% endverbatim %}</td>
+                    </tr>
+                </table>
             </div>
             <!--Man positions: -100px - 347px - 235px - 170px - 105px - 40px -->
             <div class="queue-space">
-                <img id="x1" class="man1" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
-                <img id="x2" class="man2" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
-                <img id="x3" class="man3" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
-                <img id="x4" class="man4" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
-                <img id="x5" class="man5" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
-                <img id="x6" class="man6" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
+                <img id="x1" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
+                <img id="x2" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
+                <img id="x3" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
+                <img id="x4" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
+                <img id="x5" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
+                <img id="x6" src="https://i.pinimg.com/originals/1b/2d/dd/1b2dddd9a9d54ebc83c8e67392ba0743.png">
             </div>
             <div class="servico"></div>
         </div>

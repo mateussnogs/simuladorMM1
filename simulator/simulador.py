@@ -98,7 +98,7 @@ class AmostradorExponencial:
 
 class AmostradorDeterministico:
     def __init__(self):
-        self.momentosChegada = [0, 5, 8, 15, 17, 18]
+        self.momentosChegada = [0, 5, 8, 15, 17, 18, 0, 5, 8, 15, 17, 18, 0, 5, 8, 15, 17, 18]
     def getChegada(self, index):
         return self.momentosChegada[index]
 
@@ -295,6 +295,7 @@ class SimuladorDeterministico:
                     # variancia_tempo_espera = self.staticts.var_incremental(variancia_tempo_espera, media_tempo_espera, tempos_espera[coletas-1], lastmedia_tempo, coletas)
             if (len(self.eventos.eventos) == 0):
                 self.instante_atual += 5
+                time.sleep(5000)
         self.rodada_atual += 1
         t_rodada = self.instante_atual - t_rodada
         media_tempo_espera = self.staticts.media_amostral(tempos_espera)

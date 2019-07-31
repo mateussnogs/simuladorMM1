@@ -582,8 +582,7 @@
                     name: 'ICs',
                     data: $scope.results['ic_ew'],
                     enableMouseTracking: false,
-                    color: blue,
-                    opacity: 0.8
+                    color: '#7cb5ec'
                 }]
             });
             var chart_ic_vw = new Highcharts.Chart({
@@ -623,14 +622,14 @@
                     name: 'ICs',
                     data: $scope.results['ic_vwt'],
                     enableMouseTracking: false,
-
+                    color: '#7cb5ec'
                 }, {
                     type: 'columnrange',
                     name: 'ICs',
                     data: $scope.results['ic_vwchi'],
                     enableMouseTracking: false,
                     color: '#7cb5ec',
-                    opacity: 0.8
+                    opacity: 0.6
                 }]
             });
             var chart_ic_enq = new Highcharts.Chart({
@@ -670,8 +669,7 @@
                     name: 'ICs',
                     data: $scope.results['ic_enq'],
                     enableMouseTracking: false,
-                    color: blue,
-                    opacity: 0.8
+                    color: '#7cb5ec'
                 }]
             });
             var chart_ic_vnq = new Highcharts.Chart({
@@ -703,18 +701,22 @@
                 tooltip: {
                     shared: true
                 },
+                legend: {
+                    enabled: false
+                },
                 series: [{
                     type: 'columnrange',
                     name: 'ICs',
                     data: $scope.results['ic_vnqt'],
-                    enableMouseTracking: false
+                    enableMouseTracking: false,
+                    color: '#7cb5ec'
                 }, {
                     type: 'columnrange',
                     name: 'ICs',
                     data: $scope.results['ic_vnqchi'],
                     enableMouseTracking: false,
                     color: '#7cb5ec',
-                    opacity: 0.8
+                    opacity: 0.6
                 }]
             });
         };
@@ -843,33 +845,154 @@
                 $scope.respDeterministico = res.data;
             });
         }
-        $scope.restartanimation = function(){
-            console.log($("#x1"))
-                var img1 = $("#x1");
+        $scope.startanimation = function(disciplina){
+            resetWatch();
+            startWatch();
+            $http.post('/simulardeterministico/' + disciplina + '/')
+            .then(function(res) {
+                console.log('runed')
+                $scope.respDeterministico = res.data;
+            });
+            var img1 = $("#x1");
+            var img2 = $("#x2");
+            var img3 = $("#x3");
+            var img4 = $("#x4");
+            var img5 = $("#x5");
+            var img6 = $("#x6");
+            console.log('add')
+            img1.addClass("man1");
+            img2.addClass("man2");
+            img3.addClass("man3");
+            img4.addClass("man4");
+            img5.addClass("man5");
+            img6.addClass("man6");
+            setTimeout(function() {
                 img1.removeClass("man1");
-                var img2 = $("#x2");
                 img2.removeClass("man2");
-                var img3 = $("#x3");
                 img3.removeClass("man3");
-                var img4 = $("#x4");
                 img4.removeClass("man4");
-                var img5 = $("#x5");
                 img5.removeClass("man5");
-                var img6 = $("#x6");
                 img6.removeClass("man6");
-                $('button').css({
-                    'animation-name': 'move_to_service',
-                    'animation-duration': '1s',
-                    'animation-delay': '0s',
-                    'animation-fill-mode': 'forwards'});
                 setTimeout(function() {
+                    console.log('add')
                     img1.addClass("man1");
                     img2.addClass("man2");
                     img3.addClass("man3");
                     img4.addClass("man4");
                     img5.addClass("man5");
                     img6.addClass("man6");
+                    setTimeout(function() {
+                        img1.removeClass("man1");
+                        img2.removeClass("man2");
+                        img3.removeClass("man3");
+                        img4.removeClass("man4");
+                        img5.removeClass("man5");
+                        img6.removeClass("man6");
+                        setTimeout(function() {
+                            console.log('add')
+                            img1.addClass("man1");
+                            img2.addClass("man2");
+                            img3.addClass("man3");
+                            img4.addClass("man4");
+                            img5.addClass("man5");
+                            img6.addClass("man6");
+                            setTimeout(function() {
+                                stopWatch();
+                            }, 35000);
+                        }, 1000);
+                    }, 34000);
                 }, 1000);
+            }, 34000);
+        }
+
+        //Function to display clock
+        var timer = null;
+        var min_txt = document.getElementById("min");
+        if(min_txt){
+            var min = Number(min_txt.innerHTML);
+        }
+        var sec_txt = document.getElementById("sec");
+        if(sec_txt){
+            var sec = Number(sec_txt.innerHTML);
+        }
+        var msec_txt = document.getElementById("msec"); 
+        if(msec_txt){
+            var msec = Number(msec_txt.innerHTML);
+        }
+        function stopTimeMilliseconds(timer) {
+            if (timer) { 
+                clearInterval(timer);
+                return timer;
+            }
+            else return timer;
+        }
+        function startTimeMilliseconds() {
+            var currDate = new Date();
+            return currDate.getTime();	
+        }
+        function getElapsedTimeMilliseconds(startMilliseconds) {
+            if (startMilliseconds > 0) {
+                var currDate = new Date();
+                var elapsedMilliseconds = (currDate.getTime() - startMilliseconds);
+                return elapsedMilliseconds;
+            }
+        else {
+            return elapsedMilliseconds = 0;
+            }
+        }
+        function startWatch() { 
+            // START TIMER
+            timer = stopTimeMilliseconds(timer); 
+            var startMilliseconds = startTimeMilliseconds();
+            timer = setInterval(function() { 
+                var elapsedMilliseconds = getElapsedTimeMilliseconds(startMilliseconds); 
+                if (msec < 10) {
+                    msec_txt.innerHTML = "00" + msec; 
+                }
+                else if (msec < 100) {
+                    msec_txt.innerHTML = "0" + msec;
+                }
+                else {
+                    msec_txt.innerHTML = msec;
+                }
+                if (sec < 10) {
+                    sec_txt.innerHTML = "0" + sec;
+                }
+                else {
+                    sec_txt.innerHTML = sec; 
+                }
+                min_txt.innerHTML = min; 
+                msec = elapsedMilliseconds;
+                if (min >= 59 && sec >=59 && msec > 900) {
+                    timer = stopTimeMilliseconds(timer);
+                    return true;
+                }
+                if (sec > 59) {
+                    sec = 0;
+                    min++;
+                }
+                if (msec > 999) {
+                    msec = 0;
+                    sec++;
+                    startWatch();
+                }
+            }, 10);
+        }
+        function stopWatch() {
+            // STOP TIMER
+            timer = stopTimeMilliseconds(timer);
+            return true;
+        }
+        function resetWatch() {
+            // REZERO TIMER
+            timer = stopTimeMilliseconds(timer);
+            msec_txt.innerHTML = "000"; 
+            msec = 0;
+            sec_txt.innerHTML = "00"; 
+            sec = 0;
+            min_txt.innerHTML = "0"; 
+            min = 0;
+            return true;
         }
     });
 })();

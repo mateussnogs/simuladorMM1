@@ -38,10 +38,8 @@
                 </select>
             </div>
         </div>
-        <div class="butons">
-            <button ng-click="simular_toplot(rho, disciplina, kmin, rodadas)"> Roda </button>
-        </div>
-        <div ng-show="showLoader" class="loader" style="margin-left: 700px;margin-top: -150px;"></div>
+        <h1><a href class="btn btn-lg btn btn_transiente" ng-click="simular_toplot(rho, disciplina, kmin, rodadas)"> Roda </a></h1>
+        <div ng-show="showLoader" class="loader" style="margin-left: 700px;"></div>
         <div ng-show="chartReady" id="graph">
             <div class="row">
                 <div class="col-sm-6">
