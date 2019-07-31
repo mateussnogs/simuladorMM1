@@ -855,19 +855,29 @@
             });
         }
         $scope.startanimation = function(disciplina){
+            var class5 = 'man5';
+            var class6 = 'man6';
+            if(disciplina == 'FCFS'){
+                class5 = class5 + 'F';
+                class6 = class6 + 'F';
+            }
+            else{
+                class5 = class5 + 'L';
+                class6 = class6 + 'L';
+            }
             $scope.respDeterministico = {
                 'e_w': null,
                 'v_w': null,
                 'e_nq': null,
                 'v_nq': null
             };
-            resetWatch();
-            startWatch();
             $http.post('/simulardeterministico/' + disciplina + '/')
             .then(function(res) {
                 console.log('runed')
                 $scope.respDeterministico = res.data;
             });
+            resetWatch();
+            startWatch();
             var img1 = $("#x1");
             var img2 = $("#x2");
             var img3 = $("#x3");
@@ -879,38 +889,38 @@
             img2.addClass("man2");
             img3.addClass("man3");
             img4.addClass("man4");
-            img5.addClass("man5");
-            img6.addClass("man6");
+            img5.addClass(class5);
+            img6.addClass(class6);
             setTimeout(function() {
                 img1.removeClass("man1");
                 img2.removeClass("man2");
                 img3.removeClass("man3");
                 img4.removeClass("man4");
-                img5.removeClass("man5");
-                img6.removeClass("man6");
+                img5.removeClass(class5);
+                img6.removeClass(class6);
                 setTimeout(function() {
                     console.log('add')
                     img1.addClass("man1");
                     img2.addClass("man2");
                     img3.addClass("man3");
                     img4.addClass("man4");
-                    img5.addClass("man5");
-                    img6.addClass("man6");
+                    img5.addClass(class5);
+                    img6.addClass(class6);
                     setTimeout(function() {
                         img1.removeClass("man1");
                         img2.removeClass("man2");
                         img3.removeClass("man3");
                         img4.removeClass("man4");
-                        img5.removeClass("man5");
-                        img6.removeClass("man6");
+                        img5.removeClass(class5);
+                        img6.removeClass(class6);
                         setTimeout(function() {
                             console.log('add')
                             img1.addClass("man1");
                             img2.addClass("man2");
                             img3.addClass("man3");
                             img4.addClass("man4");
-                            img5.addClass("man5");
-                            img6.addClass("man6");
+                            img5.addClass(class5);
+                            img6.addClass(class6);
                             setTimeout(function() {
                                 stopWatch();
                             }, 35000);

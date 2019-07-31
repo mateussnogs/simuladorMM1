@@ -222,17 +222,31 @@ img{
   animation-fill-mode: forwards;
 }
 
-.man5{
+.man5F{
   animation-name: move_to_pos1, move_to_service, goaway;
   animation-duration: 1s, 1s, 1s;
   animation-delay: 17s, 20s, 25s;
   animation-fill-mode: forwards;
 }
 
-.man6{
+.man6F{
   animation-name: move_to_pos2, move_to_pos1, move_to_service, goaway;
   animation-duration: 1s, 1s, 1s, 1s;
   animation-delay: 18s, 20s, 25s, 30s;
+  animation-fill-mode: forwards;
+}
+
+.man5L{
+  animation-name: move_to_pos1, move_to_pos2, move_to_pos1, move_to_service, goaway;
+  animation-duration: 1s, 1s, 1s;
+  animation-delay: 17s, 18s, 20s, 25s, 30s;
+  animation-fill-mode: forwards;
+}
+
+.man6L{
+  animation-name: move_to_pos1, move_to_service, goaway;
+  animation-duration: 1s, 1s, 1s, 1s;
+  animation-delay: 18s, 20s, 25s;
   animation-fill-mode: forwards;
 }
 

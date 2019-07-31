@@ -367,8 +367,8 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
             k += 5
 
     context['kmins'].append([kmin_w[0], kmin_w[1]])
-    context['kmins'].append([kmin_nq[0], kmin_nq[1]])
     context['kmins'].append([kmin_vw[0], kmin_vw[1]])
+    context['kmins'].append([kmin_nq[0], kmin_nq[1]])
     context['kmins'].append([kmin_vnq[0], kmin_vnq[1]])
 
     file_random_state = open("random_state.txt", "w")
