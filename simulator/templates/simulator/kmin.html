@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html ng-app='app'>
+    <head>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="/static/css/styles.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.28/angular-cookies.min.js"></script>
+        <script src="/static/js/app.js"></script>
+        <script src="/static/js/controllers/simulador_controller.js"></script>
+        <script src="http://code.highcharts.com/highcharts.js"></script>
+        <script src="https://code.highcharts.com/highcharts-more.js"></script>
+        <script src="https://code.highcharts.com/modules/exporting.js"></script>
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>    </head>
+    <title>SimuladorMM1</title>
+    <body ng-controller="SimuladorController">
+        <div class="topnav">
+            <a class="active" href="main">Simulador de Filas M/M/1</a>
+            <a href="kmin">Teste Kmin</a>
+            <a href="animacao">Simulação em tempo discreto</a>
+            <a href="transiente">Determinação da fase transiente</a>
+        </div>
+        <div class="before">
+            <h3 style="padding-left:10px">Escolha as configurações para obter os Kmin</h3>
+            <div class="opcoes" style="height: 50px;padding-top: 8px;">
+                <label for="taxa">Taxa de utilização:</label>
+                <select id="taxa" ng-model="rho">
+                    <option value=0.2>0.2</option>
+                    <option value=0.4>0.4</option>
+                    <option value=0.6>0.6</option>
+                    <option value=0.8>0.8</option>
+                    <option value=0.9>0.9</option>
+                </select>
+            </div>
+            
+            <div class="opcoes" style="height: 50px;padding-top: 8px;">
+                <label for="disc">Disciplina:</label>
+                <select id="disc" ng-model="disciplina">
+                    <option value='FCFS'>FCFS</option>
+                    <option value='LCFS'>LCFS</option>
+                </select>
+            </div>
+        </div>
+        <h1 style="top:90px"><a href ng-disabled="simulando" ng-click="simularkmin(rho, disciplina, rodadas, seed_esperta)" class="btn btn-lg btn btn_simular">Teste Kmin</a></h1>
+        <div class="after">
+            <div ng-show="showLoader" class="loader"></div>
+            <p ng-show="showLoader" class="rod">
+                Rodada:
+            </p>
+            <p ng-show="showLoader" class="rod" style="margin-top: 155px;margin-left: -125px;">{% verbatim %} {{ rodada }} {% endverbatim %}</p>
+            <p ng-show="!showLoader" class="time" style="margin-top: 130px;margin-left: -190px;position: absolute;">Tempo de processamento: </p>
+            <p ng-show="!showLoader" class="time" style="margin-top: 155px;margin-left: -200px;position: absolute;">{% verbatim %} {{ tempo_process }} {% endverbatim %} minutos</p>
+            
+            <div ng-if="hasKResults">
+                <h2> Resultados:</h2>
+                <p>Kmins:</p>
+                <p>Precisao: {% verbatim %} {{ results['kmins'][0][0] }} {% endverbatim %}, Analitico no IC: {% verbatim %} {{ results['kmins'][0][1] }} {% endverbatim %}</p>
+                <p>Precisao: {% verbatim %} {{ results['kmins'][1][0] }} {% endverbatim %}, Analitico no IC: {% verbatim %} {{ results['kmins'][1][1] }} {% endverbatim %}</p>
+                <p>Precisao: {% verbatim %} {{ results['kmins'][2][0] }} {% endverbatim %}, Analitico no IC: {% verbatim %} {{ results['kmins'][2][1] }} {% endverbatim %}</p>
+                <p>Precisao: {% verbatim %} {{ results['kmins'][3][0] }} {% endverbatim %}, Analitico no IC: {% verbatim %} {{ results['kmins'][3][1] }} {% endverbatim %}</p>
+
+        </div>
+        <div class="row" style="float: left;" >
+            <div id="ic_ew" style="float: left;"></div>
+            <div id="ic_vw" style="float: left; position: relative;"></div>
+        </div>
+        <div class="row" style="float: left;">
+            <div id="ic_enq" style="float: left; position: relative;"></div>
+            <div id="ic_vnq" style="float: left;"></div>
+        </div>
+        <div id="graph_results" style="float: left;">
+        </div>
+    </body>
+</html>
+
