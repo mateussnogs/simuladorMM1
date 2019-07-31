@@ -280,3 +280,12 @@ img{
   color: white;
   border-radius: 15px;
 }
+
+.btn_transiente{
+  background-color: darkcyan;
+  color: white;
+  border-radius: 15px;
+  position: absolute;
+  left: -250px;
+  top: -150px;
+}

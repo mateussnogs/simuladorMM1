@@ -16,6 +16,7 @@
     <body ng-controller="SimuladorController">
         <div class="topnav">
             <a class="active" href="main">Simulador de Filas M/M/1</a>
+            <a href="kmin">Teste Kmin</a>
             <a href="animacao">Simulação em tempo discreto</a>
             <a href="transiente">Determinação da fase transiente</a>
         </div>
@@ -50,13 +51,12 @@
                 <input id="rod" type="number" ng-model="rodadas" min="1" max="3200">
             </div>
 
-            <div class="opcoes">
+            <div class="opcoes" style="padding: 25px;">
                 <label for="seed">Mudar para seed esperta</label>
                 <input type="checkbox" ng-model="seed_esperta">
             </div>
         </div>
         <h1><a href ng-disabled="simulando" ng-click="simular(rho, disciplina, kmin, rodadas, seed_esperta)" class="btn btn-lg btn btn_simular">Simular</a></h1>
-        <h1 style="top:90px"><a href ng-disabled="simulando" ng-click="simularkmin(rho, disciplina, rodadas, seed_esperta)" class="btn btn-lg btn btn_simular">Teste Kmin</a></h1>
         <div class="after">
             <div ng-show="showLoader" class="loader"></div>
             <p ng-show="showLoader" class="rod">
