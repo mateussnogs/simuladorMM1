@@ -231,7 +231,6 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
         'VNq': {'0.2': 0.0725, '0.4': 0.5511, '0.6': 2.7900, '0.8': 18.5600, '0.9': 88.2900}
     }
     rho = float(rho)
-    simulador = Simulador(rho)
     rodadas = int(rodadas)
     disciplina = str(disciplina)
     if(disciplina == 'FCFS'):
@@ -264,6 +263,7 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
         Vw = []
         Nq = []
         Vnq = []
+        simulador = Simulador(rho)
         for i in range(rodadas):
             nqi, vi_nq, wi, vi_w = simulador.simular(disciplina, k)
             W.append(wi) #Conjunto de variaveis aleatorias {Wi}
@@ -310,9 +310,8 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
             kmin_vnq[0] = k
             print('precisao ok!')
         if(kmin_w[0] > 0 and kmin_nq[0] > 0 and kmin_vw[0] > 0 and kmin_vnq[0] > 0):
-            analiticoAux = analitico['EW']
-            if((analiticoAux[str(rho)] < ic_w[1] or analiticoAux[str(rho)] > ic_w[2]) and (not analiticoin_w)):
-                print(ic_w[1], analiticoAux[str(rho)], ic_w[2])
+            if((analitico['EW'][str(rho)] < ic_w[1] or analitico['EW'][str(rho)] > ic_w[2]) and (not analiticoin_w)):
+                print(ic_w[1], analitico['EW'][str(rho)], ic_w[2])
                 context['ic_ew'].append([ic_w[1], ic_w[2]])
             else:
                 if(not analiticoin_w):
@@ -320,9 +319,8 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
                     analiticoin_w = True
                     kmin_w[1] = k
                 print('ic ok!')
-            analiticoAux = analitico['ENq']
-            if((analiticoAux[str(rho)] < ic_nq[1] or analiticoAux[str(rho)] > ic_nq[2]) and (not analiticoin_nq)):
-                print(ic_nq[1], analiticoAux[str(rho)], ic_nq[2])
+            if((analitico['ENq'][str(rho)] < ic_nq[1] or analitico['ENq'][str(rho)] > ic_nq[2]) and (not analiticoin_nq)):
+                print(ic_nq[1], analitico['ENq'][str(rho)], ic_nq[2])
                 context['ic_enq'].append([ic_nq[1], ic_nq[2]])
             else:
                 if(not analiticoin_nq):
@@ -330,9 +328,8 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
                     analiticoin_nq = True
                     kmin_nq[1] = k
                 print('ic ok!')
-            analiticoAux = analitico['VW']
-            if((analiticoAux[str(rho)] < ic_vwt[1] or analiticoAux[str(rho)] > ic_vwt[2]) and (not analiticoin_vw)):
-                print(ic_vwt[1], analiticoAux[str(rho)], ic_vwt[2])
+            if((analitico['VW'][str(rho)] < ic_vwt[1] or analitico['VW'][str(rho)] > ic_vwt[2]) and (not analiticoin_vw)):
+                print(ic_vwt[1], analitico['VW'][str(rho)], ic_vwt[2])
                 context['ic_vwt'].append([ic_vwt[1], ic_vwt[2]])
                 context['ic_vwchi'].append([ic_vwchi[1], ic_vwchi[2]])
             else:
@@ -342,9 +339,8 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
                     analiticoin_vw = True
                     kmin_vw[1] = k
                 print('ic ok!')
-            analiticoAux = analitico['VNq']
-            if((analiticoAux[str(rho)] < ic_vnqt[1] or analiticoAux[str(rho)] > ic_vnqt[2]) and (not analiticoin_vnq)):
-                print(ic_vnqt[1], analiticoAux[str(rho)], ic_vnqt[2])
+            if((analitico['VNq'][str(rho)] < ic_vnqt[1] or analitico['VNq'][str(rho)] > ic_vnqt[2]) and (not analiticoin_vnq)):
+                print(ic_vnqt[1], analitico['VNq'][str(rho)], ic_vnqt[2])
                 context['ic_vnqt'].append([ic_vnqt[1], ic_vnqt[2]])
                 context['ic_vnqchi'].append([ic_vnqchi[1], ic_vnqchi[2]])
             else:
