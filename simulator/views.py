@@ -100,7 +100,8 @@ def simular(rho, disciplina, kmin, rodadas, seed_esperta):
     }
     
     rho = float(rho)
-    simulador = Simulador(rho)
+    # simulador = Simulador(rho)
+    simulador = get_equilibrio(rho, disciplina)
     rodadas = int(rodadas)
     disciplina = str(disciplina)
     kmin = int(kmin)
