@@ -10,11 +10,13 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse
 from ast import literal_eval
+from background_task.models import Task
 # Create your views here.
 
 
 @csrf_exempt
-def main(request):    
+def main(request):
+    Task.objects.all().delete()
     return render(request, 'simulator/main.html', {})
 @csrf_exempt
 def animacao(request):    
