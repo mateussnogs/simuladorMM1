@@ -10,11 +10,13 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import redirect
 from django.urls import reverse
 from ast import literal_eval
+from background_task.models import Task
 # Create your views here.
 
 
 @csrf_exempt
-def main(request):    
+def main(request):
+    Task.objects.all().delete()
     return render(request, 'simulator/main.html', {})
 @csrf_exempt
 def animacao(request):    
@@ -103,7 +105,6 @@ def simular(rho, disciplina, kmin, rodadas, seed_esperta):
     disciplina = str(disciplina)
     kmin = int(kmin)
     if (seed_esperta == '1'):
-        print("seed esperta!")
         try:
             file_random_state = open("random_state.txt", "r")        
             random_state = file_random_state.readline()
@@ -112,6 +113,8 @@ def simular(rho, disciplina, kmin, rodadas, seed_esperta):
             file_random_state.close()
         except:
             pass
+    else:
+        random.seed(13)
     W = []
     Vw = []
     Nq = []
@@ -389,7 +392,18 @@ def simular_kmin(rho, disciplina, rodadas, seed_esperta):
 
 @csrf_exempt
 #simulacao para gerar graficos para analise de fase transiente
-def simular_toplot(request, rho, disciplina, kmin, rodadas):
+def simular_toplot(request, rho, disciplina, kmin, rodadas, seed_esperta):
+    if (seed_esperta == '1'):
+        try:
+            file_random_state = open("random_state.txt", "r")        
+            random_state = file_random_state.readline()
+            if (len(random_state) > 0):
+                random.setstate(literal_eval(random_state))
+            file_random_state.close()
+        except:
+            pass
+    else:
+        random.seed(13)
     rho = float(rho)
     simulador = Simulador(rho)
     rodadas = int(rodadas)
@@ -516,7 +530,12 @@ def simular_toplot(request, rho, disciplina, kmin, rodadas):
     context['V'] = vespera
     context['ENq'] = nq_medias
     context['VNq'] = nq_vars
-    #return nq/t_rodada, media_tempo_espera, variancia_tempo_espera
+
+    file_random_state = open("random_state.txt", "w")
+    file_random_state.write(str(simulador.estado_randomico))
+    file_random_state.close()
+
+    print(nq_medias[len(nq_medias)-1])
     return HttpResponse(json.dumps(context))
 
 @csrf_exempt

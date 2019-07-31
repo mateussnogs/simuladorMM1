@@ -835,14 +835,15 @@
                 $scope.hasKResults = true;
             });
         }
-        $scope.simular_toplot = function(rho, disciplina, kmin, rodadas) {
+        $scope.simular_toplot = function(rho, disciplina, kmin, rodadas, seed_esperta) {
             console.log('rodar');
             $scope.chartReady = false;
             $scope.showLoader = true;
-            $http.post('/simulartoplot/' + rho + '/' + disciplina + '/' + kmin + '/' + rodadas + '/')
+            seed_esperta = seed_esperta ? 1:0;
+            $http.post('/simulartoplot/' + rho + '/' + disciplina + '/' + kmin + '/' + rodadas + '/' + seed_esperta + '/')
             .then(function(res) {
                 $scope.plots = res.data;
-                console.log('parei')
+                console.log('parei');
                 $scope.plotCharts(rho, disciplina);
             });
         }

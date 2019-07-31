@@ -90,7 +90,6 @@ class Statistics:
 class AmostradorExponencial:
     def __init__(self, lamb):
         self.lamb = lamb
-        random.seed(13)
     def gerar_amostra(self):
         u0 = random.uniform(0,1)
         x0 = log(u0)/(-self.lamb)
